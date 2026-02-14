@@ -88,13 +88,11 @@ export const PROJECTS: Project[] = [
     id: "proj1",
     title: "AI-Driven Precision Agriculture Decision Support System",
     description: [
-      "Designed and developed an AI-powered end-to-end decision support platform for precision agriculture, integrating crop recommendation, fertilizer optimization, disease detection, pest outbreak prediction, and market price forecasting into a unified system. Designed an end-to-end ML pipeline covering data ingestion, preprocessing, feature engineering, model training, and inference.",
-      "Built and trained machine learning models (Random Forest, XGBoost, Linear Regression) for crop selection, fertilizer dosage, loan eligibility scoring, and yield-linked decision support using soil, weather, and historical crop datasets.",
-      "Implemented CNN-based plant disease detection using image classification models (MobileNet/ResNet), enabling earlystage disease identification and reducing potential crop loss.",
-      "Integrated geo-climate data to generate early warning signals for pest outbreaks and crop risks.",
-      "Developed ETL pipelines for ingesting and preprocessing multi-source structured and unstructured data (soil data, weather APIs, market prices), ensuring scalable and clean data flow.",
-      "Created an interactive farmer dashboard with visual analytics for crop health, weather risks, irrigation planning, and profitability insights. Built API-based model inference services using Flask/FastAPI to deliver real-time recommendations.",
-      "Focused on model generalization, modular design, and scalability across crops and regions."
+      "Designed and developed an AI-powered end-to-end decision support platform for precision agriculture, integrating crop recommendation, fertilizer optimization, disease detection, pest outbreak prediction, and market price forecasting into a unified system.",
+      "Built and trained machine learning models (Random Forest, XGBoost, Linear Regression) for crop selection, fertilizer dosage, and yield-linked decision support.",
+      "Implemented CNN-based plant disease detection using image classification models.",
+      "Developed ETL pipelines for ingesting and preprocessing multi-source data.",
+      "Created an interactive farmer dashboard with visual analytics."
     ],
     techStack: ["Python", "Scikit-learn", "TensorFlow", "CNN", "Pandas", "NumPy", "Flask/FastAPI", "SQL/NoSQL", "Weather APIs", "GIS"],
     image: "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1000&auto=format&fit=crop"
@@ -103,13 +101,10 @@ export const PROJECTS: Project[] = [
     id: "proj2",
     title: "Next-Gen Classroom Automation System",
     description: [
-      "Designed and implemented an AI-driven classroom automation platform to support academic integrity, assessment evaluation, and data-driven educator decision-making using LLMs and ML models.",
-      "Built a scalable plagiarism detection pipeline using FAISS + BM25, enabling semantic and keyword-based similarity analysis across large volumes of PDF and text submissions.",
-      "Developed an AI-generated text detection pipeline leveraging NLP preprocessing and transformer-based models to identify machine-generated content in student assignments.",
-      "Architected role-based APIs and dashboards for teachers and students with JWT-based authentication, submission tracking, performance analytics, and automated evaluation insights.",
-      "Integrated LLM-powered workflows for research paper generation, citation assistance, and exam analytics to surface curriculum trends and learning gaps.",
-      "Improved system responsiveness and scalability using Redis caching, asynchronous background workers.",
-      "Deployed the application with a cloud-ready architecture following secure authentication and modular service design."
+      "Designed and implemented an AI-driven classroom automation platform using LLMs and ML models.",
+      "Built a scalable plagiarism detection pipeline using FAISS + BM25.",
+      "Developed an AI-generated text detection pipeline leveraging NLP preprocessing.",
+      "Architected role-based APIs and dashboards with JWT-based authentication."
     ],
     techStack: ["Python", "FastAPI", "Transformers", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Redis", "LangChain", "AWS S3", "AWS EC2"],
     image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000&auto=format&fit=crop"
@@ -118,12 +113,10 @@ export const PROJECTS: Project[] = [
     id: "proj3",
     title: "Automated ETL Data Engineering Pipeline",
     description: [
-      "Designed and implemented an end-to-end ETL pipeline to ingest, clean, transform, and store large volumes of structured and semi-structured data using AWS Lambda, AWS Glue, and Python.",
-      "Automated data extraction from multiple sources, performed schema validation, normalization, and data quality checks, and converted raw data into optimized Parquet format for analytics efficiency.",
-      "Built a cloud-based data warehouse using Amazon Redshift, enabling fast querying and scalable analytics for business intelligence use cases. Used AWS Athena to run SQL queries on the data lake for validation and analysis.",
-      "Developed Power BI dashboards to track KPIs, demand trends, revenue metrics, and operational insights with scheduled refresh and automated reporting. Focused on understanding cloud data flow, schema design, and analytics consumption.",
-      "Improved query performance and storage efficiency through partitioning, indexing strategies, and optimized data modeling.",
-      "Implemented event-driven workflows and logging for monitoring pipeline health and failure handling."
+      "Designed and implemented an end-to-end ETL pipeline to ingest, clean, and store large volumes of data using AWS services.",
+      "Automated data extraction, schema validation, and normalization.",
+      "Built a cloud-based data warehouse using Amazon Redshift.",
+      "Developed Power BI dashboards to track KPIs and demand trends."
     ],
     techStack: ["Python", "AWS Lambda", "AWS Glue", "Athena", "Redshift", "SQL", "Parquet", "Power BI", "Data Modeling", "ETL Pipelines"],
     image: "https://images.unsplash.com/photo-1551288049-bbbda536339a?q=80&w=1000&auto=format&fit=crop"
@@ -134,111 +127,119 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     name: "Languages",
     skills: [
-      { name: "Python", icon: "py", hasLogo: true }, 
-      { name: "JavaScript", icon: "js", hasLogo: true }, 
-      { name: "TypeScript", icon: "ts", hasLogo: true }, 
-      { name: "C Programming", icon: "c", hasLogo: true }
+      { name: "Python" }, 
+      { name: "JavaScript" }, 
+      { name: "TypeScript" }, 
+      { name: "C Programming" }
     ]
   },
   {
     name: "Web Development",
     skills: [
-      { name: "React.js", icon: "react", hasLogo: true }, 
-      { name: "Next.js", icon: "nextjs", hasLogo: true }, 
-      { name: "Node.js", icon: "nodejs", hasLogo: true }, 
-      { name: "Express.js", icon: "express", hasLogo: true }, 
-      { name: "MERN Stack", hasLogo: true },
-      { name: "REST APIs", hasLogo: false },
-      { name: "JWT Auth", hasLogo: false },
-      { name: "WebSockets", hasLogo: false }
+      { name: "React.js" }, 
+      { name: "Next.js" }, 
+      { name: "Node.js" }, 
+      { name: "Express.js" }, 
+      { name: "MERN Stack" },
+      { name: "REST APIs" },
+      { name: "JWT Auth" },
+      { name: "WebSockets" }
     ]
   },
   {
     name: "AI/ML & LLMs",
     skills: [
-      { name: "LangChain", hasLogo: true },
-      { name: "Transformers", hasLogo: false },
-      { name: "RAG Systems", hasLogo: false },
-      { name: "TensorFlow", icon: "tensorflow", hasLogo: true },
-      { name: "Llama/GPT/Gemini Models", hasLogo: true },
-      { name: "Prompt Engineering", hasLogo: false },
-      { name: "Machine Learning", hasLogo: false },
-      { name: "Gen AI", hasLogo: false },
-      { name: "NLP", hasLogo: false },
-      { name: "GAN", hasLogo: false },
-      { name: "FAISS", hasLogo: false },
-      { name: "ChromaDB", hasLogo: false }
+      { name: "LangChain" },
+      { name: "Transformers" },
+      { name: "RAG Systems" },
+      { name: "TensorFlow" },
+      { name: "Llama/GPT/Gemini Models" },
+      { name: "Prompt Engineering" },
+      { name: "Machine Learning" },
+      { name: "Gen AI" },
+      { name: "NLP" },
+      { name: "GAN" },
+      { name: "FAISS" },
+      { name: "ChromaDB" }
     ]
   },
   {
     name: "Data Engineering & Analysis",
     skills: [
-      { name: "ETL Pipelines", hasLogo: false },
-      { name: "SQL", icon: "mysql", hasLogo: true },
-      { name: "PostgreSQL", icon: "postgres", hasLogo: true },
-      { name: "MongoDB", icon: "mongodb", hasLogo: true },
-      { name: "MySQL", icon: "mysql", hasLogo: true },
-      { name: "Supabase", icon: "supabase", hasLogo: true },
-      { name: "Power BI", hasLogo: true },
-      { name: "DAX", hasLogo: false },
-      { name: "Tableau", hasLogo: true },
-      { name: "Apache Airflow", hasLogo: true },
-      { name: "Data Modeling", hasLogo: false },
-      { name: "Data Lakes and Warehousing", hasLogo: false },
-      { name: "Incremental Loads", hasLogo: false },
-      { name: "Vector Databases", hasLogo: false }
+      { name: "ETL Pipelines" },
+      { name: "SQL" },
+      { name: "PostgreSQL" },
+      { name: "MongoDB" },
+      { name: "MySQL" },
+      { name: "Supabase" },
+      { name: "Power BI" },
+      { name: "DAX" },
+      { name: "Tableau" },
+      { name: "Apache Airflow" },
+      { name: "Data Modeling" },
+      { name: "Data Lakes and Warehousing" },
+      { name: "Incremental Loads" },
+      { name: "Vector Databases" }
     ]
   },
   {
     name: "Cloud & DevOps",
     skills: [
-      { name: "AWS", icon: "aws", hasLogo: true },
-      { name: "Docker", icon: "docker", hasLogo: true },
-      { name: "Kubernetes (Basics)", icon: "kubernetes", hasLogo: true },
-      { name: "Git/GitHub", icon: "github", hasLogo: true },
-      { name: "CI/CD Mindset", hasLogo: false }
+      { name: "AWS" },
+      { name: "Docker" },
+      { name: "Kubernetes (Basics)" },
+      { name: "Git/GitHub" },
+      { name: "CI/CD Mindset" }
     ]
   },
   {
     name: "Tools & Frameworks",
     skills: [
-      { name: "Flask", icon: "flask", hasLogo: true },
-      { name: "Redis", icon: "redis", hasLogo: true },
-      { name: "Prisma", icon: "prisma", hasLogo: true },
-      { name: "Streamlit", hasLogo: true },
-      { name: "FastAPI", icon: "fastapi", hasLogo: true },
-      { name: "Tailwind CSS", icon: "tailwind", hasLogo: true },
-      { name: "Clerk/AuthJS", hasLogo: true },
-      { name: "n8n", hasLogo: true },
-      { name: "Zapier", hasLogo: true }
+      { name: "Flask" },
+      { name: "Redis" },
+      { name: "Prisma" },
+      { name: "Streamlit" },
+      { name: "FastAPI" },
+      { name: "Tailwind CSS" },
+      { name: "Clerk/AuthJS" },
+      { name: "n8n" },
+      { name: "Zapier" }
     ]
   },
   {
     name: "Project Management & Collaboration",
     skills: [
-      { name: "Jira", icon: "windows", hasLogo: true },
-      { name: "Trello", hasLogo: true },
-      { name: "Agile Practices", hasLogo: false },
-      { name: "Stakeholder Communication", hasLogo: false }
+      { name: "Jira" },
+      { name: "Trello" },
+      { name: "Agile Practices" },
+      { name: "Stakeholder Communication" }
     ]
   },
   {
     name: "Soft Skills",
     skills: [
-      { name: "Analytical Thinking", hasLogo: false },
-      { name: "Product Thinking", hasLogo: false },
-      { name: "Technical Mentoring", hasLogo: false },
-      { name: "Team Collaboration", hasLogo: false },
-      { name: "Detailed-Oriented", hasLogo: false }
+      { name: "Analytical Thinking" },
+      { name: "Product Thinking" },
+      { name: "Technical Mentoring" },
+      { name: "Team Collaboration" },
+      { name: "Detailed-Oriented" }
     ]
   }
 ];
 
 export const CERTIFICATIONS: Certification[] = [
-  { name: "AWS Certified Solutions Architect – Associate" },
-  { name: "Oracle AI Foundations Associate" },
-  { name: "IBM AI Product Management" },
-  { name: "Google Cloud GenAI + Gemini Tooling" }
+  { name: "AWS Certified Solutions Architect – Associate (SAA-C03)" },
+  { name: "Oracle AI Foundations Associate (OCI)" },
+  { name: "IBM AI Product Management Professional Certificate" },
+  { name: "Google Cloud GenAI + Responsible AI + Gemini Tooling" },
+  { name: "Machine Learning Crash Course (MLCC) – Google" },
+  { name: "Google Analytics Individual Qualification (GA4)" },
+  { name: "Google Advanced Data Analytics Professional Certificate" },
+  { name: "SQL for Data Science – University of California" },
+  { name: "Google Cybersecurity Professional Certificate" },
+  { name: "Harvard CS50 – Introduction to Computer Science" },
+  { name: "Cybersecurity Fundamentals—LinkedIn Learning" },
+  { name: "ISB Executive Education — Investing Fundamentals" }
 ];
 
 export const ACHIEVEMENTS: Achievement[] = [

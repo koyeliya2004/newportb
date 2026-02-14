@@ -31,13 +31,15 @@ const Navbar: React.FC = () => {
   const bgColor = isScrolled 
     ? (isDark ? 'bg-black/90 backdrop-blur-md border-b border-white/10' : 'bg-white/90 backdrop-blur-md border-b border-black/10') 
     : 'bg-transparent';
-  const logoBg = (isHome && !isScrolled && isDark) ? 'bg-black text-white' : (isDark ? 'bg-white text-black' : 'bg-black text-white');
+  
+  // Colorful Logo Style
+  const logoStyle = "bg-gradient-to-br from-[#d946ef] via-[#a855f7] to-[#3b82f6] text-white shadow-lg shadow-purple-500/20";
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 py-6 ${bgColor}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <NavLink to="/" className="flex items-center gap-2">
-          <div className={`w-10 h-10 ${logoBg} font-black flex items-center justify-center rounded-sm text-xl tracking-tighter transition-all`}>
+          <div className={`w-10 h-10 ${logoStyle} font-black flex items-center justify-center rounded-sm text-xl tracking-tighter transition-all hover:scale-105 active:scale-95`}>
             BT
           </div>
           <span className={`font-black text-xl hidden sm:inline-block tracking-tighter uppercase ${textColor} transition-colors`}>Bhumika</span>
@@ -77,7 +79,7 @@ const Navbar: React.FC = () => {
 
           <NavLink 
             to="/contact"
-            className={`${(isHome && !isScrolled && isDark) ? 'bg-black text-white hover:bg-gray-800' : (isDark ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800')} px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-xl`}
+            className={`bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all shadow-xl hover:scale-105 active:scale-95`}
           >
             Hire Me
           </NavLink>
