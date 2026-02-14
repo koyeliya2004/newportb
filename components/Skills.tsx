@@ -87,18 +87,38 @@ const EcoIcon: React.FC<{ icon: string; name: string; delay: number; active: boo
   </div>
 );
 
-const AnimatedGlobe: React.FC<{ className?: string }> = ({ className }) => {
+const RotatingGlobeEffect: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <div className={`relative perspective-[1000px] ${className}`}>
-      <div className="absolute inset-0 bg-blue-500/5 blur-[120px] rounded-full animate-pulse"></div>
-      <div className="absolute inset-0 border-[0.5px] border-blue-500/30 rounded-full animate-globe"></div>
-      <div className="absolute inset-0 border-[0.5px] border-pink-500/30 rounded-full rotate-45 animate-globe" style={{ animationDirection: 'reverse' }}></div>
-      <div className="absolute inset-0 border-[0.5px] border-purple-500/30 rounded-full rotate-90 animate-globe"></div>
-      <svg className="w-full h-full opacity-40 globe-3d" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.05" className="text-white/20" />
-        <path d="M2,50 Q25,2 50,2 Q75,2 98,50 Q75,98 50,98 Q25,98 2,50" fill="none" stroke="currentColor" strokeWidth="0.1" className="text-blue-400" />
-        <path d="M50,2 Q2,25 2,50 Q2,75 50,98 Q98,75 98,50 Q98,25 50,2" fill="none" stroke="currentColor" strokeWidth="0.1" className="text-pink-400" />
-      </svg>
+    <div className={`absolute inset-0 pointer-events-none flex items-center justify-center ${className}`}>
+      {/* Central Cosmic Glow */}
+      <div className="absolute w-[400px] h-[400px] bg-purple-600/5 blur-[120px] rounded-full animate-pulse"></div>
+      
+      {/* Professional Rotating Globe Core */}
+      <div className="relative w-[300px] h-[300px] md:w-[450px] md:h-[450px] opacity-20">
+        <svg viewBox="0 0 100 100" className="w-full h-full animate-globe">
+           {/* Longitude / Latitude Lines */}
+           <circle cx="50" cy="50" r="48" fill="none" stroke="white" strokeWidth="0.1" />
+           <circle cx="50" cy="50" r="30" fill="none" stroke="white" strokeWidth="0.05" strokeDasharray="2 4" />
+           <ellipse cx="50" cy="50" rx="48" ry="18" fill="none" stroke="purple" strokeWidth="0.15" />
+           <ellipse cx="50" cy="50" rx="18" ry="48" fill="none" stroke="blue" strokeWidth="0.15" />
+           <ellipse cx="50" cy="50" rx="48" ry="48" fill="none" stroke="white" strokeWidth="0.05" transform="rotate(45 50 50)" />
+           <ellipse cx="50" cy="50" rx="48" ry="48" fill="none" stroke="white" strokeWidth="0.05" transform="rotate(-45 50 50)" />
+        </svg>
+      </div>
+
+      {/* Satellite Particles */}
+      <div className="absolute w-full h-full max-w-[600px] max-h-[600px]">
+         {[...Array(8)].map((_, i) => (
+           <div 
+             key={i}
+             className="absolute top-1/2 left-1/2 w-1 h-1 bg-white rounded-full opacity-30 animate-float"
+             style={{
+               animationDelay: `${i * 1.2}s`,
+               transform: `rotate(${i * 45}deg) translate(220px) rotate(-${i * 45}deg)`
+             }}
+           />
+         ))}
+      </div>
     </div>
   );
 };
@@ -112,7 +132,6 @@ const Skills: React.FC = () => {
     return gradients[index % gradients.length];
   };
 
-  // Professional list of technologies relevant to Bhumika's CV
   const ecoIcons = [
     { i: 'react', n: 'React' }, { i: 'nextjs', n: 'Next.js' }, { i: 'ts', n: 'TypeScript' }, 
     { i: 'py', n: 'Python' }, { i: 'nodejs', n: 'Node.js' }, { i: 'express', n: 'Express' },
@@ -125,43 +144,46 @@ const Skills: React.FC = () => {
   ];
 
   return (
-    <section id="about" className="py-24 bg-black px-6 overflow-hidden min-h-screen">
-      <div className="max-w-7xl mx-auto">
+    <section id="about" className="relative py-24 bg-transparent px-6 overflow-hidden min-h-screen">
+      {/* Professional Visual Centerpiece */}
+      <div className="absolute top-0 left-0 w-full h-[75vh] flex items-center justify-center overflow-hidden pointer-events-none">
+        <RotatingGlobeEffect />
         
-        {/* Header Section */}
-        <div ref={summaryRef} className={`reveal ${summaryActive ? 'active' : ''} text-center mb-48 max-w-5xl mx-auto relative h-[500px] flex flex-col justify-center items-center`}>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 w-full select-none pointer-events-none">
-            <h2 className="text-[7vw] md:text-[7rem] font-black tracking-tighter text-white uppercase leading-none opacity-80 drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-              About
-            </h2>
-            <h2 className="text-[7vw] md:text-[7rem] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 uppercase leading-[0.8] opacity-90 gradient-animate">
-              Me
-            </h2>
-          </div>
-          <div className="relative z-10 w-full flex flex-col items-center">
-             <AnimatedGlobe className="w-56 h-56 md:w-[380px] md:h-[380px]" />
-             <div className="mt-12 relative group max-w-3xl bg-black/40 backdrop-blur-md p-6 rounded-2xl border border-white/5 shadow-2xl">
-                <p className="text-base md:text-lg font-light leading-relaxed text-white/90 italic relative z-10 transition-all duration-700">
-                  {CV_DATA.summary}
-                </p>
-             </div>
+        <div ref={summaryRef} className={`reveal ${summaryActive ? 'active' : ''} text-center z-10 transition-all duration-1000`}>
+          <h2 className="text-7xl md:text-9xl font-black tracking-tight text-[#e5e7eb] uppercase leading-none select-none drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]">
+            ABOUT
+          </h2>
+          <h2 className="text-7xl md:text-9xl font-black tracking-tight text-[#c026d3] uppercase leading-[0.7] select-none drop-shadow-[0_0_50px_rgba(192,38,211,0.2)]">
+            ME
+          </h2>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto pt-[60vh] relative z-20">
+        
+        {/* About Summary Box */}
+        <div className="mb-64 flex justify-center">
+          <div className={`reveal ${summaryActive ? 'active' : ''} max-w-3xl bg-black/50 backdrop-blur-2xl p-8 md:p-14 rounded-[2.5rem] border border-white/10 shadow-2xl text-center`}>
+            <p className="text-lg md:text-xl font-light leading-relaxed text-white/90 italic">
+              {CV_DATA.summary}
+            </p>
           </div>
         </div>
 
         {/* Skill Categories Section */}
-        <div className="space-y-32 pb-40">
+        <div className="space-y-48 pb-40">
           {SKILL_CATEGORIES.map((category, catIdx) => {
             const { ref: catRef, active: catActive } = useScrollReveal();
             return (
               <div key={category.name} ref={catRef} className={`reveal ${catActive ? 'active' : ''} group/section`}>
-                <div className="flex flex-col md:flex-row items-baseline gap-4 md:gap-6 mb-12 relative px-4">
+                <div className="flex flex-col md:flex-row items-baseline gap-4 md:gap-6 mb-16 relative px-4">
                   <div className={`absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b ${getCategoryGradient(catIdx)} opacity-0 group-hover/section:opacity-100 blur-sm transition-all duration-700 rounded-full`}></div>
-                  <h4 className="text-xl md:text-3xl font-black tracking-tighter text-white uppercase leading-none">
+                  <h4 className="text-xl md:text-4xl font-black tracking-tighter text-white uppercase leading-none">
                      {category.name} 
                   </h4>
                   <div className={`h-[1px] flex-1 bg-white/10 transform scale-x-0 group-hover/section:scale-x-100 transition-transform duration-1000 origin-left opacity-30`}></div>
                 </div>
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4 md:gap-8">
+                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-6 md:gap-10">
                   {category.skills.map((skill) => (
                     <SkillIcon key={skill.name} name={skill.name} icon={skill.icon} hasLogo={skill.hasLogo} className="w-full" />
                   ))}
@@ -172,18 +194,18 @@ const Skills: React.FC = () => {
         </div>
 
         {/* Professional Technical Ecosystem Section */}
-        <div ref={ecosystemRef} className="pt-20 pb-40 border-t border-white/5 relative">
+        <div ref={ecosystemRef} className="pt-32 pb-48 border-t border-white/5 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
           
-          <div className="text-center mb-24">
-             <p className="text-pink-500 font-bold uppercase tracking-[0.4em] text-[10px] mb-4">Stack Mastery</p>
-             <h2 className="text-4xl md:text-7xl font-playfair font-normal text-white">
+          <div className="text-center mb-32">
+             <p className="text-pink-500 font-bold uppercase tracking-[0.4em] text-[10px] mb-6">Expertise Stack</p>
+             <h2 className="text-5xl md:text-8xl font-playfair font-normal text-white">
                 Technical <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">Ecosystem</span>
              </h2>
           </div>
 
           <div className="max-w-6xl mx-auto px-4">
-             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6 md:gap-10">
+             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-8 md:gap-12">
                 {ecoIcons.map((icon, idx) => (
                   <EcoIcon 
                     key={idx} 
@@ -198,12 +220,12 @@ const Skills: React.FC = () => {
         </div>
 
         {/* Explore Journey */}
-        <div className="text-center pb-20">
+        <div className="text-center pb-32">
            <div className="inline-block relative p-0.5 group cursor-pointer">
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-blue-500 to-purple-600 rounded-full blur-2xl opacity-20 group-hover:opacity-60 transition-all duration-1000"></div>
               <button 
                 onClick={() => window.location.hash = '#/experience'}
-                className="relative px-12 py-5 bg-black rounded-full text-white font-black uppercase tracking-[0.6em] text-[10px] hover:bg-white hover:text-black transition-all duration-700 border border-white/10 group-hover:border-transparent shadow-[0_20px_50px_rgba(255,255,255,0.05)]"
+                className="relative px-16 py-6 bg-black rounded-full text-white font-black uppercase tracking-[0.8em] text-[11px] hover:bg-white hover:text-black transition-all duration-700 border border-white/10 group-hover:border-transparent shadow-[0_30px_60px_rgba(255,255,255,0.05)]"
               >
                 Experience
               </button>
