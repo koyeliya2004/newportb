@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { EXPERIENCES } from '../constants';
+import { EXPERIENCES, VIRTUAL_SIMULATIONS } from '../constants';
 
 const Experience: React.FC = () => {
   return (
@@ -46,6 +46,39 @@ const Experience: React.FC = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Roadmap for Virtual Work Simulations */}
+        <div className="mt-40">
+           <div className="text-center mb-20">
+              <p className="text-pink-500 font-bold uppercase tracking-[0.4em] text-[10px] mb-4">Journey of Growth</p>
+              <h3 className="text-3xl md:text-5xl font-black tracking-tighter">Virtual Work <span className="text-blue-500 italic font-playfair">Simulations</span></h3>
+           </div>
+
+           <div className="relative max-w-4xl mx-auto">
+              {/* Roadmap Path */}
+              <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-pink-500 to-purple-500 opacity-20 hidden md:block -translate-x-1/2 rounded-full"></div>
+
+              <div className="space-y-24">
+                 {VIRTUAL_SIMULATIONS.map((sim, idx) => (
+                    <div key={idx} className={`relative flex flex-col md:flex-row items-center gap-8 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                       {/* Center Node */}
+                       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-black border-4 border-pink-500 rounded-full z-20 hidden md:flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.3)]">
+                          <span className="text-lg">{sim.icon}</span>
+                       </div>
+
+                       {/* Content Card */}
+                       <div className={`w-full md:w-5/12 p-8 bg-white/5 border border-white/10 rounded-3xl relative hover:bg-white/[0.08] transition-all group hover:border-pink-500/50 ${idx % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
+                          <div className={`absolute top-1/2 w-8 h-px bg-pink-500 opacity-0 group-hover:opacity-100 transition-opacity hidden md:block ${idx % 2 === 0 ? '-right-8' : '-left-8'}`}></div>
+                          <h4 className="text-xl font-bold mb-2 text-white">{sim.category}</h4>
+                          <p className="text-gray-400 text-sm leading-relaxed">{sim.companies}</p>
+                       </div>
+
+                       <div className="hidden md:block w-5/12"></div>
+                    </div>
+                 ))}
+              </div>
+           </div>
         </div>
       </div>
     </section>

@@ -7,8 +7,9 @@ export const CV_DATA = {
   phone: "+91 8420399560",
   location: "Kolkata, India",
   links: {
-    github: "https://github.com",
-    linkedin: "https://linkedin.com"
+    github: "https://github.com/bhumikatewari",
+    linkedin: "https://linkedin.com/in/bhumikatewari",
+    whatsapp: "https://wa.me/918420399560"
   },
   summary: "Innovative software engineer with hands-on experience in full-stack development, AI/ML systems, data engineering pipelines, cyber security and cloud-based solutions. Proven ability to build scalable, data-driven products using modern frameworks, machine learning models, and enterprise tools. Actively involved in development, teaching and tech — converting real business problems into functioning products. Passionate about building tech products that improve focus, efficiency, and user wellbeing."
 };
@@ -55,6 +56,29 @@ export const EXPERIENCES: Experience[] = [
   }
 ];
 
+export const VIRTUAL_SIMULATIONS = [
+  {
+    category: "Software & Cloud",
+    companies: "AWS, Walmart, Goldman Sachs, HPE, Accenture, AIG, Verizon",
+    icon: "☁️"
+  },
+  {
+    category: "Data & Analytics",
+    companies: "Microsoft, PwC, Tata, Quantium, British Airways, Mastercard",
+    icon: "📊"
+  },
+  {
+    category: "Finance & Consulting",
+    companies: "JPMorgan, Fidelity, HP, KPMG US, HSBC, Bank of America, BCG",
+    icon: "💼"
+  },
+  {
+    category: "PM & Leadership",
+    companies: "Siemens, CBRE, GE, NY Jobs CEO Council",
+    icon: "🚀"
+  }
+];
+
 export const PROJECTS: Project[] = [
   {
     id: "proj1",
@@ -94,7 +118,6 @@ export const PROJECTS: Project[] = [
   }
 ];
 
-// We add a 'hasLogo' property to distinguish in UI
 export const SKILL_CATEGORIES = [
   {
     name: "Languages",
@@ -205,9 +228,16 @@ export const SKILL_CATEGORIES = [
 ];
 
 export const CERTIFICATIONS: Certification[] = [
-  { name: "AWS Certified Solutions Architect – Associate" },
-  { name: "Oracle AI Foundations Associate" },
-  { name: "IBM AI Product Management" },
-  { name: "Google Cloud GenAI + Gemini Tooling" },
-  { name: "Harvard CS50" }
+  { name: "AWS Certified Solutions Architect – Associate (SAA-C03)" },
+  { name: "Oracle AI Foundations Associate (OCI)" },
+  { name: "IBM AI Product Management Professional Certificate" },
+  { name: "Google Cloud GenAI + Responsible AI + Gemini Tooling" },
+  { name: "Machine Learning Crash Course (MLCC) – Google" },
+  { name: "Google Analytics Individual Qualification (GA4)" },
+  { name: "Google Advanced Data Analytics Professional Certificate" },
+  { name: "SQL for Data Science – University of California" },
+  { name: "Google Cybersecurity Professional Certificate" },
+  { name: "Harvard CS50 – Introduction to Computer Science" },
+  { name: "Cybersecurity Fundamentals—LinkedIn Learning" },
+  { name: "ISB Executive Education — Investing Fundamentals" }
 ];
