@@ -1,0 +1,7 @@
+{
+  "name": "Bhumika Tewari Portfolio",
+  "description": "A high-end, modern portfolio for Bhumika Tewari, featuring AI/ML, Full-stack, and Data Engineering projects with a cutting-edge dark aesthetic.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
