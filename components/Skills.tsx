@@ -10,9 +10,10 @@ const useScrollReveal = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setActive(true);
+        // Toggle active status based on visibility for "comes in and moves out" effect
+        setActive(entry.isIntersecting);
       },
-      { threshold: 0.1 }
+      { threshold: 0.05 } // Low threshold for early reveal
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
@@ -97,13 +98,13 @@ const SkillLogo: React.FC<{ name: string; icon?: string; delay: number; isDark: 
       style={{ animationDelay: `${delay}ms` }}
     >
       <div 
-        className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-xl transition-all duration-500 hover:scale-110 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:-translate-y-1 ${isDark ? 'bg-[#111] border border-white/5 hover:border-pink-500/50' : 'bg-white border border-black/5 hover:border-pink-500/50 shadow-lg'}`}
+        className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-xl transition-all duration-500 hover:scale-110 animate-logo-pulse hover:animate-none ${isDark ? 'bg-[#111] border border-white/5 hover:border-pink-500/50 hover:shadow-[0_0_25px_rgba(236,72,153,0.4)]' : 'bg-white border border-black/5 hover:border-pink-500/50 shadow-lg hover:shadow-[0_0_20px_rgba(236,72,153,0.2)] hover:-translate-y-1'}`}
       >
         {!error ? (
           <img 
             src={url} 
             alt={name} 
-            className="w-8 h-8 md:w-10 md:h-10 object-contain transition-all duration-500"
+            className="w-8 h-8 md:w-10 md:h-10 object-contain transition-all duration-500 group-hover:brightness-110"
             onError={() => setError(true)}
           />
         ) : (
@@ -123,12 +124,6 @@ const SkillLogoGrid: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     { name: 'Next.js', icon: 'nextjs' },
     { name: 'TypeScript', icon: 'ts' },
     { name: 'Tailwind', icon: 'tailwind' },
-    { name: 'CSS', icon: 'css' },
-    { name: 'JavaScript', icon: 'js' },
-    { name: 'HTML', icon: 'html' },
-    { name: 'Figma', icon: 'figma' },
-    { name: 'Notion', icon: 'notion' },
-    { name: 'Markdown', icon: 'markdown' },
     { name: 'Node.js', icon: 'nodejs' },
     { name: 'Express', icon: 'express' },
     { name: 'Redis', icon: 'redis' },
@@ -141,16 +136,14 @@ const SkillLogoGrid: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     { name: 'Docker', icon: 'docker' },
     { name: 'AWS', icon: 'aws' },
     { name: 'K8s', icon: 'kubernetes' },
-    { name: 'Linux', icon: 'linux' },
-    { name: 'Vercel', icon: 'vercel' },
     { name: 'TensorFlow', icon: 'tensorflow' },
     { name: 'FastAPI', icon: 'fastapi' },
     { name: 'Supabase', icon: 'supabase' },
     { name: 'MySQL', icon: 'mysql' },
     { name: 'Flask', icon: 'flask' },
-    { name: 'Jira', icon: 'windows' },
+    { name: 'Figma', icon: 'figma' },
     { name: 'Postman', icon: 'postman' },
-    { name: 'Bun', icon: 'bun' }
+    { name: 'Vercel', icon: 'vercel' }
   ];
 
   return (
@@ -169,10 +162,10 @@ const Skills: React.FC = () => {
 
   return (
     <section id="about" className={`relative py-32 px-6 overflow-hidden min-h-screen transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-slate-50'}`}>
-      {/* Moving background blue blob (secondary) */}
+      {/* Moving background blue blob */}
       <div className={`absolute top-[30%] left-[20%] w-[800px] h-[800px] rounded-full blur-[180px] animate-blob-drift ${isDark ? 'bg-blue-600/10' : 'bg-blue-600/5'}`}></div>
       
-      <div ref={headerRef} className={`reveal ${headerActive ? 'active' : ''} mb-40 text-center relative z-10 pt-20`}>
+      <div ref={headerRef} className={`reveal-custom ${headerActive ? 'active' : 'exit'} mb-40 text-center relative z-10 pt-20`}>
         <PlasmaGlobe />
         <p className="text-pink-500 font-bold uppercase tracking-[0.5em] text-[10px] mb-4 relative z-20">Discovery</p>
         <h2 className={`text-5xl md:text-9xl font-black tracking-tighter uppercase leading-none select-none relative z-20 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -192,7 +185,7 @@ const Skills: React.FC = () => {
               <div 
                 key={category.name} 
                 ref={catRef} 
-                className={`reveal ${catActive ? 'active' : ''} p-10 backdrop-blur-sm rounded-[2.5rem] transition-all duration-500 group border ${isDark ? 'bg-[#0a0a0a]/80 border-white/5 hover:bg-[#111] hover:border-white/10' : 'bg-white/80 border-black/5 hover:bg-white hover:border-pink-500/20 shadow-xl'}`}
+                className={`reveal-custom ${catActive ? 'active' : 'exit'} p-10 backdrop-blur-sm rounded-[2.5rem] transition-all duration-700 group border ${isDark ? 'bg-[#0a0a0a]/80 border-white/5 hover:bg-[#111] hover:border-white/10' : 'bg-white/80 border-black/5 hover:bg-white hover:border-pink-500/20 shadow-xl'}`}
               >
                 <h4 className="text-[10px] md:text-xs font-black tracking-[0.3em] uppercase mb-8 text-pink-600 flex items-center gap-2">
                    <span className="w-1.5 h-1.5 bg-pink-600 rounded-full"></span>
@@ -217,7 +210,7 @@ const Skills: React.FC = () => {
         <div className="mt-20 mb-32 relative">
           <div className="text-center mb-24">
             <h3 className={`text-4xl md:text-6xl font-black tracking-tighter transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Nexus of <span className="text-pink-600 italic">Innovation</span>
+              Nexus of <span className="text-pink-600 italic font-playfair">Innovation</span>
             </h3>
             <div className="w-24 h-1 bg-gradient-to-r from-pink-600 to-blue-600 mx-auto mt-6 mb-8 rounded-full"></div>
             <p className={`mt-4 uppercase tracking-[0.4em] text-[10px] font-black transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-slate-500'}`}>Immersive Ecosystem of Modern Technologies</p>
@@ -251,6 +244,30 @@ const Skills: React.FC = () => {
         .animate-fadeInScale {
           animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
           opacity: 0;
+        }
+        
+        /* Custom scroll reveal for "moves comes in and moves out" */
+        .reveal-custom {
+          opacity: 0;
+          transform: translateY(40px) scale(0.95);
+          transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-custom.active {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        .reveal-custom.exit {
+          opacity: 0;
+          transform: translateY(-20px) scale(0.98);
+        }
+
+        @keyframes logo-pulse {
+          0% { transform: scale(1); box-shadow: 0 0 0 rgba(236, 72, 153, 0); }
+          50% { transform: scale(1.02); box-shadow: 0 0 10px rgba(236, 72, 153, 0.1); }
+          100% { transform: scale(1); box-shadow: 0 0 0 rgba(236, 72, 153, 0); }
+        }
+        .animate-logo-pulse {
+          animation: logo-pulse 4s ease-in-out infinite;
         }
       `}</style>
     </section>
