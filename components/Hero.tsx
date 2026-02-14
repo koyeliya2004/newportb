@@ -1,19 +1,22 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../App';
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#e5e5e5]">
+    <section id="home" className={`relative min-h-screen flex items-center justify-center overflow-hidden transition-colors duration-500 ${isDark ? 'bg-black/20' : 'bg-slate-100'}`}>
       {/* Background Marquee Text */}
       <div className="absolute inset-0 flex items-center pointer-events-none select-none overflow-hidden">
         <div className="animate-marquee whitespace-nowrap flex items-center">
-          <h1 className="text-[35vw] font-black leading-none tracking-tighter text-black uppercase opacity-100 pr-20">
+          <h1 className={`text-[35vw] font-black leading-none tracking-tighter uppercase opacity-10 pr-20 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
             BHUMIKA&nbsp;
           </h1>
-          <h1 className="text-[35vw] font-black leading-none tracking-tighter text-black uppercase opacity-100 pr-20">
+          <h1 className={`text-[35vw] font-black leading-none tracking-tighter uppercase opacity-10 pr-20 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
             BHUMIKA&nbsp;
           </h1>
         </div>
@@ -21,10 +24,10 @@ const Hero: React.FC = () => {
 
       {/* Aesthetic Overlay Lines - Behind the picture (z-0) */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/4 w-px h-full bg-black/20 animate-line-v"></div>
-        <div className="absolute top-0 left-3/4 w-px h-full bg-black/20 animate-line-v-reverse"></div>
-        <div className="absolute top-1/3 left-0 w-full h-px bg-black/20 animate-line-h"></div>
-        <div className="absolute top-2/3 left-0 w-full h-px bg-black/20 animate-line-h-reverse"></div>
+        <div className={`absolute top-0 left-1/4 w-px h-full animate-line-v ${isDark ? 'bg-white/10' : 'bg-black/10'}`}></div>
+        <div className={`absolute top-0 left-3/4 w-px h-full animate-line-v-reverse ${isDark ? 'bg-white/10' : 'bg-black/10'}`}></div>
+        <div className={`absolute top-1/3 left-0 w-full h-px animate-line-h ${isDark ? 'bg-white/10' : 'bg-black/10'}`}></div>
+        <div className={`absolute top-2/3 left-0 w-full h-px animate-line-h-reverse ${isDark ? 'bg-white/10' : 'bg-black/10'}`}></div>
       </div>
 
       {/* Main Content Area */}
@@ -32,7 +35,7 @@ const Hero: React.FC = () => {
         
         {/* Left Side Labels */}
         <div className="absolute left-12 top-1/2 -translate-y-1/2 hidden lg:block">
-          <div className="space-y-1 text-black font-medium">
+          <div className={`space-y-1 font-medium transition-colors duration-500 ${isDark ? 'text-white/80' : 'text-slate-900'}`}>
             <p className="text-lg">Freelance</p>
             <p className="text-lg">Software Engineer</p>
           </div>
@@ -51,10 +54,10 @@ const Hero: React.FC = () => {
               }}
               onClick={() => navigate('/about')}
             />
-            <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-700"></div>
+            <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-700 ${isDark ? 'bg-white/5' : 'bg-black/5'}`}></div>
           </div>
           
-          <div className="lg:hidden mt-8 text-center text-black">
+          <div className={`lg:hidden mt-8 text-center transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
             <p className="text-xl font-bold uppercase tracking-widest">Software Engineer</p>
           </div>
         </div>
@@ -63,10 +66,10 @@ const Hero: React.FC = () => {
         <div className="absolute right-12 bottom-12 hidden lg:block">
            <button 
              onClick={() => navigate('/about')}
-             className="flex flex-col items-center gap-4 text-black group transition-transform hover:translate-y-2"
+             className={`flex flex-col items-center gap-4 group transition-all hover:translate-y-2 ${isDark ? 'text-white' : 'text-slate-900'}`}
            >
              <span className="text-[10px] uppercase tracking-[0.4em] font-black rotate-90 origin-left mb-12">DISCOVER MORE</span>
-             <div className="w-px h-16 bg-black/20"></div>
+             <div className={`w-px h-16 transition-colors duration-500 ${isDark ? 'bg-white/20' : 'bg-black/20'}`}></div>
            </button>
         </div>
       </div>

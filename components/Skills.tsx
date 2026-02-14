@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { SKILL_CATEGORIES, CV_DATA } from '../constants';
+import { useTheme } from '../App';
 
 const useScrollReveal = () => {
   const [active, setActive] = useState(false);
@@ -85,7 +86,7 @@ const PlasmaGlobe: React.FC = () => {
   );
 };
 
-const SkillLogo: React.FC<{ name: string; icon?: string; delay: number }> = ({ name, icon, delay }) => {
+const SkillLogo: React.FC<{ name: string; icon?: string; delay: number; isDark: boolean }> = ({ name, icon, delay, isDark }) => {
   const [error, setError] = useState(false);
   const iconId = icon || name.toLowerCase().replace(/\s+/g, '').replace(/\.js/g, '').replace(/\//g, '');
   const url = `https://skillicons.dev/icons?i=${iconId}`;
@@ -96,7 +97,7 @@ const SkillLogo: React.FC<{ name: string; icon?: string; delay: number }> = ({ n
       style={{ animationDelay: `${delay}ms` }}
     >
       <div 
-        className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-[#111] border border-white/5 rounded-xl transition-all duration-500 hover:scale-110 hover:border-pink-500/50 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:-translate-y-1"
+        className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-xl transition-all duration-500 hover:scale-110 hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:-translate-y-1 ${isDark ? 'bg-[#111] border border-white/5 hover:border-pink-500/50' : 'bg-white border border-black/5 hover:border-pink-500/50 shadow-lg'}`}
       >
         {!error ? (
           <img 
@@ -106,17 +107,17 @@ const SkillLogo: React.FC<{ name: string; icon?: string; delay: number }> = ({ n
             onError={() => setError(true)}
           />
         ) : (
-          <span className="text-[10px] font-black text-gray-400 group-hover:text-white transition-colors">{name.substring(0, 3)}</span>
+          <span className={`text-[10px] font-black transition-colors ${isDark ? 'text-gray-400' : 'text-slate-500'}`}>{name.substring(0, 3)}</span>
         )}
       </div>
-      <span className="text-[9px] font-black uppercase tracking-widest text-gray-500 group-hover:text-pink-500 transition-colors pointer-events-none text-center max-w-[70px] leading-tight">
+      <span className={`text-[9px] font-black uppercase tracking-widest transition-colors pointer-events-none text-center max-w-[70px] leading-tight ${isDark ? 'text-gray-500 group-hover:text-pink-500' : 'text-slate-500 group-hover:text-pink-600'}`}>
         {name}
       </span>
     </div>
   );
 };
 
-const SkillLogoGrid: React.FC = () => {
+const SkillLogoGrid: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   const logos = [
     { name: 'React', icon: 'react' },
     { name: 'Next.js', icon: 'nextjs' },
@@ -155,7 +156,7 @@ const SkillLogoGrid: React.FC = () => {
   return (
     <div className="mt-20 flex flex-wrap justify-center gap-x-6 gap-y-10 md:gap-x-10 md:gap-y-14 max-w-6xl mx-auto">
       {logos.map((logo, i) => (
-        <SkillLogo key={logo.name} name={logo.name} icon={logo.icon} delay={i * 30} />
+        <SkillLogo key={logo.name} name={logo.name} icon={logo.icon} delay={i * 30} isDark={isDark} />
       ))}
     </div>
   );
@@ -163,20 +164,22 @@ const SkillLogoGrid: React.FC = () => {
 
 const Skills: React.FC = () => {
   const { ref: headerRef, active: headerActive } = useScrollReveal();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
-    <section id="about" className="relative py-32 px-6 overflow-hidden min-h-screen bg-black">
+    <section id="about" className={`relative py-32 px-6 overflow-hidden min-h-screen transition-colors duration-500 ${isDark ? 'bg-black' : 'bg-slate-50'}`}>
       {/* Moving background blue blob (secondary) */}
-      <div className="absolute top-[30%] left-[20%] w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[180px] animate-blob-drift"></div>
+      <div className={`absolute top-[30%] left-[20%] w-[800px] h-[800px] rounded-full blur-[180px] animate-blob-drift ${isDark ? 'bg-blue-600/10' : 'bg-blue-600/5'}`}></div>
       
       <div ref={headerRef} className={`reveal ${headerActive ? 'active' : ''} mb-40 text-center relative z-10 pt-20`}>
         <PlasmaGlobe />
         <p className="text-pink-500 font-bold uppercase tracking-[0.5em] text-[10px] mb-4 relative z-20">Discovery</p>
-        <h2 className="text-5xl md:text-9xl font-black tracking-tighter text-white uppercase leading-none select-none relative z-20">
+        <h2 className={`text-5xl md:text-9xl font-black tracking-tighter uppercase leading-none select-none relative z-20 transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
           ABOUT <span className="text-pink-600">ME</span>
         </h2>
         
-        <div className="mt-16 max-w-4xl mx-auto px-4 text-white/70 text-lg md:text-xl font-light leading-relaxed relative z-20">
+        <div className={`mt-16 max-w-4xl mx-auto px-4 text-lg md:text-xl font-light leading-relaxed relative z-20 transition-colors duration-500 ${isDark ? 'text-white/70' : 'text-slate-600'}`}>
           <p className="italic">"{CV_DATA.summary}"</p>
         </div>
       </div>
@@ -189,7 +192,7 @@ const Skills: React.FC = () => {
               <div 
                 key={category.name} 
                 ref={catRef} 
-                className={`reveal ${catActive ? 'active' : ''} p-10 bg-[#0a0a0a]/80 backdrop-blur-sm border border-white/5 rounded-[2.5rem] hover:bg-[#111] transition-all duration-500 hover:border-white/10 group`}
+                className={`reveal ${catActive ? 'active' : ''} p-10 backdrop-blur-sm rounded-[2.5rem] transition-all duration-500 group border ${isDark ? 'bg-[#0a0a0a]/80 border-white/5 hover:bg-[#111] hover:border-white/10' : 'bg-white/80 border-black/5 hover:bg-white hover:border-pink-500/20 shadow-xl'}`}
               >
                 <h4 className="text-[10px] md:text-xs font-black tracking-[0.3em] uppercase mb-8 text-pink-600 flex items-center gap-2">
                    <span className="w-1.5 h-1.5 bg-pink-600 rounded-full"></span>
@@ -199,7 +202,7 @@ const Skills: React.FC = () => {
                   {category.skills.map((skill) => (
                     <span 
                       key={skill.name} 
-                      className="px-4 py-2 rounded-xl text-[10px] md:text-[11px] font-bold uppercase tracking-wider bg-[#151515] text-gray-400 border border-white/5 hover:border-pink-500/30 hover:text-white transition-all cursor-default"
+                      className={`px-4 py-2 rounded-xl text-[10px] md:text-[11px] font-bold uppercase tracking-wider transition-all cursor-default border ${isDark ? 'bg-[#151515] text-gray-400 border-white/5 hover:border-pink-500/30 hover:text-white' : 'bg-slate-50 text-slate-600 border-black/5 hover:border-pink-500/30 hover:text-pink-600'}`}
                     >
                       {skill.name}
                     </span>
@@ -213,20 +216,20 @@ const Skills: React.FC = () => {
         {/* The Animated Logo Grid - "Nexus of Innovation" */}
         <div className="mt-20 mb-32 relative">
           <div className="text-center mb-24">
-            <h3 className="text-4xl md:text-6xl font-black tracking-tighter text-white">
+            <h3 className={`text-4xl md:text-6xl font-black tracking-tighter transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               Nexus of <span className="text-pink-600 italic">Innovation</span>
             </h3>
             <div className="w-24 h-1 bg-gradient-to-r from-pink-600 to-blue-600 mx-auto mt-6 mb-8 rounded-full"></div>
-            <p className="text-gray-400 mt-4 uppercase tracking-[0.4em] text-[10px] font-black">Immersive Ecosystem of Modern Technologies</p>
+            <p className={`mt-4 uppercase tracking-[0.4em] text-[10px] font-black transition-colors duration-500 ${isDark ? 'text-gray-400' : 'text-slate-500'}`}>Immersive Ecosystem of Modern Technologies</p>
           </div>
           
-          <div className="relative p-12 md:p-20 bg-[#050505]/50 border border-white/5 rounded-[4rem] backdrop-blur-xl">
+          <div className={`relative p-12 md:p-20 rounded-[4rem] backdrop-blur-xl border transition-all duration-500 ${isDark ? 'bg-[#050505]/50 border-white/5' : 'bg-white/50 border-black/5 shadow-2xl'}`}>
              <div className="absolute top-0 right-0 p-8 text-pink-500/10 pointer-events-none">
                 <svg className="w-40 h-40" viewBox="0 0 24 24" fill="currentColor">
                    <path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" />
                 </svg>
              </div>
-             <SkillLogoGrid />
+             <SkillLogoGrid isDark={isDark} />
           </div>
         </div>
       </div>

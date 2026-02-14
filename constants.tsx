@@ -1,5 +1,5 @@
 
-import { Project, Experience, SkillCategory, Certification } from './types';
+import { Project, Experience, SkillCategory, Certification, Achievement } from './types';
 
 export const CV_DATA = {
   name: "Bhumika Tewari",
@@ -43,10 +43,30 @@ export const EXPERIENCES: Experience[] = [
 ];
 
 export const VIRTUAL_SIMULATIONS = [
-  { category: "Software & Cloud", companies: "AWS, Walmart, Goldman Sachs, HPE, Accenture", icon: "☁️" },
-  { category: "Data & Analytics", companies: "Microsoft, PwC, Tata, Quantium, Mastercard", icon: "📊" },
-  { category: "Finance & Consulting", companies: "JPMorgan, Fidelity, HP, KPMG US, HSBC", icon: "💼" },
-  { category: "PM & Leadership", companies: "Siemens, CBRE, GE", icon: "🚀" }
+  { 
+    category: "Software & Cloud", 
+    companies: "AWS, Walmart, Goldman Sachs, HPE, Accenture, AIG, Verizon", 
+    icon: "☁️",
+    color: "#EF4444" // Red
+  },
+  { 
+    category: "Data & Analytics", 
+    companies: "Microsoft, PwC, Tata, Quantium, British Airways, Mastercard", 
+    icon: "📊",
+    color: "#10B981" // Green
+  },
+  { 
+    category: "Finance & Consulting", 
+    companies: "JPMorgan, Fidelity, HP, KPMG US, HSBC, Bank of America, BCG", 
+    icon: "💼",
+    color: "#F59E0B" // Orange
+  },
+  { 
+    category: "PM & Leadership", 
+    companies: "Siemens, CBRE, GE, NY Jobs CEO Council", 
+    icon: "🚀",
+    color: "#3B82F6" // Blue
+  }
 ];
 
 export const PROJECTS: Project[] = [
@@ -168,4 +188,31 @@ export const CERTIFICATIONS: Certification[] = [
   { name: "Oracle AI Foundations Associate" },
   { name: "IBM AI Product Management" },
   { name: "Google Cloud GenAI + Gemini Tooling" }
+];
+
+export const ACHIEVEMENTS: Achievement[] = [
+  { 
+    title: "Second Runner-Up, Igniters Tank Competition", 
+    description: "Engineered a tech-driven solution for an impact challenge." 
+  },
+  { 
+    title: "Top 12 National Finalist, LaunchX", 
+    description: "National Business Summit, Jadavpur University." 
+  },
+  { 
+    title: "Cloud & DevOps Associate, Ignite X Club", 
+    description: "Cloud, containerization & CI/CD basics." 
+  },
+  { 
+    title: "Finalist, Innovate for Impact (Loreto College)", 
+    description: "Sustainable, tech-enabled Cloud Kitchen business model." 
+  },
+  { 
+    title: "Marketing Team Member, HackInverse", 
+    description: "East India’s first theme-based hackathon." 
+  },
+  { 
+    title: "Finalist, Market Maelstrom (ECONOVISION’25)", 
+    description: "Sustainability-focused market strategy case study." 
+  }
 ];
