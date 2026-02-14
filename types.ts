@@ -18,7 +18,8 @@ export interface Experience {
 
 export interface SkillCategory {
   name: string;
-  skills: { name: string; icon?: string }[];
+  // Fix: Added optional hasLogo property to the skill definition to allow logo metadata in constants
+  skills: { name: string; icon?: string; hasLogo?: boolean }[];
 }
 
 export interface Certification {

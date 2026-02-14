@@ -19,6 +19,14 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
+      {/* Aesthetic Overlay Lines - Behind the picture (z-0) */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 left-1/4 w-px h-full bg-black/20 animate-line-v"></div>
+        <div className="absolute top-0 left-3/4 w-px h-full bg-black/20 animate-line-v-reverse"></div>
+        <div className="absolute top-1/3 left-0 w-full h-px bg-black/20 animate-line-h"></div>
+        <div className="absolute top-2/3 left-0 w-full h-px bg-black/20 animate-line-h-reverse"></div>
+      </div>
+
       {/* Main Content Area */}
       <div className="relative z-10 w-full max-w-[1400px] px-6 md:px-12 flex flex-col md:flex-row items-center justify-between">
         
@@ -63,11 +71,29 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Aesthetic Overlay Lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-5">
-        <div className="absolute top-0 left-1/4 w-px h-full bg-black"></div>
-        <div className="absolute top-1/3 left-0 w-full h-px bg-black"></div>
-      </div>
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+          animation: marquee 30s linear infinite;
+        }
+        @keyframes line-v {
+          0% { transform: translateX(-200px); opacity: 0; }
+          50% { opacity: 0.3; }
+          100% { transform: translateX(200px); opacity: 0; }
+        }
+        @keyframes line-h {
+          0% { transform: translateY(-200px); opacity: 0; }
+          50% { opacity: 0.3; }
+          100% { transform: translateY(200px); opacity: 0; }
+        }
+        .animate-line-v { animation: line-v 8s infinite linear; }
+        .animate-line-v-reverse { animation: line-v 10s infinite linear reverse; }
+        .animate-line-h { animation: line-h 7s infinite linear; }
+        .animate-line-h-reverse { animation: line-h 12s infinite linear reverse; }
+      `}</style>
     </section>
   );
 };

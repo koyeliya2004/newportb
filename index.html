@@ -13,19 +13,21 @@
       :root {
         --bg-color: #000000;
         --text-color: #ffffff;
-        --grid-color: rgba(255, 255, 255, 0.05);
-        --accent-1: rgba(192, 38, 211, 0.15);
-        --accent-2: rgba(59, 130, 246, 0.15);
-        --accent-3: rgba(236, 72, 153, 0.15);
+        --grid-color: rgba(255, 255, 255, 0.03);
+        --accent-1: rgba(192, 38, 211, 0.12);
+        --accent-2: rgba(59, 130, 246, 0.1);
+        --accent-3: rgba(236, 72, 153, 0.1);
+        --blob-color: rgba(192, 38, 211, 0.05);
       }
 
       html.light {
-        --bg-color: #f8f9fa;
+        --bg-color: #fcfcfc;
         --text-color: #0f172a;
-        --grid-color: rgba(0, 0, 0, 0.05);
-        --accent-1: rgba(192, 38, 211, 0.08);
-        --accent-2: rgba(59, 130, 246, 0.08);
-        --accent-3: rgba(236, 72, 153, 0.08);
+        --grid-color: rgba(0, 0, 0, 0.02);
+        --accent-1: rgba(192, 38, 211, 0.05);
+        --accent-2: rgba(59, 130, 246, 0.05);
+        --accent-3: rgba(236, 72, 153, 0.05);
+        --blob-color: rgba(0, 0, 0, 0.02);
       }
 
       body {
@@ -33,7 +35,7 @@
         background-color: var(--bg-color);
         color: var(--text-color);
         overflow-x: hidden;
-        transition: background-color 0.5s ease, color 0.5s ease;
+        transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s ease;
       }
 
       .font-playfair {
@@ -48,7 +50,7 @@
       }
       ::-webkit-scrollbar-thumb {
         background: #333;
-        border-radius: 4px;
+        border-radius: 10px;
       }
 
       .app-background {
@@ -62,16 +64,38 @@
 
       .mesh-layer {
         position: absolute;
-        inset: -50%;
-        width: 200%;
-        height: 200%;
+        inset: -100%;
+        width: 300%;
+        height: 300%;
         background: 
-          radial-gradient(circle at 20% 30%, var(--accent-1) 0%, transparent 40%),
-          radial-gradient(circle at 80% 20%, var(--accent-2) 0%, transparent 40%),
-          radial-gradient(circle at 50% 80%, var(--accent-3) 0%, transparent 40%),
-          radial-gradient(circle at 80% 80%, var(--accent-1) 0%, transparent 40%);
-        animation: mesh-rotate 60s linear infinite;
-        filter: blur(100px);
+          radial-gradient(circle at 30% 20%, var(--accent-1) 0%, transparent 35%),
+          radial-gradient(circle at 70% 80%, var(--accent-2) 0%, transparent 35%),
+          radial-gradient(circle at 10% 90%, var(--accent-3) 0%, transparent 35%),
+          radial-gradient(circle at 90% 10%, var(--accent-1) 0%, transparent 35%);
+        animation: mesh-drift 80s ease-in-out infinite alternate;
+        filter: blur(120px);
+      }
+
+      @keyframes mesh-drift {
+        0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        50% { transform: translate(-5%, -5%) scale(1.1) rotate(5deg); }
+        100% { transform: translate(5%, 5%) scale(1) rotate(-5deg); }
+      }
+
+      .blobs-container {
+        position: absolute;
+        inset: 0;
+      }
+      .bg-blob {
+        position: absolute;
+        border-radius: 50%;
+        background: var(--blob-color);
+        filter: blur(80px);
+        animation: blob-float var(--duration) ease-in-out infinite alternate;
+      }
+      @keyframes blob-float {
+        0% { transform: translate(0, 0) scale(1); }
+        100% { transform: translate(var(--x), var(--y)) scale(1.2); }
       }
 
       .grid-layer {
@@ -79,17 +103,31 @@
         inset: 0;
         background-image: linear-gradient(var(--grid-color) 1px, transparent 1px),
                           linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-        background-size: 60px 60px;
-        mask-image: radial-gradient(circle at 50% 50%, black 10%, transparent 90%);
-        animation: grid-drift 30s linear infinite;
+        background-size: 80px 80px;
+        mask-image: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, transparent 80%);
+        transition: mask-image 0.3s ease;
+        opacity: 0.6;
       }
 
       .noise-layer {
         position: absolute;
         inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        opacity: 0.05;
         mix-blend-mode: overlay;
+        pointer-events: none;
+      }
+
+      .stardust-layer {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+        background-size: 100px 100px;
+        animation: stardust-drift 100s linear infinite;
+      }
+      @keyframes stardust-drift {
+        from { background-position: 0 0; }
+        to { background-position: 1000px 1000px; }
       }
 
       .beams-layer {
@@ -97,46 +135,23 @@
         inset: 0;
         overflow: hidden;
       }
-      
       .beam {
         position: absolute;
-        width: 1px;
+        width: 1.5px;
         height: 100%;
-        background: linear-gradient(to bottom, transparent, rgba(192, 38, 211, 0.2), transparent);
-        animation: beam-move 10s ease-in-out infinite;
+        background: linear-gradient(to bottom, transparent, rgba(192, 38, 211, 0.1), transparent);
+        animation: beam-sweep 15s ease-in-out infinite;
       }
-
-      @keyframes beam-move {
-        0%, 100% { transform: translateX(-100%) skewX(-45deg); opacity: 0; }
-        50% { opacity: 1; }
-        100% { transform: translateX(200%) skewX(-45deg); opacity: 0; }
-      }
-
-      @keyframes mesh-rotate {
-        0% { transform: rotate(0deg) scale(1); }
-        50% { transform: rotate(180deg) scale(1.2); }
-        100% { transform: rotate(360deg) scale(1); }
-      }
-
-      @keyframes grid-drift {
-        0% { background-position: 0 0; }
-        100% { background-position: 60px 60px; }
-      }
-
-      @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-      }
-      .animate-marquee {
-        display: flex;
-        width: 200%;
-        animation: marquee 30s linear infinite;
+      @keyframes beam-sweep {
+        0% { transform: translateX(-100vw) skewX(-45deg); opacity: 0; }
+        50% { opacity: 0.8; }
+        100% { transform: translateX(100vw) skewX(-45deg); opacity: 0; }
       }
 
       .reveal {
         opacity: 0;
-        transform: translateY(30px);
-        transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        transform: translateY(20px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .reveal.active {
         opacity: 1;
@@ -148,16 +163,16 @@
         100% { transform: rotate(360deg); }
       }
       .animate-globe {
-        animation: rotate-globe 40s linear infinite;
+        animation: rotate-globe 50s linear infinite;
       }
     </style>
   <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.2.0"
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0"
   }
 }
 </script>
@@ -165,14 +180,27 @@
   <body>
     <div class="app-background">
       <div class="mesh-layer"></div>
+      <div class="stardust-layer"></div>
+      <div class="blobs-container">
+        <div class="bg-blob" style="--duration: 25s; --x: 100px; --y: 50px; width: 400px; height: 400px; left: 10%; top: 20%;"></div>
+        <div class="bg-blob" style="--duration: 35s; --x: -80px; --y: 120px; width: 500px; height: 500px; right: 15%; bottom: 10%; background: rgba(59, 130, 246, 0.05);"></div>
+      </div>
       <div class="grid-layer"></div>
       <div class="noise-layer"></div>
       <div class="beams-layer">
-        <div class="beam" style="left: 20%; animation-duration: 15s"></div>
-        <div class="beam" style="left: 50%; animation-duration: 20s; animation-delay: 2s"></div>
-        <div class="beam" style="left: 80%; animation-duration: 12s; animation-delay: 5s"></div>
+        <div class="beam" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="beam" style="left: 40%; animation-delay: 5s; background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.1), transparent);"></div>
+        <div class="beam" style="left: 70%; animation-delay: 10s;"></div>
       </div>
     </div>
     <div id="root"></div>
+    <script>
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth) * 100;
+        const y = (e.clientY / window.innerHeight) * 100;
+        document.documentElement.style.setProperty('--mouse-x', x + '%');
+        document.documentElement.style.setProperty('--mouse-y', y + '%');
+      });
+    </script>
   </body>
 </html>
