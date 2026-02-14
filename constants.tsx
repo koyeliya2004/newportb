@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { Project, Experience, SkillCategory, Certification } from './types';
 
 export const CV_DATA = {
@@ -66,7 +65,7 @@ export const PROJECTS: Project[] = [
       "Implement CNN-based plant disease detection using image classification models.",
       "Create interactive farmer dashboard with visual analytics."
     ],
-    techStack: ["Python", "Scikit-learn", "TensorFlow", "CNN", "FastAPI"],
+    techStack: ["Python", "Sklearn", "TensorFlow", "FastAPI"],
     image: "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1000&auto=format&fit=crop"
   },
   {
@@ -78,7 +77,7 @@ export const PROJECTS: Project[] = [
       "Developed AI-generated text detection using NLP.",
       "Architected role-based APIs and JWT-based authentication."
     ],
-    techStack: ["Next.js", "TypeScript", "FastAPI", "Transformers", "PostgreSQL"],
+    techStack: ["Nextjs", "TypeScript", "FastAPI", "Postgres"],
     image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000&auto=format&fit=crop"
   },
   {
@@ -90,67 +89,117 @@ export const PROJECTS: Project[] = [
       "Built cloud data warehouse using Amazon Redshift.",
       "Developed Power BI dashboards to track KPIs."
     ],
-    techStack: ["Python", "AWS Lambda", "Glue", "Redshift", "Power BI"],
+    techStack: ["Python", "AWS", "Redshift"],
     image: "https://images.unsplash.com/photo-1551288049-bbbda536339a?q=80&w=1000&auto=format&fit=crop"
   }
 ];
 
-export const SKILL_CATEGORIES: SkillCategory[] = [
+// We add a 'hasLogo' property to distinguish in UI
+export const SKILL_CATEGORIES = [
   {
     name: "Languages",
     skills: [
-      { name: "Python", icon: "py" }, 
-      { name: "JavaScript", icon: "js" }, 
-      { name: "TypeScript", icon: "ts" }, 
-      { name: "C", icon: "c" }
+      { name: "Python", icon: "py", hasLogo: true }, 
+      { name: "JavaScript", icon: "js", hasLogo: true }, 
+      { name: "TypeScript", icon: "ts", hasLogo: true }, 
+      { name: "C Programming", icon: "c", hasLogo: true },
+      { name: "SQL", icon: "mysql", hasLogo: true }
     ]
   },
   {
     name: "Web Development",
     skills: [
-      { name: "React.js", icon: "react" }, 
-      { name: "Next.js", icon: "nextjs" }, 
-      { name: "Node.js", icon: "nodejs" }, 
-      { name: "Express.js", icon: "express" }, 
-      { name: "MongoDB", icon: "mongodb" }, 
-      { name: "MySQL", icon: "mysql" }, 
-      { name: "Tailwind", icon: "tailwind" }, 
-      { name: "HTML5", icon: "html" }
+      { name: "React.js", icon: "react", hasLogo: true }, 
+      { name: "Next.js", icon: "nextjs", hasLogo: true }, 
+      { name: "Node.js", icon: "nodejs", hasLogo: true }, 
+      { name: "Express.js", icon: "express", hasLogo: true }, 
+      { name: "MERN Stack", hasLogo: false }, 
+      { name: "REST APIs", hasLogo: false },
+      { name: "JWT Auth", hasLogo: false },
+      { name: "WebSockets", hasLogo: false },
+      { name: "Tailwind CSS", icon: "tailwind", hasLogo: true }
     ]
   },
   {
     name: "AI/ML & LLMs",
     skills: [
-      { name: "TensorFlow", icon: "tensorflow" }, 
-      { name: "PyTorch", icon: "pytorch" }, 
-      { name: "Scikit-Learn", icon: "sklearn" }, 
-      { name: "Pandas", icon: "pandas" }, 
-      { name: "OpenCV", icon: "opencv" }, 
-      { name: "HuggingFace", icon: "huggingface" }
+      { name: "LangChain", icon: "py", hasLogo: true },
+      { name: "TensorFlow", icon: "tensorflow", hasLogo: true }, 
+      { name: "Llama", icon: "huggingface", hasLogo: true },
+      { name: "OpenAI/GPT", icon: "huggingface", hasLogo: true },
+      { name: "Gemini", icon: "huggingface", hasLogo: true },
+      { name: "FAISS", icon: "postgres", hasLogo: true },
+      { name: "ChromaDB", icon: "mongodb", hasLogo: true },
+      { name: "Transformers", hasLogo: false },
+      { name: "RAG Systems", hasLogo: false },
+      { name: "Prompt Engineering", hasLogo: false },
+      { name: "Machine Learning", hasLogo: false },
+      { name: "Gen AI", hasLogo: false },
+      { name: "NLP", hasLogo: false },
+      { name: "GAN", hasLogo: false }
     ]
   },
   {
-    name: "Data & Cloud",
+    name: "Data Engineering & Analysis",
     skills: [
-      { name: "AWS", icon: "aws" }, 
-      { name: "Docker", icon: "docker" }, 
-      { name: "Kubernetes", icon: "kubernetes" }, 
-      { name: "PostgreSQL", icon: "postgres" }, 
-      { name: "Redis", icon: "redis" }, 
-      { name: "Firebase", icon: "firebase" }, 
-      { name: "Linux", icon: "linux" }, 
-      { name: "Git", icon: "git" }
+      { name: "SQL", icon: "mysql", hasLogo: true },
+      { name: "PostgreSQL", icon: "postgres", hasLogo: true },
+      { name: "MongoDB", icon: "mongodb", hasLogo: true },
+      { name: "MySQL", icon: "mysql", hasLogo: true },
+      { name: "Supabase", icon: "supabase", hasLogo: true },
+      { name: "Power BI", icon: "windows", hasLogo: true },
+      { name: "Tableau", icon: "windows", hasLogo: true },
+      { name: "Apache Airflow", icon: "py", hasLogo: true },
+      { name: "ETL Pipelines", hasLogo: false },
+      { name: "DAX", hasLogo: false },
+      { name: "Data Modeling", hasLogo: false },
+      { name: "Data Lakes", hasLogo: false },
+      { name: "Data Warehousing", hasLogo: false },
+      { name: "Incremental Loads", hasLogo: false },
+      { name: "Vector Databases", hasLogo: false }
     ]
   },
   {
-    name: "Design & Tools",
+    name: "Cloud & DevOps",
     skills: [
-      { name: "Figma", icon: "figma" }, 
-      { name: "Postman", icon: "postman" }, 
-      { name: "Notion", icon: "notion" }, 
-      { name: "Visual Studio", icon: "vscode" }, 
-      { name: "Slack", icon: "slack" }, 
-      { name: "Discord", icon: "discord" }
+      { name: "AWS", icon: "aws", hasLogo: true }, 
+      { name: "Docker", icon: "docker", hasLogo: true }, 
+      { name: "Kubernetes", icon: "kubernetes", hasLogo: true }, 
+      { name: "Git", icon: "git", hasLogo: true },
+      { name: "GitHub", icon: "github", hasLogo: true },
+      { name: "CI/CD Mindset", hasLogo: false }
+    ]
+  },
+  {
+    name: "Tools & Frameworks",
+    skills: [
+      { name: "Flask", icon: "flask", hasLogo: true },
+      { name: "Redis", icon: "redis", hasLogo: true },
+      { name: "Prisma", icon: "prisma", hasLogo: true },
+      { name: "Streamlit", icon: "py", hasLogo: true },
+      { name: "FastAPI", icon: "fastapi", hasLogo: true },
+      { name: "Clerk/AuthJS", icon: "clerk", hasLogo: true },
+      { name: "n8n", icon: "js", hasLogo: true },
+      { name: "Zapier", icon: "js", hasLogo: true }
+    ]
+  },
+  {
+    name: "Project Management",
+    skills: [
+      { name: "Jira", icon: "windows", hasLogo: true },
+      { name: "Trello", icon: "windows", hasLogo: true },
+      { name: "Agile Practices", hasLogo: false },
+      { name: "Stakeholder Communication", hasLogo: false }
+    ]
+  },
+  {
+    name: "Soft Skills",
+    skills: [
+      { name: "Analytical Thinking", hasLogo: false },
+      { name: "Product Thinking", hasLogo: false },
+      { name: "Technical Mentoring", hasLogo: false },
+      { name: "Team Collaboration", hasLogo: false },
+      { name: "Detailed-Oriented", hasLogo: false }
     ]
   }
 ];

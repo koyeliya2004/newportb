@@ -43,42 +43,51 @@
         animation: marquee 20s linear infinite;
       }
 
-      /* New Animations for About Page */
+      /* Scroll Animations */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Globe Animation */
+      @keyframes rotate-globe {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .animate-globe {
+        animation: rotate-globe 20s linear infinite;
+      }
+
+      @keyframes spin-slow {
+        0% { transform: rotateY(0deg); }
+        100% { transform: rotateY(360deg); }
+      }
+      .globe-3d {
+        perspective: 1000px;
+        animation: spin-slow 15s linear infinite;
+      }
+
       @keyframes float {
         0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
+        50% { transform: translateY(-20px); }
       }
       .animate-float {
-        animation: float 4s ease-in-out infinite;
+        animation: float 6s ease-in-out infinite;
       }
 
-      @keyframes glow-pulse {
-        0%, 100% { box-shadow: 0 0 5px rgba(236, 72, 153, 0.2), 0 0 10px rgba(236, 72, 153, 0.1); }
-        50% { box-shadow: 0 0 20px rgba(236, 72, 153, 0.6), 0 0 40px rgba(236, 72, 153, 0.3); }
-      }
-      .hover-glow:hover {
-        animation: glow-pulse 2s infinite;
-      }
-
-      @keyframes gradient-shift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
       .gradient-animate {
         background-size: 200% 200%;
         animation: gradient-shift 5s ease infinite;
       }
-
-      /* Transitions for page changes */
-      .page-enter {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      .page-enter-active {
-        opacity: 1;
-        transform: translateY(0);
-        transition: opacity 500ms, transform 500ms;
+      @keyframes gradient-shift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
     </style>
   <script type="importmap">
