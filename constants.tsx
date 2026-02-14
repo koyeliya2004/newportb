@@ -8,7 +8,7 @@ export const CV_DATA = {
   location: "Kolkata, India",
   links: {
     github: "https://github.com/bhumikatewari",
-    linkedin: "https://linkedin.com/in/bhumikatewari",
+    linkedin: "https://www.linkedin.com/in/bhumika-tewari-21294027a/",
     whatsapp: "https://wa.me/918420399560"
   },
   summary: "Innovative software engineer with hands-on experience in full-stack development, AI/ML systems, data engineering pipelines, cyber security and cloud-based solutions. Proven ability to build scalable, data-driven products using modern frameworks, machine learning models, and enterprise tools. Actively involved in development, teaching and tech — converting real business problems into functioning products. Passionate about building tech products that improve focus, efficiency, and user wellbeing."

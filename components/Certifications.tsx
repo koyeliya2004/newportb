@@ -62,15 +62,42 @@ const Certifications: React.FC = () => {
   return (
     <div className={`relative transition-colors duration-1000 ${isDark ? 'bg-black' : 'bg-white'}`}>
       
-      {/* 1. STACK 1: HERO (NOW BLUE) */}
-      <section className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-10 bg-[#3b82f6] overflow-hidden px-6">
-        <div className="max-w-[1600px] w-full text-center">
-          <h2 className="text-3xl md:text-[6vw] font-black text-white tracking-tighter leading-[0.9] uppercase select-none pointer-events-none mb-4">
-            PROFESSIONAL CREDENTIALS
+      {/* 1. STACK 1: HERO (REFINED BLUE TECH SECTION) */}
+      <section className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-10 bg-gradient-to-br from-[#1e3a8a] via-[#3b82f6] to-[#1d4ed8] overflow-hidden px-6">
+        {/* Animated Background Layers */}
+        <div className="absolute inset-0 z-0">
+          {/* Glass Orbs */}
+          <div className="absolute top-[-10%] left-[-5%] w-[40vw] h-[40vw] bg-white/10 rounded-full blur-[120px] animate-pulse"></div>
+          <div className="absolute bottom-[-10%] right-[-5%] w-[35vw] h-[35vw] bg-blue-400/20 rounded-full blur-[100px] animate-bounce-slow"></div>
+          
+          {/* Tech Grid */}
+          <div className="absolute inset-0 opacity-20" style={{ 
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', 
+            backgroundSize: '60px 60px' 
+          }}></div>
+          
+          {/* Scanning Line */}
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent animate-scan-line"></div>
+        </div>
+
+        {/* HUD Elements (Professional Decals) */}
+        <div className="absolute bottom-10 right-10 hidden md:block opacity-40 text-right">
+           <div className="text-[10px] font-mono text-white/80 tracking-widest leading-none mb-1">VERIFIED_CREDENTIALS_SEC</div>
+           <div className="w-48 h-0.5 bg-white/20 ml-auto"></div>
+        </div>
+
+        <div className="max-w-[1600px] w-full text-center relative z-10">
+          <h2 className="text-4xl md:text-[6vw] font-black text-white tracking-tighter leading-[0.9] uppercase select-none drop-shadow-2xl mb-4">
+            PROFESSIONAL <span className="text-blue-200 italic font-playfair">CREDENTIALS</span>
           </h2>
-          <h2 className="text-2xl md:text-[5vw] font-black text-white/80 tracking-tighter leading-[0.9] uppercase select-none pointer-events-none">
-            ACHIEVEMENTS & EXPERIENCE
-          </h2>
+          
+          <div className="flex items-center justify-center gap-6 my-8">
+            <div className="h-px w-12 md:w-24 bg-gradient-to-r from-transparent to-white/40"></div>
+            <h2 className="text-xl md:text-[3vw] font-bold text-white/70 tracking-tighter uppercase select-none">
+              ACHIEVEMENTS & EXPERIENCE
+            </h2>
+            <div className="h-px w-12 md:w-24 bg-gradient-to-l from-transparent to-white/40"></div>
+          </div>
           
           <div className="mt-12 flex justify-center gap-4">
             <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
@@ -79,8 +106,8 @@ const Certifications: React.FC = () => {
           </div>
         </div>
         
-        {/* Background Decorative Grid */}
-        <div className="absolute inset-0 pointer-events-none opacity-10" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+        {/* Subtle Bottom Glow */}
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/20 to-transparent"></div>
       </section>
 
       {/* 2. STACK 2: CERTIFICATIONS */}
@@ -131,6 +158,22 @@ const Certifications: React.FC = () => {
         @keyframes side-float {
           from { transform: translateX(-15px) rotate(-0.5deg); }
           to { transform: translateX(15px) rotate(0.5deg); }
+        }
+        @keyframes scan-line {
+          0% { transform: translate3d(0, -100px, 0); opacity: 0; }
+          20% { opacity: 1; }
+          80% { opacity: 1; }
+          100% { transform: translate3d(0, 100vh, 0); opacity: 0; }
+        }
+        @keyframes bounce-slow {
+          0%, 100% { transform: translate3d(0, 0, 0); }
+          50% { transform: translate3d(-30px, 40px, 0); }
+        }
+        .animate-scan-line {
+          animation: scan-line 6s linear infinite;
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 15s ease-in-out infinite;
         }
         .glow-blue {
           text-shadow: 0 0 50px rgba(59, 130, 246, 0.3);

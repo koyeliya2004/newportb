@@ -7,17 +7,31 @@ const useScrollProgress = (ref: React.RefObject<HTMLElement>) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const totalHeight = rect.height;
-      const visibleStart = -rect.top;
-      const p = Math.min(Math.max(visibleStart / totalHeight, 0), 1);
-      setProgress(p);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (ref.current) {
+            const rect = ref.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const sectionTop = rect.top;
+            const sectionHeight = rect.height;
+            
+            let p = 0;
+            if (sectionTop < windowHeight) {
+              p = Math.min(Math.max((windowHeight - sectionTop) / (sectionHeight + windowHeight), 0), 1);
+            }
+            setProgress(p);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [ref]);
 
@@ -86,6 +100,8 @@ const Experience: React.FC = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const spiralRef = useRef<HTMLDivElement>(null);
+  const trajectoryRef = useRef<HTMLDivElement>(null);
+  const trajectoryProgress = useScrollProgress(trajectoryRef);
   const scrollProgress = useScrollProgress(spiralRef);
 
   return (
@@ -101,8 +117,26 @@ const Experience: React.FC = () => {
           </div>
         </ScrollReveal>
 
-        <div className="relative space-y-24 mb-64">
-          <div className="absolute left-[23px] top-4 bottom-4 w-px bg-gradient-to-b from-blue-500 via-pink-500 to-transparent hidden md:block opacity-20"></div>
+        <div ref={trajectoryRef} className="relative space-y-24 mb-64">
+          {/* Glowing Animated Line */}
+          <div className="absolute left-[23px] top-4 bottom-4 w-px bg-white/5 hidden md:block overflow-hidden">
+             <div 
+               className="absolute left-0 w-full bg-gradient-to-b from-blue-500 via-pink-500 to-blue-500 shadow-[0_0_20px_rgba(236,72,153,0.8)]"
+               style={{ 
+                 height: '100px', 
+                 transform: `translate3d(0, ${trajectoryProgress * 100}%, 0)`,
+                 transition: 'transform 0.1s linear',
+                 willChange: 'transform'
+               }}
+             />
+             <div 
+               className="absolute top-0 left-0 w-full bg-gradient-to-b from-blue-500 via-pink-500 to-transparent"
+               style={{ 
+                 height: `${trajectoryProgress * 100}%`,
+                 opacity: 0.3
+               }}
+             />
+          </div>
 
           {EXPERIENCES.map((exp, idx) => (
             <ScrollReveal key={exp.id} delay={idx * 150}>

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, createContext, useContext } from 'react';
+import React, { useEffect, useState, createContext, useContext, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -17,6 +17,68 @@ const ThemeContext = createContext<{ theme: Theme; toggleTheme: () => void }>({
 });
 
 export const useTheme = () => useContext(ThemeContext);
+
+const CustomCursor: React.FC = () => {
+  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+  const [isHovering, setIsHovering] = useState(false);
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      
+      setTrail((prev) => [
+        { x: clientX, y: clientY, id: Math.random() },
+        ...prev.slice(0, 15), // Longer trail for more fluid effect
+      ]);
+    };
+
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button')) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseover', handleMouseOver);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseover', handleMouseOver);
+    };
+  }, []);
+
+  return (
+    <>
+      {/* Interactive ethereal trail */}
+      {trail.map((dot, index) => {
+        // Opacity and size decay curves
+        const ratio = 1 - index / trail.length;
+        const size = (isHovering ? 18 : 12) * Math.pow(ratio, 1.5);
+        const opacity = Math.pow(ratio, 2) * (isHovering ? 0.6 : 0.4);
+        
+        return (
+          <div 
+            key={dot.id}
+            className={`fixed top-0 left-0 rounded-full z-[9998] pointer-events-none blur-[2px] ${
+              theme === 'dark' ? 'bg-pink-500' : 'bg-blue-500'
+            }`}
+            style={{ 
+              width: `${size}px`,
+              height: `${size}px`,
+              transform: `translate(${dot.x}px, ${dot.y}px) translate(-50%, -50%)`,
+              opacity: opacity,
+              // No transition on transform to keep it perfectly synced with pointer
+              transition: 'opacity 0.3s ease, width 0.3s ease, height 0.3s ease',
+            }}
+          />
+        );
+      })}
+    </>
+  );
+};
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -62,6 +124,7 @@ const App: React.FC = () => {
       <Router>
         <div className={`min-h-screen flex flex-col transition-colors duration-500 ${theme === 'dark' ? 'bg-transparent text-white' : 'bg-transparent text-slate-900'} selection:bg-pink-500 selection:text-white`}>
           <ScrollToTop />
+          <CustomCursor />
           <Navbar />
           
           <main className="flex-grow">
@@ -111,8 +174,8 @@ const App: React.FC = () => {
               <p className={`${theme === 'dark' ? 'text-gray-600' : 'text-slate-400'} text-sm transition-colors`}>© 2024 Bhumika Tewari. All rights reserved.</p>
               
               <div className={`flex gap-8 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-slate-500'} font-bold uppercase tracking-widest text-[10px] transition-colors`}>
-                 <a href="https://linkedin.com" target="_blank" className="hover:text-pink-500 transition-colors">LinkedIn</a>
-                 <a href="https://github.com" target="_blank" className="hover:text-pink-500 transition-colors">GitHub</a>
+                 <a href="https://www.linkedin.com/in/bhumika-tewari-21294027a/" target="_blank" className="hover:text-pink-500 transition-colors">LinkedIn</a>
+                 <a href="https://github.com/bhumikatewari" target="_blank" className="hover:text-pink-500 transition-colors">GitHub</a>
               </div>
             </div>
           </footer>

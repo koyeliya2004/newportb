@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark" style="scroll-behavior: smooth;">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -36,6 +36,8 @@
         color: var(--text-color);
         overflow-x: hidden;
         transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s ease;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
 
       .font-playfair {
@@ -60,6 +62,8 @@
         pointer-events: none;
         overflow: hidden;
         background-color: var(--bg-color);
+        transform: translate3d(0,0,0);
+        perspective: 1000px;
       }
 
       .mesh-layer {
@@ -74,17 +78,20 @@
           radial-gradient(circle at 90% 10%, var(--accent-1) 0%, transparent 35%);
         animation: mesh-drift 80s ease-in-out infinite alternate;
         filter: blur(120px);
+        will-change: transform;
+        transform: translate3d(0,0,0);
       }
 
       @keyframes mesh-drift {
-        0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-        50% { transform: translate(-5%, -5%) scale(1.1) rotate(5deg); }
-        100% { transform: translate(5%, 5%) scale(1) rotate(-5deg); }
+        0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+        50% { transform: translate3d(-2%, -2%, 0) scale(1.05) rotate(2deg); }
+        100% { transform: translate3d(2%, 2%, 0) scale(1) rotate(-2deg); }
       }
 
       .blobs-container {
         position: absolute;
         inset: 0;
+        will-change: transform;
       }
       .bg-blob {
         position: absolute;
@@ -92,10 +99,12 @@
         background: var(--blob-color);
         filter: blur(80px);
         animation: blob-float var(--duration) ease-in-out infinite alternate;
+        will-change: transform;
+        transform: translate3d(0,0,0);
       }
       @keyframes blob-float {
-        0% { transform: translate(0, 0) scale(1); }
-        100% { transform: translate(var(--x), var(--y)) scale(1.2); }
+        0% { transform: translate3d(0, 0, 0) scale(1); }
+        100% { transform: translate3d(var(--x), var(--y), 0) scale(1.1); }
       }
 
       .grid-layer {
@@ -105,8 +114,9 @@
                           linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
         background-size: 80px 80px;
         mask-image: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, transparent 80%);
-        transition: mask-image 0.3s ease;
+        transition: mask-image 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         opacity: 0.6;
+        will-change: mask-image;
       }
 
       .noise-layer {
@@ -124,6 +134,7 @@
         background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
         background-size: 100px 100px;
         animation: stardust-drift 100s linear infinite;
+        will-change: background-position;
       }
       @keyframes stardust-drift {
         from { background-position: 0 0; }
@@ -141,29 +152,23 @@
         height: 100%;
         background: linear-gradient(to bottom, transparent, rgba(192, 38, 211, 0.1), transparent);
         animation: beam-sweep 15s ease-in-out infinite;
+        will-change: transform;
       }
       @keyframes beam-sweep {
-        0% { transform: translateX(-100vw) skewX(-45deg); opacity: 0; }
+        0% { transform: translate3d(-100vw, 0, 0) skewX(-45deg); opacity: 0; }
         50% { opacity: 0.8; }
-        100% { transform: translateX(100vw) skewX(-45deg); opacity: 0; }
+        100% { transform: translate3d(100vw, 0, 0) skewX(-45deg); opacity: 0; }
       }
 
       .reveal {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translate3d(0, 20px, 0);
         transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: opacity, transform;
       }
       .reveal.active {
         opacity: 1;
-        transform: translateY(0);
-      }
-
-      @keyframes rotate-globe {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      .animate-globe {
-        animation: rotate-globe 50s linear infinite;
+        transform: translate3d(0, 0, 0);
       }
     </style>
   <script type="importmap">
@@ -195,11 +200,18 @@
     </div>
     <div id="root"></div>
     <script>
+      let ticking = false;
       document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth) * 100;
-        const y = (e.clientY / window.innerHeight) * 100;
-        document.documentElement.style.setProperty('--mouse-x', x + '%');
-        document.documentElement.style.setProperty('--mouse-y', y + '%');
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.documentElement.style.setProperty('--mouse-x', x + '%');
+            document.documentElement.style.setProperty('--mouse-y', y + '%');
+            ticking = false;
+          });
+          ticking = true;
+        }
       });
     </script>
   </body>

@@ -25,8 +25,15 @@ const FuturisticFluidBlob: React.FC = () => {
   const [scrollPos, setScrollPos] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrollPos(window.scrollY);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollPos(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -36,56 +43,57 @@ const FuturisticFluidBlob: React.FC = () => {
     <div 
       className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[900px] aspect-square z-0 pointer-events-none overflow-visible"
       style={{ 
-        transform: `translateX(-50%) translateY(${scrollPos * 0.05}px)`,
-        transition: 'transform 0.4s cubic-bezier(0.2, 0, 0.2, 1)'
+        transform: `translate3d(-50%, ${scrollPos * 0.05}px, 0)`,
+        transition: 'transform 0.4s cubic-bezier(0.2, 0, 0.2, 1)',
+        willChange: 'transform'
       }}
     >
-      {/* 3D Iridescent Liquid Body - Base Layer */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-[#00d2ff] via-[#928dab] to-[#ff0099] blur-[100px] rounded-full animate-iridescent-morph opacity-40 mix-blend-screen"></div>
+      {/* 3D Iridescent Liquid Body - Grayscale Base Layer */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[#333] via-[#888] to-[#222] blur-[100px] rounded-full animate-iridescent-morph opacity-30 mix-blend-screen"></div>
       
-      {/* Shimmering Core Layer */}
-      <div className="absolute inset-16 bg-gradient-to-bl from-[#ff00ff] via-[#00ffff] to-[#7000ff] blur-[80px] rounded-full animate-iridescent-morph-alt opacity-50 mix-blend-color-dodge"></div>
+      {/* Shimmering Core Layer - Silver tones */}
+      <div className="absolute inset-16 bg-gradient-to-bl from-[#aaa] via-[#555] to-[#eee] blur-[80px] rounded-full animate-iridescent-morph-alt opacity-40 mix-blend-color-dodge"></div>
       
-      {/* Glowing Edges - Highlighting the organic motion */}
-      <div className="absolute inset-8 border-[1px] border-white/30 blur-[15px] rounded-full animate-iridescent-morph opacity-40 shadow-[0_0_80px_rgba(255,255,255,0.3)]"></div>
+      {/* Glowing Edges - Silver/White highlight */}
+      <div className="absolute inset-8 border-[1px] border-white/20 blur-[15px] rounded-full animate-iridescent-morph opacity-30 shadow-[0_0_80px_rgba(255,255,255,0.15)]"></div>
       
-      {/* Cinematic Highlight Flares */}
-      <div className="absolute top-1/3 left-1/3 w-1/4 h-1/4 bg-white/40 blur-[50px] rounded-full animate-pulse"></div>
-      <div className="absolute bottom-1/3 right-1/3 w-1/5 h-1/5 bg-cyan-400/30 blur-[40px] rounded-full animate-bounce-slow"></div>
+      {/* Cinematic Highlight Flares - Subtle White */}
+      <div className="absolute top-1/3 left-1/3 w-1/4 h-1/4 bg-white/20 blur-[50px] rounded-full animate-pulse"></div>
+      <div className="absolute bottom-1/3 right-1/3 w-1/5 h-1/5 bg-white/10 blur-[40px] rounded-full animate-bounce-slow"></div>
 
       <style>{`
         @keyframes iridescent-morph {
           0%, 100% { 
             border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; 
-            transform: scale(1) rotate(0deg); 
-            filter: hue-rotate(0deg) contrast(1.2); 
+            transform: translate3d(0,0,0) scale(1) rotate(0deg); 
+            filter: contrast(1.1); 
           }
           33% { 
             border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; 
-            transform: scale(1.15) rotate(120deg); 
-            filter: hue-rotate(90deg) contrast(1.5); 
+            transform: translate3d(0,0,0) scale(1.05) rotate(120deg); 
+            filter: contrast(1.3); 
           }
           66% { 
             border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; 
-            transform: scale(0.9) rotate(240deg); 
-            filter: hue-rotate(180deg) contrast(1.1); 
+            transform: translate3d(0,0,0) scale(0.95) rotate(240deg); 
+            filter: contrast(1.0); 
           }
         }
         @keyframes iridescent-morph-alt {
           0%, 100% { 
             border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; 
-            transform: rotate(360deg) scale(1.05); 
-            filter: brightness(1.2);
+            transform: translate3d(0,0,0) rotate(360deg) scale(1.0); 
+            filter: brightness(1.1);
           }
           50% { 
             border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; 
-            transform: rotate(180deg) scale(0.95); 
-            filter: brightness(0.8);
+            transform: translate3d(0,0,0) rotate(180deg) scale(0.98); 
+            filter: brightness(0.9);
           }
         }
         @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-20px); }
+          0%, 100% { transform: translate3d(0, 0, 0); }
+          50% { transform: translate3d(0, -20px, 0); }
         }
         .animate-iridescent-morph { animation: iridescent-morph 18s ease-in-out infinite; }
         .animate-iridescent-morph-alt { animation: iridescent-morph-alt 22s ease-in-out infinite; }
@@ -137,7 +145,8 @@ const ColorfulSkillIcon: React.FC<{ icon: string; index: number; isDark: boolean
       style={{ 
         transitionDelay: `${(index % 8) * 30}ms`,
         animation: `icon-float ${6 + Math.random() * 4}s ease-in-out infinite alternate`,
-        animationDelay: `${index * 0.1}s`
+        animationDelay: `${index * 0.1}s`,
+        willChange: 'transform, opacity'
       }}
     >
       <img 
@@ -150,8 +159,8 @@ const ColorfulSkillIcon: React.FC<{ icon: string; index: number; isDark: boolean
       
       <style>{`
         @keyframes icon-float {
-          from { transform: translateY(0); }
-          to { transform: translateY(-5px); }
+          from { transform: translate3d(0, 0, 0); }
+          to { transform: translate3d(0, -5px, 0); }
         }
       `}</style>
     </div>
@@ -175,13 +184,12 @@ const Skills: React.FC = () => {
       
       <div className="max-w-7xl mx-auto relative z-10">
         
-        {/* Header Section with 3D Iridescent Liquid Blob */}
+        {/* Header Section with Subtle Gray Fluid Blob */}
         <div className="relative mb-32 md:mb-52 text-center py-24 md:py-32">
           <FuturisticFluidBlob />
           
           <div className="relative z-10">
-            <p className="text-pink-600 font-black uppercase tracking-[0.6em] text-[11px] mb-8">Engineering with Precision</p>
-            <h2 className={`text-7xl md:text-[12vw] font-black tracking-tighter uppercase leading-none select-none transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h2 className={`text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none select-none transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               ABOUT <span className="text-pink-500 italic font-playfair animate-glow-pulse">ME</span>
             </h2>
             
@@ -196,7 +204,7 @@ const Skills: React.FC = () => {
         {/* Knowledge Matrix Section */}
         <div className="text-left mb-20 flex items-center gap-6">
            <h3 className={`text-2xl md:text-3xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>KNOWLEDGE MATRIX</h3>
-           <div className="h-0.5 flex-1 bg-gradient-to-r from-pink-500 via-blue-500 to-transparent opacity-30"></div>
+           <div className="h-0.5 flex-1 bg-gradient-to-r from-gray-500 via-blue-500 to-transparent opacity-30"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-40">
@@ -238,15 +246,6 @@ const Skills: React.FC = () => {
             ))}
           </div>
         </div>
-
-        {/* Decorative Technical Footer */}
-        <div className={`mt-32 pt-20 border-t ${isDark ? 'border-white/5' : 'border-black/5'} flex flex-col md:flex-row justify-between items-center gap-10 opacity-30 transition-all duration-700`}>
-           <div className="flex gap-5">
-              <div className="px-6 py-2.5 border border-current rounded-full text-[10px] font-black uppercase tracking-[0.3em]">Architectural Efficiency</div>
-              <div className="px-6 py-2.5 border border-current rounded-full text-[10px] font-black uppercase tracking-[0.3em]">Data Mastery</div>
-           </div>
-           <p className="text-[11px] font-black uppercase tracking-[0.5em]">Modern • Scalable • Reliable</p>
-        </div>
       </div>
 
       <style>{`
@@ -256,10 +255,10 @@ const Skills: React.FC = () => {
         }
         .animate-glow-pulse { animation: glow-pulse 5s ease-in-out infinite; }
         @keyframes float-particle {
-          0% { transform: translateY(0) translateX(0); opacity: 0; }
+          0% { transform: translate3d(0, 0, 0); opacity: 0; }
           20% { opacity: 1; }
           80% { opacity: 1; }
-          100% { transform: translateY(-400px) translateX(100px); opacity: 0; }
+          100% { transform: translate3d(100px, -400px, 0); opacity: 0; }
         }
       `}</style>
     </section>
