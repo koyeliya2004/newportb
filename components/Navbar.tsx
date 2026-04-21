@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTheme } from '../App';
 
+// Golden accent
+const GOLD = '#f5c518';
+
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
@@ -33,12 +36,13 @@ const Navbar: React.FC = () => {
 
         {/* Logo */}
         <NavLink to="/" className="flex-shrink-0">
-          <div className="w-9 h-9 bg-[#b5f23d] text-black font-black flex items-center justify-center rounded-sm text-base tracking-tighter hover:scale-105 transition-transform select-none">
+          <div className="w-9 h-9 text-black font-black flex items-center justify-center rounded-sm text-base tracking-tighter hover:scale-105 transition-transform select-none"
+            style={{ background: GOLD }}>
             A
           </div>
         </NavLink>
 
-        {/* Nav pill — all 6 items always visible on md+ */}
+        {/* Nav pill */}
         <div className={`hidden md:flex items-center gap-0.5 border px-1.5 py-1 rounded-full transition-colors flex-1 justify-center ${
           isDark ? 'bg-white/5 border-white/10' : 'bg-black/5 border-black/10'
         }`}>
@@ -50,10 +54,11 @@ const Navbar: React.FC = () => {
               className={({ isActive }) =>
                 `px-3 py-1.5 rounded-full text-[11px] uppercase font-bold tracking-wider transition-all whitespace-nowrap ${
                   isActive
-                    ? 'bg-[#b5f23d] text-black shadow-[0_0_12px_rgba(181,242,61,0.5)]'
-                    : isDark ? 'text-white/80 hover:text-[#b5f23d]' : 'text-slate-700 hover:text-[#5a9200]'
+                    ? 'text-black shadow-[0_0_12px_rgba(245,197,24,0.5)]'
+                    : isDark ? 'text-white/80' : 'text-slate-700'
                 }`
               }
+              style={({ isActive }) => isActive ? { background: GOLD } : {}}
             >
               {item.name}
             </NavLink>
@@ -66,9 +71,12 @@ const Navbar: React.FC = () => {
             onClick={toggleTheme}
             className={`w-9 h-9 flex items-center justify-center rounded-full border transition-all ${
               isDark
-                ? 'border-white/10 bg-white/5 text-white hover:bg-[#b5f23d] hover:text-black hover:border-[#b5f23d]'
-                : 'border-black/10 bg-black/5 text-black hover:bg-[#b5f23d] hover:border-[#b5f23d]'
+                ? 'border-white/10 bg-white/5 text-white'
+                : 'border-black/10 bg-black/5 text-black'
             }`}
+            style={{}}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = GOLD; (e.currentTarget as HTMLElement).style.color = 'black'; (e.currentTarget as HTMLElement).style.borderColor = GOLD; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = ''; (e.currentTarget as HTMLElement).style.borderColor = ''; }}
             aria-label="Toggle Theme"
           >
             {isDark ? (
@@ -84,7 +92,8 @@ const Navbar: React.FC = () => {
 
           <NavLink
             to="/contact"
-            className="bg-[#b5f23d] text-black px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(181,242,61,0.3)] hover:shadow-[0_0_35px_rgba(181,242,61,0.55)] hover:scale-105 active:scale-95 whitespace-nowrap"
+            className="text-black px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 whitespace-nowrap"
+            style={{ background: GOLD, boxShadow: '0 0 20px rgba(245,197,24,0.35)' }}
           >
             Hire Me
           </NavLink>

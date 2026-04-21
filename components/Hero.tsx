@@ -1,7 +1,11 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CV_DATA } from '../constants';
 import { useTheme } from '../App';
+
+// Golden accent
+const GOLD = '#f5c518';
+const GOLD_RGB = '245,197,24';
 
 // ── Scramble text hook ───────────────────────────────────────────────────────
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
@@ -28,33 +32,30 @@ function useScramble(target: string, trigger: boolean, speed = 40) {
   return display;
 }
 
-// ── Three.js Network Background (cursor-reactive) ────────────────────────────
-const NetworkBackground: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+// ── Three.js Network Background ───────────────────────────────────────────────
+const NetworkBackground: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const stateRef = useRef<any>(null);
   const frameRef = useRef<number>(0);
-  const isDarkRef = useRef(isDark);
-
-  useEffect(() => { isDarkRef.current = isDark; }, [isDark]);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     let cleanupFn: (() => void) | null = null;
 
-    // Check if THREE already loaded
     const setup = () => {
       const THREE = (window as any).THREE;
       if (!THREE) return;
 
-      const particleCount = 150;
-      const maxDistance = 150;
+      // Smaller, sparser network
+      const particleCount = 100;
+      const maxDistance = 120;
+      const SPREAD = 500;
       const positions = new Float32Array(particleCount * 3);
-      const particleData: { vx: number; vy: number; vz: number }[] = [];
+      const particleData: { vx: number; vy: number; vz: number; pulsePhase: number }[] = [];
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 1, 4000);
-      camera.position.z = 800;
+      camera.position.z = 900;
 
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(window.devicePixelRatio);
@@ -65,29 +66,35 @@ const NetworkBackground: React.FC<{ isDark: boolean }> = ({ isDark }) => {
       const group = new THREE.Group();
       scene.add(group);
 
-      const pMaterial = new THREE.PointsMaterial({ color: 0x00ff00, size: 3, transparent: true, opacity: 0.8 });
+      // Golden dimmed particles
+      const pMaterial = new THREE.PointsMaterial({ color: 0xd4a017, size: 2, transparent: true, opacity: 0.55 });
       const particlesGeom = new THREE.BufferGeometry();
       for (let i = 0; i < particleCount; i++) {
-        positions[i*3]   = Math.random() * 800 - 400;
-        positions[i*3+1] = Math.random() * 800 - 400;
-        positions[i*3+2] = Math.random() * 800 - 400;
-        particleData.push({ vx: (Math.random()-0.5)*0.7, vy: (Math.random()-0.5)*0.7, vz: (Math.random()-0.5)*0.7 });
+        positions[i*3]   = Math.random() * SPREAD - SPREAD/2;
+        positions[i*3+1] = Math.random() * SPREAD - SPREAD/2;
+        positions[i*3+2] = Math.random() * SPREAD - SPREAD/2;
+        particleData.push({
+          vx: (Math.random()-0.5)*0.5,
+          vy: (Math.random()-0.5)*0.5,
+          vz: (Math.random()-0.5)*0.3,
+          pulsePhase: Math.random() * Math.PI * 2,
+        });
       }
       particlesGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3).setUsage(THREE.DynamicDrawUsage));
       const particles = new THREE.Points(particlesGeom, pMaterial);
       group.add(particles);
 
+      // Lines
       const lineGeom = new THREE.BufferGeometry();
       const lPos = new Float32Array(particleCount * particleCount * 3);
       const lCol = new Float32Array(particleCount * particleCount * 3);
       lineGeom.setAttribute('position', new THREE.BufferAttribute(lPos, 3).setUsage(THREE.DynamicDrawUsage));
       lineGeom.setAttribute('color',    new THREE.BufferAttribute(lCol, 3).setUsage(THREE.DynamicDrawUsage));
-      const lineMesh = new THREE.LineSegments(lineGeom, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.5 }));
+      const lineMesh = new THREE.LineSegments(lineGeom, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.28 }));
       group.add(lineMesh);
 
-      // Mouse state — raw pixel coords updated instantly
-      let rawMouseX = 0, rawMouseY = 0;
-      let smoothX = 0, smoothY = 0;
+      let rawMouseX = 0, rawMouseY = 0, smoothX = 0, smoothY = 0;
+      let rotY = 0, rotX = 0;
 
       const onMouseMove = (e: MouseEvent) => {
         rawMouseX = e.clientX - window.innerWidth / 2;
@@ -110,15 +117,25 @@ const NetworkBackground: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 
       const animate = () => {
         frameRef.current = requestAnimationFrame(animate);
-        // Smooth lerp towards raw mouse — snappy follow
+        const time = Date.now() * 0.001;
+
+        // Cursor follow (snappy)
         smoothX += (rawMouseX - smoothX) * 0.08;
         smoothY += (rawMouseY - smoothY) * 0.08;
-        camera.position.x += (smoothX * 0.5 - camera.position.x) * 0.06;
-        camera.position.y += (-smoothY * 0.5 - camera.position.y) * 0.06;
+        camera.position.x += (smoothX * 0.4 - camera.position.x) * 0.06;
+        camera.position.y += (-smoothY * 0.4 - camera.position.y) * 0.06;
         camera.lookAt(scene.position);
 
-        const dark = isDarkRef.current;
-        pMaterial.color.set(dark ? 0x00ff00 : 0x00bb00);
+        // Slow auto-rotation of the whole group for more animation
+        group.rotation.y = Math.sin(time * 0.12) * 0.4;
+        group.rotation.x = Math.sin(time * 0.08) * 0.15;
+        group.rotation.z = Math.sin(time * 0.05) * 0.08;
+
+        // Pulsing particle opacity
+        pMaterial.opacity = 0.45 + Math.sin(time * 1.2) * 0.15;
+
+        // Golden line colour (r=0.96, g=0.77, b=0.09) dimmed
+        const lr = 0.82, lg = 0.62, lb = 0.05;
 
         const linePosAttr = lineMesh.geometry.attributes.position as any;
         const lineColAttr = lineMesh.geometry.attributes.color as any;
@@ -128,12 +145,13 @@ const NetworkBackground: React.FC<{ isDark: boolean }> = ({ isDark }) => {
           positions[i*3]   += particleData[i].vx;
           positions[i*3+1] += particleData[i].vy;
           positions[i*3+2] += particleData[i].vz;
-          if (positions[i*3]   < -400) positions[i*3]   = 400;
-          if (positions[i*3]   >  400) positions[i*3]   = -400;
-          if (positions[i*3+1] < -400) positions[i*3+1] = 400;
-          if (positions[i*3+1] >  400) positions[i*3+1] = -400;
-          if (positions[i*3+2] < -400) positions[i*3+2] = 400;
-          if (positions[i*3+2] >  400) positions[i*3+2] = -400;
+          const h = SPREAD/2;
+          if (positions[i*3]   < -h) positions[i*3]   = h;
+          if (positions[i*3]   >  h) positions[i*3]   = -h;
+          if (positions[i*3+1] < -h) positions[i*3+1] = h;
+          if (positions[i*3+1] >  h) positions[i*3+1] = -h;
+          if (positions[i*3+2] < -h) positions[i*3+2] = h;
+          if (positions[i*3+2] >  h) positions[i*3+2] = -h;
 
           for (let j = i+1; j < particleCount; j++) {
             const dx = positions[i*3]-positions[j*3];
@@ -142,8 +160,8 @@ const NetworkBackground: React.FC<{ isDark: boolean }> = ({ isDark }) => {
             if (Math.sqrt(dx*dx+dy*dy+dz*dz) < maxDistance) {
               linePosAttr.setXYZ(vi++, positions[i*3], positions[i*3+1], positions[i*3+2]);
               linePosAttr.setXYZ(vi++, positions[j*3], positions[j*3+1], positions[j*3+2]);
-              lineColAttr.setXYZ(ci++, 0, dark?1:0.73, 0);
-              lineColAttr.setXYZ(ci++, 0, dark?1:0.73, 0);
+              lineColAttr.setXYZ(ci++, lr, lg, lb);
+              lineColAttr.setXYZ(ci++, lr, lg, lb);
               lineCount++;
             }
           }
@@ -166,9 +184,8 @@ const NetworkBackground: React.FC<{ isDark: boolean }> = ({ isDark }) => {
       };
     };
 
-    if ((window as any).THREE) {
-      setup();
-    } else {
+    if ((window as any).THREE) setup();
+    else {
       const script = document.createElement('script');
       script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
       script.onload = setup;
@@ -181,7 +198,7 @@ const NetworkBackground: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   return <div ref={containerRef} className="absolute inset-0 z-0" style={{ pointerEvents: 'none' }} />;
 };
 
-// ── Tech Stack 3D Cloud Section ───────────────────────────────────────────────
+// ── Tech Stack 3D Cloud ──────────────────────────────────────────────────────────
 const TechStackCloud: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number>(0);
@@ -224,7 +241,6 @@ const TechStackCloud: React.FC = () => {
       renderer.setSize(container.clientWidth, container.clientHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
       container.appendChild(renderer.domElement);
-
       scene.add(new THREE.AmbientLight(0xffffff, 1));
 
       const logos: any[] = [];
@@ -275,12 +291,10 @@ const TechStackCloud: React.FC = () => {
         camera.position.x += (targetX * 0.6 - camera.position.x) * 0.05;
         camera.position.y += (-targetY * 0.6 - camera.position.y) * 0.05;
         camera.lookAt(scene.position);
-
         raycaster.setFromCamera(mouse2D, camera);
         logos.forEach(l => { l.userData.hovered = false; });
         const hits = raycaster.intersectObjects(logos);
         if (hits.length > 0) hits[0].object.userData.hovered = true;
-
         const time = Date.now() * 0.001;
         logos.forEach(logo => {
           const d = logo.userData;
@@ -289,8 +303,7 @@ const TechStackCloud: React.FC = () => {
           logo.position.y = d.origin.y + Math.sin(time * d.speed + d.phase) * 15;
           logo.position.z = d.origin.z + Math.sin(time * 0.5) * 5;
           const ts = d.hovered ? 1.5 : 1.0;
-          const ns = logo.scale.x + (ts - logo.scale.x) * 0.1;
-          logo.scale.set(ns, ns, ns);
+          logo.scale.setScalar(logo.scale.x + (ts - logo.scale.x) * 0.1);
           logo.material.opacity = d.hovered ? 1.0 : 0.85;
         });
         renderer.render(scene, camera);
@@ -317,48 +330,12 @@ const TechStackCloud: React.FC = () => {
     return () => { cleanupFn?.(); };
   }, []);
 
-  return <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }} />;
-};
-
-// ── Glitch Avatar ────────────────────────────────────────────────────────────
-const GlitchAvatar: React.FC = () => {
-  const [glitching, setGlitching] = useState(false);
-  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const triggerGlitch = useCallback(() => {
-    setGlitching(true);
-    if (timeout.current) clearTimeout(timeout.current);
-    timeout.current = setTimeout(() => setGlitching(false), 1400);
-  }, []);
-  return (
-    <div onClick={triggerGlitch} className="relative cursor-pointer select-none" title="Click me!">
-      <div className="absolute inset-0 bg-[#b5f23d] z-0" style={{ clipPath: 'polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%)' }} />
-      <div className={`relative z-10 flex items-center justify-center overflow-hidden transition-all duration-300 ${glitching?'grayscale brightness-75':''}`}
-        style={{ width:'300px', height:'420px', clipPath:'polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%)', transform:glitching?`rotate(${(Math.random()-0.5)*6}deg)`:'rotate(0deg)', transition:'filter 0.2s, transform 0.15s' }}
-      >
-        <div className="flex flex-col items-center justify-center w-full h-full bg-black/30">
-          <div className="w-28 h-28 rounded-full bg-gradient-to-br from-[#b5f23d] via-[#6ee7b7] to-[#3b82f6] flex items-center justify-center text-4xl font-black text-black shadow-2xl">KG</div>
-          <p className="mt-4 text-white/70 text-sm font-semibold tracking-widest uppercase">Your Photo Here</p>
-        </div>
-        {glitching && (
-          <>
-            <div className="absolute inset-0 pointer-events-none" style={{ background:'repeating-linear-gradient(transparent 0px,transparent 3px,rgba(181,242,61,0.18) 3px,rgba(181,242,61,0.18) 4px)', animation:'glitchScan 0.18s steps(1) infinite', mixBlendMode:'screen' }} />
-            <div className="absolute inset-0 pointer-events-none" style={{ background:'rgba(255,0,80,0.12)', transform:'translateX(4px)', animation:'glitchShift 0.12s steps(1) infinite', mixBlendMode:'screen' }} />
-            <div className="absolute inset-0 pointer-events-none" style={{ background:'rgba(0,255,200,0.10)', transform:'translateX(-4px)', animation:'glitchShift 0.09s steps(1) infinite reverse', mixBlendMode:'screen' }} />
-          </>
-        )}
-      </div>
-      {!glitching && <div className="absolute bottom-3 right-2 z-20 bg-black text-[#b5f23d] text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-[#b5f23d]/40 animate-pulse">Click me</div>}
-      <style>{`
-        @keyframes glitchScan{0%{transform:translateY(0)}25%{transform:translateY(-8px)}50%{transform:translateY(5px)}75%{transform:translateY(-3px)}100%{transform:translateY(0)}}
-        @keyframes glitchShift{0%{clip-path:inset(20% 0 60% 0)}20%{clip-path:inset(60% 0 10% 0)}40%{clip-path:inset(5% 0 80% 0)}60%{clip-path:inset(40% 0 30% 0)}80%{clip-path:inset(70% 0 5% 0)}100%{clip-path:inset(20% 0 60% 0)}}
-      `}</style>
-    </div>
-  );
+  return <div ref={containerRef} style={{ width:'100%', height:'100%', position:'absolute', inset:0 }} />;
 };
 
 const roles = ['Full Stack Developer', 'AI / ML Engineer', 'Deep Learning Explorer', 'Open Source Contributor'];
 
-// ── Main Hero (3 sections) ───────────────────────────────────────────────────
+// ── Main Hero ────────────────────────────────────────────────────────────────────
 const Hero: React.FC = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
@@ -380,70 +357,97 @@ const Hero: React.FC = () => {
   const displayName = useScramble(CV_DATA.name, hoverName, 25);
 
   return (
-    <div className={isDark ? 'bg-[#050805]' : 'bg-white'}>
+    <div style={{ background: isDark ? '#06050a' : '#fff' }}>
 
-      {/* ── SECTION 1: Hero with Network BG ── */}
-      <section className={`relative min-h-screen overflow-hidden text-white flex items-center`}>
-        <NetworkBackground isDark={isDark} />
+      {/* ── SECTION 1: Hero ── */}
+      <section className="relative min-h-screen overflow-hidden text-white flex items-center">
+        <NetworkBackground />
+        {/* faint gold grid */}
         <div className="pointer-events-none absolute inset-0 z-[1]" style={{
-          backgroundImage: 'linear-gradient(rgba(181,242,61,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(181,242,61,0.025) 1px,transparent 1px)',
+          backgroundImage: `linear-gradient(rgba(${GOLD_RGB},0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(${GOLD_RGB},0.03) 1px,transparent 1px)`,
           backgroundSize: '60px 60px',
         }} />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-16 py-24">
-          <div className="grid w-full gap-14 lg:grid-cols-2 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#b5f23d]/40 bg-[#b5f23d]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] text-[#b5f23d] mb-8">
-                <span className="h-2 w-2 rounded-full bg-[#b5f23d] shadow-[0_0_10px_rgba(181,242,61,0.9)] animate-pulse" />
-                Open to Internships &amp; Collaborations
+
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 sm:px-10 lg:px-16 py-28">
+          {/* Status badge */}
+          <div className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.28em] mb-10"
+            style={{ borderColor: `rgba(${GOLD_RGB},0.4)`, background: `rgba(${GOLD_RGB},0.08)`, color: GOLD }}>
+            <span className="h-2 w-2 rounded-full animate-pulse" style={{ background: GOLD, boxShadow: `0 0 10px ${GOLD}` }} />
+            Open to Internships &amp; Collaborations
+          </div>
+
+          {/* Name */}
+          <h1
+            className="text-5xl sm:text-6xl lg:text-8xl font-black leading-none tracking-tighter mb-6 cursor-default"
+            onMouseEnter={() => setHoverName(true)}
+            onMouseLeave={() => setHoverName(false)}
+          >
+            <span className="block text-lg font-semibold tracking-[0.4em] uppercase mb-3 text-white/40">Hey, I&apos;m</span>
+            <span style={{ background: `linear-gradient(90deg, ${GOLD}, #fff, ${GOLD})`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>
+              {displayName}
+            </span>
+          </h1>
+
+          {/* Animated role */}
+          <div className="h-10 flex items-center mb-6">
+            <span className="text-xl sm:text-2xl font-mono font-bold text-white/50">&gt;&nbsp;</span>
+            <span className="text-xl sm:text-2xl font-mono font-bold tracking-wide" style={{ color: GOLD }}>
+              {displayRole}
+              <span className="inline-block w-[2px] h-6 ml-1 animate-pulse align-middle" style={{ background: GOLD }} />
+            </span>
+          </div>
+
+          {/* Bio */}
+          <p className="max-w-2xl text-base leading-8 text-white/50 mb-12">
+            I build intelligent web applications and real-world AI solutions — from deep learning models to full-stack products. Currently pursuing CSE at MAKAUT, Kolkata.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-wrap gap-4 mb-16">
+            <button onClick={() => navigate('/projects')}
+              className="rounded-full text-black px-8 py-4 text-sm font-black uppercase tracking-[0.2em] hover:-translate-y-1 transition-all duration-300"
+              style={{ background: GOLD, boxShadow: `0 0 30px rgba(${GOLD_RGB},0.35)` }}>
+              View My Work
+            </button>
+            <button onClick={() => navigate('/contact')}
+              className="rounded-full border px-8 py-4 text-sm font-black uppercase tracking-[0.2em] text-white hover:-translate-y-1 transition-all duration-300"
+              style={{ borderColor: 'rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.05)' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor=`rgba(${GOLD_RGB},0.6)`; (e.currentTarget as HTMLElement).style.color=GOLD; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(255,255,255,0.2)'; (e.currentTarget as HTMLElement).style.color='white'; }}
+            >
+              Get In Touch
+            </button>
+          </div>
+
+          {/* Stats */}
+          <div className="flex flex-wrap gap-4">
+            {[{value:'15+',label:'Projects Built'},{value:'MAKAUT',label:'B.Tech CSE'},{value:'AI & Web',label:'Specialisation'},{value:'Kolkata',label:'Based In'}].map(s=>(
+              <div key={s.label}
+                className="rounded-2xl px-5 py-4 backdrop-blur-xl transition-colors"
+                style={{ border: 'rgba(255,255,255,0.08) 1px solid', background: 'rgba(255,255,255,0.04)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor=`rgba(${GOLD_RGB},0.4)`; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(255,255,255,0.08)'; }}
+              >
+                <p className="text-xl font-extrabold" style={{ color: GOLD }}>{s.value}</p>
+                <p className="text-xs text-white/50 mt-0.5">{s.label}</p>
               </div>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black leading-none tracking-tighter mb-4 cursor-default"
-                onMouseEnter={() => setHoverName(true)} onMouseLeave={() => setHoverName(false)}>
-                <span className={`block text-lg font-semibold tracking-[0.4em] uppercase mb-2 ${isDark?'text-white/40':'text-white/50'}`}>Hey, I&apos;m</span>
-                <span className="bg-gradient-to-r from-[#b5f23d] via-white to-[#b5f23d] bg-clip-text text-transparent">{displayName}</span>
-              </h1>
-              <div className="mt-4 h-10 flex items-center">
-                <span className="text-xl sm:text-2xl font-mono font-bold text-white/60">&gt;&nbsp;</span>
-                <span className="text-xl sm:text-2xl font-mono font-bold text-[#b5f23d] tracking-wide">
-                  {displayRole}<span className="inline-block w-[2px] h-6 bg-[#b5f23d] ml-1 animate-pulse align-middle" />
-                </span>
-              </div>
-              <p className="mt-6 max-w-lg text-base leading-8 text-white/55">
-                I build intelligent web applications and real-world AI solutions — from deep learning models to full-stack products. Currently pursuing CSE at MAKAUT, Kolkata.
-              </p>
-              <div className="mt-10 flex flex-wrap gap-4">
-                <button onClick={() => navigate('/projects')}
-                  className="rounded-full bg-[#b5f23d] text-black px-8 py-4 text-sm font-black uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(181,242,61,0.35)] hover:shadow-[0_0_50px_rgba(181,242,61,0.55)] hover:-translate-y-1 transition-all duration-300">View My Work</button>
-                <button onClick={() => navigate('/contact')}
-                  className="rounded-full border border-white/20 bg-white/5 text-white px-8 py-4 text-sm font-black uppercase tracking-[0.2em] hover:border-[#b5f23d]/60 hover:text-[#b5f23d] hover:-translate-y-1 transition-all duration-300">Get In Touch</button>
-              </div>
-              <div className="mt-12 flex flex-wrap gap-4">
-                {[{value:'15+',label:'Projects Built'},{value:'MAKAUT',label:'B.Tech CSE'},{value:'AI & Web',label:'Specialisation'},{value:'Kolkata',label:'Based In'}].map(s=>(
-                  <div key={s.label} className="rounded-2xl border border-white/8 bg-white/4 px-5 py-4 backdrop-blur-xl hover:border-[#b5f23d]/40 transition-colors">
-                    <p className="text-xl font-extrabold text-[#b5f23d]">{s.value}</p>
-                    <p className="text-xs text-white/50 mt-0.5">{s.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="order-1 lg:order-2 flex justify-center lg:justify-end"><GlitchAvatar /></div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── SECTION 2: Mission / About ── */}
-      <section className={`relative py-32 px-6 sm:px-10 lg:px-16 overflow-hidden ${isDark?'bg-[#0a0c0a]':'bg-[#f5f5f0]'}`}>
-        {/* faint grid */}
+      {/* ── SECTION 2: Mission ── */}
+      <section className="relative py-32 px-6 sm:px-10 lg:px-16 overflow-hidden"
+        style={{ background: isDark ? '#0c0a06' : '#f8f5ee' }}>
         <div className="pointer-events-none absolute inset-0" style={{
-          backgroundImage:'linear-gradient(rgba(181,242,61,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(181,242,61,0.04) 1px,transparent 1px)',
+          backgroundImage:`linear-gradient(rgba(${GOLD_RGB},0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(${GOLD_RGB},0.04) 1px,transparent 1px)`,
           backgroundSize:'80px 80px',
         }} />
         <div className="relative z-10 max-w-5xl mx-auto">
-          {/* eyebrow */}
-          <p className="text-[#b5f23d] text-xs font-black uppercase tracking-[0.4em] mb-6">// What I do</p>
-          {/* main heading */}
+          <p className="text-xs font-black uppercase tracking-[0.4em] mb-6" style={{ color: GOLD }}>// What I do</p>
           <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6 ${isDark?'text-white':'text-black'}`}>
             Building intelligent systems<br />
-            <span className="text-[#b5f23d]">that turn ideas into real-world impact.</span>
+            <span style={{ color: GOLD }}>that turn ideas into real-world impact.</span>
           </h2>
           <p className={`text-xl font-semibold mb-8 max-w-3xl ${isDark?'text-white/70':'text-black/60'}`}>
             Creating scalable AI and full-stack solutions that solve meaningful problems.
@@ -453,36 +457,36 @@ const Hero: React.FC = () => {
           </p>
           <div className="flex flex-wrap gap-4">
             <button onClick={() => navigate('/about')}
-              className="rounded-full bg-[#b5f23d] text-black px-8 py-4 text-sm font-black uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(181,242,61,0.3)] hover:shadow-[0_0_50px_rgba(181,242,61,0.5)] hover:-translate-y-1 transition-all duration-300">
+              className="rounded-full text-black px-8 py-4 text-sm font-black uppercase tracking-[0.2em] hover:-translate-y-1 transition-all duration-300"
+              style={{ background: GOLD, boxShadow: `0 0 30px rgba(${GOLD_RGB},0.3)` }}>
               About Me
             </button>
             <button onClick={() => navigate('/projects')}
-              className={`rounded-full border px-8 py-4 text-sm font-black uppercase tracking-[0.2em] hover:-translate-y-1 transition-all duration-300 ${
-                isDark?'border-white/20 bg-white/5 text-white hover:border-[#b5f23d]/60 hover:text-[#b5f23d]':'border-black/20 bg-black/5 text-black hover:border-[#b5f23d] hover:text-[#5a9200]'
-              }`}>
+              className={`rounded-full border px-8 py-4 text-sm font-black uppercase tracking-[0.2em] hover:-translate-y-1 transition-all duration-300 ${isDark?'text-white border-white/20 bg-white/5':'text-black border-black/20 bg-black/5'}`}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor=GOLD; (e.currentTarget as HTMLElement).style.color=GOLD; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor=''; (e.currentTarget as HTMLElement).style.color=''; }}
+            >
               Explore My Work &rarr;
             </button>
           </div>
         </div>
       </section>
 
-      {/* ── SECTION 3: Tech Stack 3D Cloud ── */}
-      <section className={`relative overflow-hidden ${isDark?'bg-[#000000]':'bg-[#0a0c0a]'}`} style={{ height: '100vh' }}>
-        {/* text overlays */}
+      {/* ── SECTION 3: Tech Stack Cloud ── */}
+      <section className="relative overflow-hidden bg-[#07060a]" style={{ height: '100vh' }}>
         <div className="absolute top-[5%] w-full text-center z-10 pointer-events-none">
           <h2 className="text-white font-light text-3xl sm:text-4xl lg:text-5xl tracking-widest">
-            Focusing on the <span className="text-[#4ade80] font-bold">Best</span>
+            Focusing on the <span className="font-bold" style={{ color: GOLD }}>Best</span>
           </h2>
         </div>
         <div className="absolute bottom-[5%] left-[5%] max-w-sm z-10 pointer-events-none">
           <h3 className="text-white text-xl font-semibold mb-1">
-            <span className="text-[#4ade80]">Multiple</span> Tech Stack
+            <span style={{ color: GOLD }}>Multiple</span> Tech Stack
           </h3>
           <p className="text-white/60 text-sm leading-relaxed">
             I have worked with multiple technologies and frameworks to build scalable and efficient solutions.
           </p>
         </div>
-        {/* 3D canvas */}
         <TechStackCloud />
       </section>
 
