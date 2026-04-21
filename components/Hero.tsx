@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useTheme } from '../App';
 import { APP_LOGO_URL } from '../constants';
 import { Logo } from './Logo';
@@ -550,12 +550,12 @@ const Hero: React.FC = () => {
             built with a clear goal: real users, real results.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <button
-              onClick={() => navigate('/about')}
+            <NavLink
+              to="/about"
               className="rounded-full bg-[#f3c623] px-8 py-4 text-xs font-black uppercase tracking-[0.28em] text-black shadow-[0_0_24px_rgba(243,198,35,0.28)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_0_38px_rgba(243,198,35,0.42)]"
             >
               About Me
-            </button>
+            </NavLink>
           </div>
         </div>
       </section>
