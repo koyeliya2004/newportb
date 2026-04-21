@@ -33,23 +33,26 @@ const WaveBackground: React.FC = () => {
 
       const waveCount = 5;
       const waveColors = [
-        { r: 255, g: 215, b: 0 },    // Gold
-        { r: 218, g: 165, b: 32 },   // GoldenRod
-        { r: 255, g: 191, b: 0 },    // Amber
-        { r: 184, g: 134, b: 11 },   // Dark Gold
-        { r: 255, g: 223, b: 0 },    // Soft Gold
+        { r: 255, g: 193, b: 7 },    // Gold/Yellow
+        { r: 236, g: 72, b: 153 },   // Pink
+        { r: 139, g: 92, b: 246 },   // Purple
+        { r: 59, g: 130, b: 246 },   // Blue
+        { r: 250, g: 204, b: 21 },   // Yellow
       ];
 
       for (let waveIdx = 0; waveIdx < waveCount; waveIdx++) {
         const waveColor = waveColors[waveIdx % waveColors.length];
-        const yOffset = (height / waveCount) * waveIdx + height / 2;
-        const amplitude = 40 + waveIdx * 15;
-        const frequency = 0.01 - waveIdx * 0.002;
-        const speed = 0.02 + waveIdx * 0.01;
-        const opacity = 0.15 - waveIdx * 0.02;
+        const yOffset = (height / waveCount) * waveIdx + height / 3;
+        const amplitude = 35 + Math.sin(time * speed * 2) * 15 + waveIdx * 10;
+        const frequency = 0.007 - waveIdx * 0.001;
+        const speed = 0.01 + waveIdx * 0.008;
+        const opacity = 0.18 - waveIdx * 0.015;
 
-        ctx.strokeStyle = `rgba(${waveColor.r}, ${waveColor.g}, ${waveColor.b}, ${opacity})`;
-        ctx.lineWidth = 2 + waveIdx * 0.5;
+        // More vibrant and glowing
+        ctx.strokeStyle = `rgba(${waveColor.r}, ${waveColor.g}, ${waveColor.b}, ${opacity + 0.1})`;
+        ctx.lineWidth = 3 + waveIdx * 0.7;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = `rgba(${waveColor.r}, ${waveColor.g}, ${waveColor.b}, 0.8)`;
         ctx.beginPath();
 
         for (let x = 0; x <= width; x += 5) {
@@ -63,8 +66,9 @@ const WaveBackground: React.FC = () => {
 
         ctx.stroke();
 
-        // Create wave fill effect
-        ctx.fillStyle = `rgba(${waveColor.r}, ${waveColor.g}, ${waveColor.b}, ${opacity * 0.3})`;
+        // Increase fill transparency and remove shadow for the fill part
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = `rgba(${waveColor.r}, ${waveColor.g}, ${waveColor.b}, ${opacity * 0.4})`;
         ctx.beginPath();
 
         for (let x = 0; x <= width; x += 5) {
@@ -84,9 +88,9 @@ const WaveBackground: React.FC = () => {
 
       // Add subtle mesh gradient overlay
       const gradient = ctx.createLinearGradient(0, 0, width, height);
-      gradient.addColorStop(0, 'rgba(255, 215, 0, 0.05)');
+      gradient.addColorStop(0, 'rgba(236, 72, 153, 0.05)');
       gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
-      gradient.addColorStop(1, 'rgba(255, 215, 0, 0.05)');
+      gradient.addColorStop(1, 'rgba(59, 130, 246, 0.05)');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 

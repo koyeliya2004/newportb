@@ -8,6 +8,7 @@ import Skills from './components/Skills';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
 import ProjectDetail from './components/ProjectDetail';
+import { Logo } from './components/Logo';
 
 type Theme = 'dark' | 'light';
 const ThemeContext = createContext<{ theme: Theme; toggleTheme: () => void }>({
@@ -129,7 +130,7 @@ const App: React.FC = () => {
           <footer className={`py-16 px-6 border-t ${theme === 'dark' ? 'border-[#f3c623]/10 bg-black' : 'border-black/10 bg-[#fff8df]'} backdrop-blur-sm transition-colors duration-500`}>
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
               <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 ${theme === 'dark' ? 'bg-[#f3c623] text-black' : 'bg-black text-[#f3c623]'} font-bold flex items-center justify-center rounded-sm transition-colors duration-500`}>B</div>
+                <Logo className={`w-8 h-8 rounded-sm transition-colors duration-500 drop-shadow-[0_0_12px_rgba(243,198,35,0.4)]`} />
                 <p className="font-bold tracking-tighter uppercase">Bhumika</p>
               </div>
 
