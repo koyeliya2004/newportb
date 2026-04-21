@@ -1,5 +1,8 @@
 import { Project, Experience, SkillCategory, Certification, Achievement } from './types';
 
+export const APP_LOGO_URL =
+  '/assets/app-logo.svg';
+
 export const CV_DATA = {
   name: "Bhumika",
   email: "bhumika@gmail.com",

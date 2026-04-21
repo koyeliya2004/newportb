@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { APP_LOGO_URL } from '../constants';
 
 const GoldenNetwork: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -650,6 +651,16 @@ const Hero: React.FC = () => {
               Focusing on the Best
             </p>
           </div>
+        </div>
+      </section>
+      <section className="relative z-10 bg-black px-6 pb-20 sm:px-10 lg:px-14">
+        <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 border-t border-[#f3c623]/20 pt-10">
+          <img
+            src={APP_LOGO_URL}
+            alt="App logo"
+            className="h-16 w-16 rounded-lg object-cover shadow-[0_0_24px_rgba(243,198,35,0.5)]"
+          />
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#f3c623]">Built with Code</p>
         </div>
       </section>
 
