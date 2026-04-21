@@ -26,10 +26,9 @@ const CustomCursor: React.FC = () => {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX, clientY } = e;
-      
       setTrail((prev) => [
         { x: clientX, y: clientY, id: Math.random() },
-        ...prev.slice(0, 15), // Longer trail for more fluid effect
+        ...prev.slice(0, 15),
       ]);
     };
 
@@ -52,25 +51,21 @@ const CustomCursor: React.FC = () => {
 
   return (
     <>
-      {/* Interactive ethereal trail */}
       {trail.map((dot, index) => {
-        // Opacity and size decay curves
         const ratio = 1 - index / trail.length;
         const size = (isHovering ? 18 : 12) * Math.pow(ratio, 1.5);
         const opacity = Math.pow(ratio, 2) * (isHovering ? 0.6 : 0.4);
-        
         return (
-          <div 
+          <div
             key={dot.id}
             className={`fixed top-0 left-0 rounded-full z-[9998] pointer-events-none blur-[2px] ${
               theme === 'dark' ? 'bg-pink-500' : 'bg-blue-500'
             }`}
-            style={{ 
+            style={{
               width: `${size}px`,
               height: `${size}px`,
               transform: `translate(${dot.x}px, ${dot.y}px) translate(-50%, -50%)`,
               opacity: opacity,
-              // No transition on transform to keep it perfectly synced with pointer
               transition: 'opacity 0.3s ease, width 0.3s ease, height 0.3s ease',
             }}
           />
@@ -126,46 +121,34 @@ const App: React.FC = () => {
           <ScrollToTop />
           <CustomCursor />
           <Navbar />
-          
+
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Hero />} />
               <Route path="/home" element={<Hero />} />
-              
+
               <Route path="/about" element={
-                <PageWrapper>
-                  <Skills />
-                </PageWrapper>
+                <PageWrapper><Skills /></PageWrapper>
               } />
-              
+
               <Route path="/experience" element={
-                <PageWrapper>
-                  <Experience />
-                </PageWrapper>
+                <PageWrapper><Experience /></PageWrapper>
               } />
-              
+
               <Route path="/projects" element={
-                <PageWrapper>
-                  <Projects />
-                </PageWrapper>
+                <PageWrapper><Projects /></PageWrapper>
               } />
-              
+
               <Route path="/projects/:id" element={
-                <PageWrapper>
-                  <ProjectDetail />
-                </PageWrapper>
+                <PageWrapper><ProjectDetail /></PageWrapper>
               } />
-              
+
               <Route path="/certifications" element={
-                <PageWrapper>
-                  <Certifications />
-                </PageWrapper>
+                <PageWrapper><Certifications /></PageWrapper>
               } />
-              
+
               <Route path="/contact" element={
-                <PageWrapper>
-                  <Contact />
-                </PageWrapper>
+                <PageWrapper><Contact /></PageWrapper>
               } />
             </Routes>
           </main>
@@ -173,15 +156,15 @@ const App: React.FC = () => {
           <footer className={`py-16 px-6 border-t ${theme === 'dark' ? 'border-white/5 bg-black/50' : 'border-black/5 bg-white/50'} backdrop-blur-sm transition-colors duration-500`}>
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
               <div className="flex items-center gap-3">
-                 <div className={`w-8 h-8 ${theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'} font-bold flex items-center justify-center rounded-sm transition-colors duration-500`}>BT</div>
-                 <p className="font-bold tracking-tighter uppercase">Bhumika Tewari</p>
+                <div className={`w-8 h-8 ${theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'} font-bold flex items-center justify-center rounded-sm transition-colors duration-500`}>KG</div>
+                <p className="font-bold tracking-tighter uppercase">Koyeliya Ghosh</p>
               </div>
-              
-              <p className={`${theme === 'dark' ? 'text-gray-600' : 'text-slate-400'} text-sm transition-colors`}>© 2024 Bhumika Tewari. All rights reserved.</p>
-              
+
+              <p className={`${theme === 'dark' ? 'text-gray-600' : 'text-slate-400'} text-sm transition-colors`}>© 2025 Koyeliya Ghosh. All rights reserved.</p>
+
               <div className={`flex gap-8 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-slate-500'} font-bold uppercase tracking-widest text-[10px] transition-colors`}>
-                 <a href="https://www.linkedin.com/in/bhumika-tewari-21294027a/" target="_blank" className="hover:text-pink-500 transition-colors">LinkedIn</a>
-                 <a href="https://github.com/bhumikatewari" target="_blank" className="hover:text-pink-500 transition-colors">GitHub</a>
+                <a href="https://www.linkedin.com/in/koyeliya-ghosh" target="_blank" className="hover:text-pink-500 transition-colors">LinkedIn</a>
+                <a href="https://github.com/Bhumika2006-hue" target="_blank" className="hover:text-pink-500 transition-colors">GitHub</a>
               </div>
             </div>
           </footer>
