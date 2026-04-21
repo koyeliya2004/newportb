@@ -28,7 +28,7 @@ const Contact: React.FC = () => {
            <div className="inline-block mb-6 px-4 py-1 rounded-full border border-pink-500/20 bg-pink-500/5 backdrop-blur-md">
               <span className="text-[10px] font-black uppercase tracking-[0.5em] text-pink-500">Secure Channel</span>
            </div>
-           <h2 className={`text-6xl md:text-9xl font-black tracking-tighter mb-6 transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>
+           <h2 className={`text-3xl md:text-5xl font-black tracking-tighter mb-6 transition-colors ${isDark ? 'text-white' : 'text-slate-900'}`}>
              Let's <span className="font-playfair italic font-light text-pink-500 drop-shadow-[0_0_30px_rgba(236,72,153,0.3)]">Connect</span>
            </h2>
            <p className={`text-xl leading-relaxed max-w-2xl mx-auto font-light transition-colors ${isDark ? 'text-gray-400' : 'text-slate-500'}`}>

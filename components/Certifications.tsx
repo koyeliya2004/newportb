@@ -10,7 +10,7 @@ const CertCard: React.FC<{ cert: any; isDark: boolean; index: number }> = ({ cer
         <span className="text-white font-black text-[10px] md:text-[12px]">{index + 1}</span>
       </div>
       <div className="flex-1 min-w-0">
-        <h5 className={`text-[12px] md:text-[14px] font-black uppercase tracking-tight leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>• {cert.name}</h5>
+        <h5 className={`text-[12px] md:text-[14px] font-black uppercase tracking-tight leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>{cert.name}</h5>
       </div>
     </div>
   );
@@ -35,7 +35,7 @@ const AchievementCard: React.FC<{ item: any; color: string; isDark: boolean; ind
         <div className="w-14 h-14 rounded-[1.5rem] flex items-center justify-center mb-6 shadow-2xl" style={{ backgroundColor: color }}>
           <span className="text-white font-black text-xl">{index + 1}</span>
         </div>
-        <h4 className={`text-xl md:text-2xl font-black mb-4 leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>• {item.title}</h4>
+        <h4 className={`text-xl md:text-2xl font-black mb-4 leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>{item.title}</h4>
         <div className="w-20 h-1.5 rounded-full" style={{ backgroundColor: color }}></div>
       </div>
       
@@ -87,13 +87,13 @@ const Certifications: React.FC = () => {
         </div>
 
         <div className="max-w-[1600px] w-full text-center relative z-10">
-          <h2 className="text-4xl md:text-[6vw] font-black text-white tracking-tighter leading-[0.9] uppercase select-none drop-shadow-2xl mb-4">
+          <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter leading-[0.9] uppercase select-none drop-shadow-2xl mb-4">
             PROFESSIONAL <span className="text-blue-200 italic font-playfair">CREDENTIALS</span>
           </h2>
           
           <div className="flex items-center justify-center gap-6 my-8">
             <div className="h-px w-12 md:w-24 bg-gradient-to-r from-transparent to-white/40"></div>
-            <h2 className="text-xl md:text-[3vw] font-bold text-white/70 tracking-tighter uppercase select-none">
+            <h2 className="text-lg md:text-2xl font-bold text-white/70 tracking-tighter uppercase select-none">
               ACHIEVEMENTS & EXPERIENCE
             </h2>
             <div className="h-px w-12 md:w-24 bg-gradient-to-l from-transparent to-white/40"></div>
@@ -114,7 +114,7 @@ const Certifications: React.FC = () => {
       <section className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center z-20 py-10 transition-colors duration-1000 shadow-[0_-50px_100px_rgba(0,0,0,0.5)] ${isDark ? 'bg-black' : 'bg-slate-50'}`}>
         <div className="max-w-7xl mx-auto w-full px-6 overflow-y-auto max-h-[85vh] py-10">
           <div className="text-center mb-12 md:mb-16">
-            <h3 className={`text-4xl md:text-[7vw] font-black tracking-tighter uppercase ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h3 className={`text-3xl md:text-5xl font-black tracking-tighter uppercase ${isDark ? 'text-white' : 'text-slate-900'}`}>
               CREDENTIALS
             </h3>
             <div className="w-24 h-1.5 bg-[#3b82f6] mx-auto mt-4 rounded-full shadow-[0_0_30px_rgba(59,130,246,0.5)]"></div>
@@ -132,7 +132,7 @@ const Certifications: React.FC = () => {
       <section className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center z-30 py-10 transition-colors duration-1000 shadow-[0_-50px_100px_rgba(0,0,0,0.5)] ${isDark ? 'bg-[#050505]' : 'bg-white'}`}>
         <div className="max-w-[1800px] w-full px-6 overflow-y-auto max-h-[85vh] py-10">
           <div className="text-center mb-12 md:mb-20">
-            <h3 className={`text-4xl md:text-[6vw] font-black tracking-tighter leading-none uppercase ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h3 className={`text-3xl md:text-5xl font-black tracking-tighter leading-none uppercase ${isDark ? 'text-white' : 'text-slate-900'}`}>
               ACHIEVEMENTS <br className="hidden md:block" /> & <span className="text-[#3b82f6] italic font-playfair glow-blue">ACTIVITIES</span>
             </h3>
           </div>

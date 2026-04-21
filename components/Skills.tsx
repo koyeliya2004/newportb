@@ -189,11 +189,11 @@ const Skills: React.FC = () => {
           <FuturisticFluidBlob />
           
           <div className="relative z-10">
-            <h2 className={`text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none select-none transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h2 className={`text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none select-none transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
               ABOUT <span className="text-pink-500 italic font-playfair animate-glow-pulse">ME</span>
             </h2>
             
-            <div className={`mt-16 max-w-4xl mx-auto px-6 text-base md:text-xl font-medium leading-relaxed transition-colors duration-500 drop-shadow-sm ${isDark ? 'text-gray-300' : 'text-slate-700'}`}>
+            <div className={`mt-16 max-w-4xl mx-auto px-6 text-sm md:text-lg font-medium leading-relaxed transition-colors duration-500 drop-shadow-sm ${isDark ? 'text-gray-300' : 'text-slate-700'}`}>
               <p className="italic bg-black/10 md:bg-transparent backdrop-blur-md md:backdrop-blur-none p-8 rounded-[3rem] md:p-0">
                 "{CV_DATA.summary}"
               </p>
@@ -236,7 +236,7 @@ const Skills: React.FC = () => {
         {/* Core Engine Tech Stack */}
         <div className="mt-40 mb-20">
           <div className="text-center mb-20">
-            <h3 className={`text-5xl md:text-7xl font-black tracking-tighter uppercase mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>CORE <span className="text-pink-500">ENGINE</span></h3>
+            <h3 className={`text-3xl md:text-5xl font-black tracking-tighter uppercase mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>CORE <span className="text-pink-500">ENGINE</span></h3>
             <p className={`text-[11px] font-black uppercase tracking-[0.6em] ${isDark ? 'text-gray-500' : 'text-slate-400'}`}>Technologies powering my builds</p>
           </div>
           

@@ -13,10 +13,10 @@ const Hero: React.FC = () => {
       {/* Background Marquee Text */}
       <div className="absolute inset-0 flex items-center pointer-events-none select-none overflow-hidden">
         <div className="animate-marquee whitespace-nowrap flex items-center">
-          <h1 className={`text-[35vw] font-black leading-none tracking-tighter uppercase opacity-10 pr-20 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
+          <h1 className={`text-[20vw] font-black leading-none tracking-tighter uppercase opacity-10 pr-20 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
             BHUMIKA&nbsp;
           </h1>
-          <h1 className={`text-[35vw] font-black leading-none tracking-tighter uppercase opacity-10 pr-20 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
+          <h1 className={`text-[20vw] font-black leading-none tracking-tighter uppercase opacity-10 pr-20 transition-colors duration-500 ${isDark ? 'text-white' : 'text-black'}`}>
             BHUMIKA&nbsp;
           </h1>
         </div>

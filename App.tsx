@@ -8,6 +8,7 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
+import ProjectDetail from './components/ProjectDetail';
 
 // Theme Context
 type Theme = 'dark' | 'light';
@@ -147,6 +148,12 @@ const App: React.FC = () => {
               <Route path="/projects" element={
                 <PageWrapper>
                   <Projects />
+                </PageWrapper>
+              } />
+              
+              <Route path="/projects/:id" element={
+                <PageWrapper>
+                  <ProjectDetail />
                 </PageWrapper>
               } />
               

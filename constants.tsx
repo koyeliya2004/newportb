@@ -95,7 +95,23 @@ export const PROJECTS: Project[] = [
       "Created an interactive farmer dashboard with visual analytics."
     ],
     techStack: ["Python", "Scikit-learn", "TensorFlow", "CNN", "Pandas", "NumPy", "Flask/FastAPI", "SQL/NoSQL", "Weather APIs", "GIS"],
-    image: "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=1000&auto=format&fit=crop",
+    fullDetails: {
+      intro: "An AI-powered end-to-end decision support platform for precision agriculture, integrating crop recommendation, fertilizer optimization, and disease detection.",
+      overview: "Designed to help farmers make data-driven decisions by analyzing soil, weather, and crop data. The system provides actionable insights to improve yield and reduce resource waste.",
+      features: [
+        { title: "Crop Recommendation", description: "Recommends the best crops to grow based on soil nutrients and weather conditions." },
+        { title: "Disease Detection", description: "CNN-based plant disease detection using leaf images." },
+        { title: "Market Forecasting", description: "Predicts market prices to help farmers time their sales." }
+      ],
+      techStackDetails: [
+        { category: "Models", items: ["Random Forest", "XGBoost", "CNN"] },
+        { category: "Backend", items: ["FastAPI", "Python"] }
+      ],
+      challenges: ["Handling multi-source data integration.", "Optimizing model accuracy for diverse soil types."],
+      learnings: ["Data preprocessing is 80% of the work.", "User-centric design is key for rural applications."],
+      outcome: "Successfully built a unified dashboard that simplifies complex agricultural data for end-users."
+    }
   },
   {
     id: "proj2",
@@ -107,7 +123,24 @@ export const PROJECTS: Project[] = [
       "Architected role-based APIs and dashboards with JWT-based authentication."
     ],
     techStack: ["Python", "FastAPI", "Transformers", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Redis", "LangChain", "AWS S3", "AWS EC2"],
-    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1000&auto=format&fit=crop",
+    fullDetails: {
+      intro: "An AI-driven classroom automation platform designed to streamline academic workflows using LLMs and advanced NLP.",
+      overview: "The system automates grading, plagiarism checks, and content generation, allowing educators to focus on teaching rather than administration.",
+      features: [
+        { title: "Plagiarism Detection", description: "Scalable pipeline using FAISS and BM25 for high-speed similarity search." },
+        { title: "AI Text Detection", description: "NLP-based detection of machine-generated content." },
+        { title: "Automated Grading", description: "LLM-powered evaluation of student submissions." }
+      ],
+      techStackDetails: [
+        { category: "Frontend", items: ["Next.js", "TypeScript"] },
+        { category: "Backend", items: ["FastAPI", "Node.js", "PostgreSQL"] },
+        { category: "AI", items: ["LangChain", "Transformers"] }
+      ],
+      challenges: ["Scaling similarity search for large document sets.", "Ensuring low latency for real-time AI detection."],
+      learnings: ["Vector databases are essential for modern NLP apps.", "JWT-based auth provides secure role-based access."],
+      outcome: "Created a robust platform that reduces administrative overhead by 40%."
+    }
   },
   {
     id: "proj3",
@@ -119,7 +152,69 @@ export const PROJECTS: Project[] = [
       "Developed Power BI dashboards to track KPIs and demand trends."
     ],
     techStack: ["Python", "AWS Lambda", "AWS Glue", "Athena", "Redshift", "SQL", "Parquet", "Power BI", "Data Modeling", "ETL Pipelines"],
-    image: "https://images.unsplash.com/photo-1551288049-bbbda536339a?q=80&w=1000&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1551288049-bbbda536339a?q=80&w=1000&auto=format&fit=crop",
+    fullDetails: {
+      intro: "An end-to-end automated ETL pipeline built on AWS to handle high-volume data ingestion and processing.",
+      overview: "The pipeline automates the flow of data from raw sources to a structured data warehouse, enabling real-time business intelligence.",
+      features: [
+        { title: "Automated Ingestion", description: "Serverless data extraction using AWS Lambda." },
+        { title: "Schema Validation", description: "Ensures data integrity during the transformation phase." },
+        { title: "Visual Analytics", description: "Interactive Power BI dashboards for real-time KPI tracking." }
+      ],
+      techStackDetails: [
+        { category: "Cloud", items: ["AWS Glue", "Athena", "Redshift"] },
+        { category: "Processing", items: ["Python", "SQL"] }
+      ],
+      challenges: ["Handling schema drift in raw data sources.", "Optimizing Redshift query performance."],
+      learnings: ["Serverless architectures reduce maintenance costs.", "Data modeling is critical for performant analytics."],
+      outcome: "Delivered a scalable data infrastructure that supports data-driven decision making across the organization."
+    }
+  },
+  {
+    id: "chest_disease",
+    title: "Chest Disease AI Assistant",
+    subtitle: "AI-Powered Chest X-Ray Analysis System",
+    description: [
+      "AI-powered medical imaging analysis application for detecting thoracic conditions from chest X-rays.",
+      "Uses a convolutional neural network (CNN) for multi-label classification of 14 conditions.",
+      "Integrated LLM (LLaMA) for structured educational explanations of diagnostic results."
+    ],
+    techStack: ["Next.js", "FastAPI", "PyTorch", "Python", "Docker", "Groq API", "Tailwind CSS"],
+    image: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?q=80&w=1000&auto=format&fit=crop",
+    github: "https://github.com/Bhumika2006-hue/chest_disease",
+    fullDetails: {
+      intro: "Chest Disease AI Assistant is a medical imaging analysis application that uses deep learning to detect potential thoracic conditions from chest X-ray images. The system combines a convolutional neural network with a backend API to process medical images and generate probability-based predictions for multiple diseases.",
+      overview: "The goal of this project was to design an AI-based system capable of analyzing chest X-ray images and identifying patterns associated with common thoracic diseases. The application processes medical images in real time and returns probability scores for each condition. The architecture separates the frontend interface, backend API, and machine learning inference pipeline, ensuring a scalable and modular system.",
+      features: [
+        { title: "Medical Image Classification", description: "The system analyzes chest X-ray images using a convolutional neural network trained for multi-label classification." },
+        { title: "Multi-Condition Detection", description: "The model predicts probabilities for 14 different thoracic conditions, allowing the system to identify multiple abnormalities in a single image." },
+        { title: "Real-Time Image Processing", description: "Users can upload chest X-ray images and receive model predictions within seconds." },
+        { title: "Deterministic Inference Pipeline", description: "The model runs strictly in evaluation mode to ensure consistent and reproducible outputs." },
+        { title: "Educational AI Explanations", description: "Predictions can be interpreted through a language model that provides structured explanations of the results." },
+        { title: "Privacy-Focused Processing", description: "Images are processed temporarily and are not stored in the system." }
+      ],
+      techStackDetails: [
+        { category: "Frontend", items: ["Next.js", "TypeScript", "Tailwind CSS", "Lucide Icons"] },
+        { category: "Backend", items: ["FastAPI", "Python", "PyTorch"] },
+        { category: "AI Models", items: ["CNN model trained on the CheXpert dataset", "LLaMA language model via the Groq API"] },
+        { category: "Deployment", items: ["Docker", "Hugging Face Spaces", "GitHub Actions CI/CD"] }
+      ],
+      systemArchitecture: "User Uploads X-Ray Image → Frontend (Next.js) → FastAPI Backend → PyTorch CNN Model → Probability Predictions → LLM Interpretation → Educational Explanation to User",
+      modelDetails: [
+        "Cardiomegaly", "Pneumonia", "Pleural Effusion", "Lung Opacity", "Atelectasis", "Pneumothorax", "Edema", "Fracture", "Support Devices"
+      ],
+      challenges: [
+        "Integrating ML with Web Applications: Connecting a deep learning model with a real-time web interface required building a backend API to handle inference requests.",
+        "Ensuring Deterministic Predictions: The inference pipeline was designed to eliminate randomness, ensuring consistent results for identical inputs.",
+        "Handling Medical Safety: The application includes disclaimers and avoids diagnostic language to ensure the system is used strictly for educational purposes."
+      ],
+      learnings: [
+        "Deploying machine learning models requires strong backend infrastructure.",
+        "Separating the frontend, backend, and inference pipeline improves scalability.",
+        "Safety considerations are essential when building AI systems for healthcare applications."
+      ],
+      outcome: "This project demonstrates the integration of deep learning, backend APIs, and modern web technologies to build an interactive AI-powered medical assistant. It highlights skills in machine learning deployment, full-stack development, and system architecture design."
+    }
   }
 ];
 

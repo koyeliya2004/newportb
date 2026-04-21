@@ -110,7 +110,7 @@ const Experience: React.FC = () => {
         <ScrollReveal>
           <div className="mb-32">
             <p className="text-pink-500 font-black uppercase tracking-[0.4em] text-[11px] mb-4">Trajectory</p>
-            <h2 className={`text-5xl md:text-8xl font-black tracking-tighter leading-none ${isDark ? 'text-white' : 'text-slate-900'}`}>
+            <h2 className={`text-3xl md:text-5xl font-black tracking-tighter leading-none ${isDark ? 'text-white' : 'text-slate-900'}`}>
               CAREER <br />
               <span className="font-playfair italic font-light text-blue-500">EVOLUTION</span>
             </h2>
@@ -150,7 +150,7 @@ const Experience: React.FC = () => {
                     <p className="text-sm tracking-tight opacity-60 uppercase">{exp.location}</p>
                   </div>
                   <div className={`p-10 rounded-[2.5rem] border transition-all duration-500 hover:-translate-y-1 ${isDark ? 'bg-[#0a0a0a] border-white/5 hover:border-white/10 shadow-2xl' : 'bg-white border-black/5 shadow-xl hover:shadow-2xl'}`}>
-                    <h3 className={`text-3xl font-black mb-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>{exp.role}</h3>
+                    <h3 className={`text-2xl font-black mb-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>{exp.role}</h3>
                     <p className="text-pink-600 font-bold uppercase tracking-widest text-[11px] mb-8">{exp.company}</p>
                     <ul className="space-y-4">
                       {exp.bullets.map((bullet, bIdx) => (
@@ -171,7 +171,7 @@ const Experience: React.FC = () => {
            <ScrollReveal>
              <div className="text-center mb-48">
                 <p className="text-blue-500 font-black uppercase tracking-[0.5em] text-[10px] mb-4">Knowledge Nexus</p>
-                <h3 className={`text-5xl md:text-8xl font-black tracking-tighter ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                <h3 className={`text-3xl md:text-5xl font-black tracking-tighter ${isDark ? 'text-white' : 'text-slate-900'}`}>
                   VIRTUAL <span className="text-pink-600 italic">HUB</span>
                 </h3>
                 <p className={`mt-6 max-w-2xl mx-auto text-lg font-light ${isDark ? 'text-gray-400' : 'text-slate-500'}`}>A professional spiral of cross-industry virtual work simulations.</p>
