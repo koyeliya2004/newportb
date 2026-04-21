@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
-
-const APP_LOGO_URL =
-  'https://github.com/user-attachments/assets/a759aca4-d673-4e52-b551-3b5414a9daa8';
+import { APP_LOGO_URL } from '../constants';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);

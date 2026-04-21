@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { APP_LOGO_URL } from '../constants';
 
 const GoldenNetwork: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -335,8 +336,6 @@ const buildItems = [
   { title: 'Data Driven Systems', description: 'Creating ETL pipelines, data models & analytics solutions.', icon: '◌' },
   { title: 'Real-world Impact', description: 'Solving meaningful problems with clean, efficient code.', icon: '↗' },
 ];
-const APP_LOGO_URL =
-  'https://github.com/user-attachments/assets/a759aca4-d673-4e52-b551-3b5414a9daa8';
 
 const skillPoints = [
   { label: 'Frontend', x: 50, y: 10 },
