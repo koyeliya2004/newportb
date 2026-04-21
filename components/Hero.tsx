@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { APP_LOGO_URL } from '../constants';
+import BhumikaPortfolio from './BhumikaPortfolio';
 
 const GoldenNetwork: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -663,6 +664,8 @@ const Hero: React.FC = () => {
           <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#f3c623]">Built with Code</p>
         </div>
       </section>
+
+      <BhumikaPortfolio />
 
       <style>{`
         @keyframes hazyPulse {
