@@ -13,14 +13,15 @@ const FloatingOrb: React.FC<{
   className: string;
   color: string;
   size: string;
-}> = ({ className, color, size }) => (
+  duration?: string;
+}> = ({ className, color, size, duration = '6s' }) => (
   <div
     className={`absolute rounded-full blur-3xl opacity-40 animate-pulse ${className}`}
     style={{
       width: size,
       height: size,
       background: color,
-      animationDuration: '6s',
+      animationDuration: duration,
     }}
   />
 );
@@ -28,12 +29,14 @@ const FloatingOrb: React.FC<{
 const ParticleLayer: React.FC = () => {
   const particles = useMemo(
     () =>
-      Array.from({ length: 24 }, (_, i) => ({
+      Array.from({ length: 48 }, (_, i) => ({
         id: i,
         left: `${Math.random() * 100}%`,
         top: `${Math.random() * 100}%`,
-        delay: `${Math.random() * 5}s`,
-        duration: `${4 + Math.random() * 5}s`,
+        delay: `${Math.random() * 6}s`,
+        duration: `${4 + Math.random() * 7}s`,
+        size: Math.random() > 0.6 ? 'h-2 w-2' : 'h-1.5 w-1.5',
+        opacity: Math.random() > 0.5 ? 'bg-white/60' : 'bg-pink-300/50',
       })),
     []
   );
@@ -43,12 +46,12 @@ const ParticleLayer: React.FC = () => {
       {particles.map((particle) => (
         <span
           key={particle.id}
-          className="absolute h-1.5 w-1.5 rounded-full bg-white/50"
+          className={`absolute rounded-full ${particle.size} ${particle.opacity}`}
           style={{
             left: particle.left,
             top: particle.top,
             animation: `floatParticle ${particle.duration} ease-in-out ${particle.delay} infinite`,
-            boxShadow: '0 0 12px rgba(255,255,255,0.35)',
+            boxShadow: '0 0 14px rgba(255,255,255,0.4)',
           }}
         />
       ))}
@@ -56,39 +59,70 @@ const ParticleLayer: React.FC = () => {
   );
 };
 
+const GridOverlay: React.FC = () => (
+  <div
+    className="pointer-events-none absolute inset-0"
+    style={{
+      backgroundImage:
+        'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
+      backgroundSize: '72px 72px',
+      maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
+    }}
+  />
+);
+
 const Hero: React.FC = () => {
   const navigate = useNavigate();
   const [activeRole, setActiveRole] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveRole((prev) => (prev + 1) % roles.length);
     }, 2200);
-
     return () => clearInterval(interval);
   }, []);
 
-  const quickStats = [
-    { value: '10+', label: 'Projects Built' },
-    { value: '5th Sem', label: 'CSE Student' },
-    { value: 'AI + Web', label: 'Main Focus' },
-    { value: 'Based in', label: 'Kolkata, India' },
-  ];
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   const highlights = [
-    'Machine Learning and Deep Learning projects',
-    'Full stack apps with modern UI',
-    'Focused on real-world problem solving',
+    'Machine Learning & Deep Learning',
+    'Full-Stack Applications',
+    'Production-Ready AI Systems',
   ];
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#070816] text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.25),transparent_28%),radial-gradient(circle_at_top_right,rgba(59,130,246,0.22),transparent_30%),radial-gradient(circle_at_bottom,rgba(236,72,153,0.16),transparent_35%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.03),transparent_25%,rgba(255,255,255,0.02))]" />
+    <section className="relative min-h-screen overflow-hidden bg-[#040610] text-white">
+      {/* Dynamic mouse-reactive gradient */}
+      <div
+        className="absolute inset-0 transition-all duration-700 ease-out"
+        style={{
+          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, rgba(168,85,247,0.18) 0%, transparent 50%)`,
+        }}
+      />
 
-      <FloatingOrb className="-left-16 top-24" color="radial-gradient(circle, rgba(244,114,182,0.9), rgba(244,114,182,0))" size="18rem" />
-      <FloatingOrb className="right-0 top-12" color="radial-gradient(circle, rgba(96,165,250,0.85), rgba(96,165,250,0))" size="22rem" />
-      <FloatingOrb className="bottom-0 left-1/3" color="radial-gradient(circle, rgba(168,85,247,0.7), rgba(168,85,247,0))" size="20rem" />
+      {/* Base gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_top_left,rgba(168,85,247,0.30),transparent_40%),radial-gradient(ellipse_100%_70%_at_top_right,rgba(59,130,246,0.28),transparent_40%),radial-gradient(ellipse_90%_60%_at_bottom_center,rgba(236,72,153,0.22),transparent_45%),radial-gradient(ellipse_60%_50%_at_center,rgba(14,165,233,0.10),transparent_60%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.04),transparent_20%,rgba(255,255,255,0.02))]" />
+
+      {/* Large atmospheric orbs */}
+      <FloatingOrb className="-left-32 top-10" color="radial-gradient(circle, rgba(244,114,182,0.95), rgba(244,114,182,0))" size="32rem" duration="7s" />
+      <FloatingOrb className="-right-20 top-0" color="radial-gradient(circle, rgba(96,165,250,0.90), rgba(96,165,250,0))" size="36rem" duration="9s" />
+      <FloatingOrb className="bottom-0 left-1/4" color="radial-gradient(circle, rgba(168,85,247,0.85), rgba(168,85,247,0))" size="28rem" duration="8s" />
+      <FloatingOrb className="bottom-1/4 right-1/4" color="radial-gradient(circle, rgba(34,211,238,0.70), rgba(34,211,238,0))" size="22rem" duration="11s" />
+      <FloatingOrb className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" color="radial-gradient(circle, rgba(139,92,246,0.15), rgba(139,92,246,0))" size="50rem" duration="15s" />
+
+      {/* Grid overlay */}
+      <GridOverlay />
 
       <ParticleLayer />
 
@@ -112,7 +146,8 @@ const Hero: React.FC = () => {
               </div>
 
               <p className="max-w-2xl text-base leading-8 text-white/68 sm:text-lg">
-                I am a passionate developer who loves building beautiful web experiences, smart AI solutions, and practical projects that feel modern, useful, and memorable.
+                Building intelligent systems across AI, data, and full-stack development — from machine learning models to production-ready applications.
+                Passionate about creating scalable, high-performance solutions with real-world impact.
               </p>
             </div>
 
@@ -141,18 +176,6 @@ const Hero: React.FC = () => {
               >
                 Contact Me
               </button>
-            </div>
-
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {quickStats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-3xl border border-white/10 bg-white/6 p-5 backdrop-blur-2xl shadow-[0_10px_40px_rgba(15,23,42,0.35)]"
-                >
-                  <p className="text-2xl font-extrabold text-white">{stat.value}</p>
-                  <p className="mt-1 text-sm text-white/60">{stat.label}</p>
-                </div>
-              ))}
             </div>
           </div>
 
@@ -211,8 +234,8 @@ const Hero: React.FC = () => {
 
       <style>{`
         @keyframes floatParticle {
-          0%, 100% { transform: translateY(0px) scale(1); opacity: 0.25; }
-          50% { transform: translateY(-18px) scale(1.45); opacity: 0.9; }
+          0%, 100% { transform: translateY(0px) scale(1); opacity: 0.2; }
+          50% { transform: translateY(-22px) scale(1.5); opacity: 0.95; }
         }
       `}</style>
     </section>

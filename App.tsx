@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, createContext, useContext, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -174,15 +173,15 @@ const App: React.FC = () => {
           <footer className={`py-16 px-6 border-t ${theme === 'dark' ? 'border-white/5 bg-black/50' : 'border-black/5 bg-white/50'} backdrop-blur-sm transition-colors duration-500`}>
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
               <div className="flex items-center gap-3">
-                 <div className={`w-8 h-8 ${theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'} font-bold flex items-center justify-center rounded-sm transition-colors duration-500`}>BT</div>
-                 <p className="font-bold tracking-tighter uppercase">Bhumika Tewari</p>
+                 <div className={`w-8 h-8 ${theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'} font-bold flex items-center justify-center rounded-sm transition-colors duration-500`}>KG</div>
+                 <p className="font-bold tracking-tighter uppercase">Koyeliya Ghosh</p>
               </div>
               
-              <p className={`${theme === 'dark' ? 'text-gray-600' : 'text-slate-400'} text-sm transition-colors`}>© 2024 Bhumika Tewari. All rights reserved.</p>
+              <p className={`${theme === 'dark' ? 'text-gray-600' : 'text-slate-400'} text-sm transition-colors`}>© 2025 Koyeliya Ghosh. All rights reserved.</p>
               
               <div className={`flex gap-8 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-slate-500'} font-bold uppercase tracking-widest text-[10px] transition-colors`}>
                  <a href="https://www.linkedin.com/in/bhumika-tewari-21294027a/" target="_blank" className="hover:text-pink-500 transition-colors">LinkedIn</a>
-                 <a href="https://github.com/bhumikatewari" target="_blank" className="hover:text-pink-500 transition-colors">GitHub</a>
+                 <a href="https://github.com/Bhumika2006-hue" target="_blank" className="hover:text-pink-500 transition-colors">GitHub</a>
               </div>
             </div>
           </footer>
