@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// ─── Golden Three.js Network Background ───────────────────────────────────────
 const GoldenNetwork: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
 
@@ -162,7 +161,6 @@ const GoldenNetwork: React.FC = () => {
   return <div ref={mountRef} className="absolute inset-0 w-full h-full" />;
 };
 
-// ─── Floating Tech Stack Cloud ────────────────────────────────────────────────
 const techIcons = [
   'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
   'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
@@ -353,20 +351,41 @@ const Hero: React.FC = () => {
   const [displayed, setDisplayed] = useState('');
   const [typing, setTyping] = useState(true);
   const [visibleSections, setVisibleSections] = useState<number[]>([]);
+  const [threeReady, setThreeReady] = useState(!!(window as any).THREE);
   const threeLoaded = useRef(false);
 
   useEffect(() => {
-    if (threeLoaded.current || (window as any).THREE) {
+    if ((window as any).THREE) {
       threeLoaded.current = true;
+      setThreeReady(true);
       return;
     }
+
+    const existingScript = document.querySelector('script[data-threejs="true"]') as HTMLScriptElement | null;
+
+    const handleLoad = () => {
+      threeLoaded.current = true;
+      setThreeReady(true);
+    };
+
+    if (existingScript) {
+      if ((window as any).THREE) {
+        handleLoad();
+      } else {
+        existingScript.addEventListener('load', handleLoad);
+        return () => existingScript.removeEventListener('load', handleLoad);
+      }
+      return;
+    }
+
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
     script.async = true;
-    script.onload = () => {
-      threeLoaded.current = true;
-    };
+    script.dataset.threejs = 'true';
+    script.onload = handleLoad;
     document.head.appendChild(script);
+
+    return () => script.removeEventListener('load', handleLoad);
   }, []);
 
   useEffect(() => {
@@ -419,7 +438,7 @@ const Hero: React.FC = () => {
     <div className="relative overflow-x-hidden bg-black text-white">
       <section className="relative min-h-screen overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <GoldenNetwork />
+          {threeReady && <GoldenNetwork />}
         </div>
         <div className="absolute inset-0 z-[1] bg-black/45" />
 
@@ -623,7 +642,7 @@ const Hero: React.FC = () => {
 
       <section className={`relative z-10 min-h-[95vh] overflow-hidden bg-[radial-gradient(circle_at_center,#1a1a1a_0%,#000000_100%)] px-6 py-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${revealClass(5)}`} data-reveal="5">
         <div className="pointer-events-none absolute inset-0 opacity-90">
-          <TechStackCloud />
+          {threeReady && <TechStackCloud />}
         </div>
 
         <div className="relative z-10 mx-auto flex min-h-[80vh] max-w-7xl flex-col justify-between">
@@ -636,18 +655,6 @@ const Hero: React.FC = () => {
             <p className="mx-auto mt-5 max-w-2xl text-sm leading-8 text-white/58 sm:text-base">
               A floating cloud of technologies I use to design, develop, and deploy scalable digital products.
             </p>
-          </div>
-
-          <div className="pb-4">
-            <div className="max-w-md rounded-[1.8rem] border border-[#f3c623]/18 bg-black/30 p-6 backdrop-blur-xl shadow-[0_0_40px_rgba(243,198,35,0.08)]">
-              <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#f3c623]">Multiple Tech Stack</p>
-              <h3 className="mt-4 text-2xl font-black text-white sm:text-3xl">
-                Building with modern tools, frameworks, and production-ready technologies.
-              </h3>
-              <p className="mt-4 text-sm leading-7 text-white/62 sm:text-base">
-                I have worked with multiple technologies and frameworks to build scalable, efficient, and user-focused solutions across AI, web, backend, cloud, and development workflows.
-              </p>
-            </div>
           </div>
         </div>
       </section>
