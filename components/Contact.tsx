@@ -28,7 +28,7 @@ interface RGB {
   b: number;
 }
 
-interface StarType {
+interface StarItem {
   x: number;
   y: number;
   size: number;
@@ -47,7 +47,7 @@ const CosmicBackground: React.FC = () => {
 
     let animationFrameId = 0;
     const particles: ParticleClass[] = [];
-    const stars: StarType[] = [];
+    const stars: StarItem[] = [];
 
     const colors: Record<string, RGB> = {
       gold: { r: 251, g: 191, b: 36 },
@@ -63,12 +63,12 @@ const CosmicBackground: React.FC = () => {
 
     class ParticleClass {
       type: string;
-      x: number = 0;
-      y: number = 0;
-      size: number = 0;
-      speed: number = 0;
-      angle: number = 0;
-      opacity: number = 0;
+      x = 0;
+      y = 0;
+      size = 0;
+      speed = 0;
+      angle = 0;
+      opacity = 0;
       color: RGB = { r: 255, g: 255, b: 255 };
 
       constructor(type = 'flow') {
@@ -84,7 +84,6 @@ const CosmicBackground: React.FC = () => {
         this.speed = Math.random() * 0.5 + 0.2;
         this.angle = Math.random() * Math.PI * 2;
         this.opacity = Math.random() * 0.5 + 0.2;
-
         if (this.x < canvas.width * 0.4 && this.y < canvas.height * 0.4) {
           this.color = colors.gold;
         } else if (this.x > canvas.width * 0.6 && this.y > canvas.height * 0.6) {
@@ -100,22 +99,26 @@ const CosmicBackground: React.FC = () => {
         this.x += Math.cos(this.angle) * this.speed;
         this.y += Math.sin(this.angle) * this.speed;
         this.angle += 0.01;
-        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+        if (
+          this.x < 0 ||
+          this.x > canvas.width ||
+          this.y < 0 ||
+          this.y > canvas.height
+        ) {
           this.reset(this.type);
         }
       }
 
       draw() {
-        if (!ctx) return;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
-        ctx.fill();
+        ctx!.beginPath();
+        ctx!.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx!.fillStyle = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.opacity})`;
+        ctx!.fill();
         if (this.size > 1.5) {
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0.5)`;
+          ctx!.shadowBlur = 10;
+          ctx!.shadowColor = `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0.5)`;
         } else {
-          ctx.shadowBlur = 0;
+          ctx!.shadowBlur = 0;
         }
       }
     }
@@ -135,7 +138,6 @@ const CosmicBackground: React.FC = () => {
     };
 
     const drawNetworks = () => {
-      if (!ctx) return;
       ctx.lineWidth = 0.5;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -155,7 +157,6 @@ const CosmicBackground: React.FC = () => {
     };
 
     const animate = () => {
-      if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.shadowBlur = 0;
 
@@ -181,14 +182,16 @@ const CosmicBackground: React.FC = () => {
       ctx.lineWidth = 120;
       ctx.moveTo(canvas.width + 100, canvas.height - 200);
       ctx.bezierCurveTo(
-        canvas.width - 300, canvas.height - 400,
-        canvas.width - 500, canvas.height,
-        canvas.width - 800, canvas.height + 100
+        canvas.width - 300,
+        canvas.height - 400,
+        canvas.width - 500,
+        canvas.height,
+        canvas.width - 800,
+        canvas.height + 100
       );
       ctx.stroke();
 
       ctx.restore();
-
       drawNetworks();
       particles.forEach((p) => {
         p.update();
@@ -235,7 +238,9 @@ const ContactCard: React.FC<ContactCardProps> = ({
     className={`relative group p-10 rounded-[32px] bg-black/40 border border-white/10 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-4 hover:border-white/25 ${borderGlow}`}
   >
     <div className="absolute top-8 left-1/2 -translate-x-1/2">
-      <span className="text-[10px] tracking-[0.4em] text-gray-500 font-bold uppercase">{ref_id}</span>
+      <span className="text-[10px] tracking-[0.4em] text-gray-500 font-bold uppercase">
+        {ref_id}
+      </span>
     </div>
 
     <div className="mt-10 mb-8 flex justify-center">
@@ -244,13 +249,15 @@ const ContactCard: React.FC<ContactCardProps> = ({
       >
         <Icon size={32} className="relative z-10" />
         <div
-          className={`absolute inset-0 rounded-full blur-2xl opacity-40 group-hover:opacity-80 transition-opacity ${colorClass.split(' ')[0]}`}
+          className={`absolute inset-0 rounded-full blur-2xl opacity-40 group-hover:opacity-80 transition-opacity`}
         ></div>
       </div>
     </div>
 
     <div className="text-center">
-      <h3 className="text-xs tracking-[0.4em] font-black text-white/90 mb-6 uppercase">{title}</h3>
+      <h3 className="text-xs tracking-[0.4em] font-black text-white/90 mb-6 uppercase">
+        {title}
+      </h3>
       <div className="w-10 h-[1px] bg-white/10 mx-auto mb-6 group-hover:w-20 group-hover:bg-white/30 transition-all duration-700"></div>
       <p className="text-xl font-semibold text-white mb-3 tracking-tight">{value}</p>
       <p className="text-sm text-gray-400 leading-relaxed font-light">{description}</p>
@@ -274,7 +281,9 @@ const SocialLink: React.FC<SocialLinkProps> = ({ href, icon: Icon, label }) => (
     <div className="p-3 rounded-2xl bg-white/5 border border-white/5 group-hover:bg-blue-500/20 group-hover:border-blue-500/30 group-hover:-translate-y-2 group-hover:shadow-[0_10px_20px_-5px_rgba(59,130,246,0.2)] transition-all duration-700">
       <Icon size={24} />
     </div>
-    <span className="text-[10px] font-black tracking-[0.3em] hidden lg:inline uppercase">{label}</span>
+    <span className="text-[10px] font-black tracking-[0.3em] hidden lg:inline uppercase">
+      {label}
+    </span>
   </a>
 );
 
@@ -373,7 +382,7 @@ const Contact: React.FC = () => {
           </div>
         </a>
 
-        {/* Footer Navigation */}
+        {/* Footer */}
         <footer className="w-full max-w-4xl px-12 py-10 rounded-[50px] border border-white/5 bg-white/[0.02] backdrop-blur-3xl flex flex-col md:flex-row items-center justify-between gap-10">
           <p className="text-lg font-light text-gray-400 tracking-tight">
             Let&apos;s build something{' '}
@@ -394,23 +403,14 @@ const Contact: React.FC = () => {
         dangerouslySetInnerHTML={{
           __html: `
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,400;0,700;1,200;1,400&family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap');
-        
         :root { font-family: 'Plus Jakarta Sans', sans-serif; }
         .font-serif { font-family: 'Crimson Pro', serif; }
-
         @keyframes gradient-xy {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
         }
-        .animate-gradient-xy {
-          background-size: 200% 200%;
-          animation: gradient-xy 12s ease infinite;
-        }
-
-        .animate-fade-in {
-          animation: fadeIn 2s ease-out forwards;
-        }
-
+        .animate-gradient-xy { background-size: 200% 200%; animation: gradient-xy 12s ease infinite; }
+        .animate-fade-in { animation: fadeIn 2s ease-out forwards; }
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
