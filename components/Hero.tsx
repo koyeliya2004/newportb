@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../App';
-import { CV_DATA, PROJECTS, SKILL_CATEGORIES } from '../constants';
+import { CV_DATA, PROJECTS, SKILL_CATEGORIES, EXPERIENCES, CERTIFICATIONS, ACHIEVEMENTS } from '../constants';
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
@@ -9,347 +9,234 @@ const Hero: React.FC = () => {
   const isDark = theme === 'dark';
 
   const featuredProjects = PROJECTS.slice(0, 3);
-  const topSkillGroups = SKILL_CATEGORIES.slice(0, 3);
+  const primarySkills = SKILL_CATEGORIES.slice(0, 4).flatMap((group) => group.skills).slice(0, 10);
+  const topCerts = CERTIFICATIONS.slice(0, 4);
+  const topAchievements = ACHIEVEMENTS.slice(0, 3);
 
   return (
-    <div
+    <section
       id="home"
-      className={`relative min-h-screen transition-colors duration-500 ${
-        isDark ? 'bg-slate-950 text-slate-50' : 'bg-slate-50 text-slate-900'
+      className={`relative min-h-screen overflow-hidden bg-gradient-to-b ${
+        isDark
+          ? 'from-slate-950 via-slate-950 to-slate-950 text-slate-50'
+          : 'from-slate-900 via-slate-900 to-slate-950 text-slate-50'
       }`}
     >
-      {/* Hero section */}
-      <section className="relative min-h-[80vh] flex items-center">
-        {/* Subtle grid background */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div
-            className={`absolute inset-0 opacity-[0.12] bg-[radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.5)_1px,transparent_0)] bg-[size:32px_32px]`}
-          />
-          <div
-            className={`absolute inset-y-0 left-1/2 w-px translate-x-[-50%] ${
-              isDark ? 'bg-slate-700/40' : 'bg-slate-300/60'
-            }`}
-          />
-        </div>
+      {/* Cosmic background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_top,_rgba(88,28,135,0.45),transparent_55%),radial-gradient(circle_at_bottom,_rgba(8,47,73,0.7),transparent_60%)]" />
+        <div className="absolute inset-0 opacity-[0.18] bg-[radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.7)_1px,transparent_0)] bg-[size:26px_26px]" />
+        <div className="absolute -left-40 top-1/3 h-[320px] w-[320px] rounded-full bg-purple-500/10 blur-3xl" />
+        <div className="absolute -right-40 bottom-10 h-[320px] w-[320px] rounded-full bg-emerald-500/10 blur-3xl" />
+      </div>
 
-        <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 py-16 md:flex-row md:items-center md:justify-between">
-          {/* Left: intro */}
-          <div className="max-w-xl space-y-6">
-            <div className="inline-flex items-center gap-3 rounded-full border border-slate-500/30 bg-slate-900/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] backdrop-blur-sm dark:bg-slate-900/30">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              <span>Portfolio · Audit-Driven Engineering</span>
-            </div>
-
-            <div className="space-y-4">
-              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-slate-500">
-                {CV_DATA.location}
-              </p>
-              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-                <span className="block text-sm font-semibold uppercase tracking-[0.35em] text-emerald-500">
-                  Bhumika Tewari
-                </span>
-                <span className="mt-3 block leading-tight">
-                  Technology, AI & Data
-                  <span className="block text-slate-500">Auditing systems with an engineer's lens.</span>
-                </span>
-              </h1>
-              <p className="text-sm leading-relaxed text-slate-500">
-                I build and review software, AI and data systems with a focus on reliability, traceability and
-                real-world impact – treating every project like an audit: clear scope, evidence-based decisions and
-                tight feedback loops.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                onClick={() => navigate('/projects')}
-                className="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-50 shadow-sm transition hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
-              >
-                View case studies
-                <span className="text-base transition-transform group-hover:translate-x-1">↗</span>
-              </button>
-
-              <button
-                onClick={() => navigate('/experience')}
-                className="inline-flex items-center gap-2 rounded-full border border-slate-500/40 bg-slate-900/5 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 backdrop-blur-sm hover:border-slate-500 hover:text-slate-300 dark:bg-slate-900/40"
-              >
-                Audit my experience
-              </button>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 pt-4 text-xs">
-              <div className="space-y-1 border-l border-slate-500/30 pl-3">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-slate-500">Projects</p>
-                <p className="text-lg font-semibold">{PROJECTS.length}+</p>
-                <p className="text-[0.7rem] text-slate-500">End-to-end builds & deep dives</p>
-              </div>
-              <div className="space-y-1 border-l border-slate-500/30 pl-3">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-slate-500">Domains</p>
-                <p className="text-lg font-semibold">AI · Data · Cloud</p>
-                <p className="text-[0.7rem] text-slate-500">From ML models to ETL & dashboards</p>
-              </div>
-              <div className="space-y-1 border-l border-slate-500/30 pl-3">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-slate-500">Style</p>
-                <p className="text-lg font-semibold">Audit-minded</p>
-                <p className="text-[0.7rem] text-slate-500">Evidence, observability & clarity</p>
-              </div>
-            </div>
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col gap-10 px-5 pb-16 pt-10 md:pt-14">
+        {/* Top hero: avatar + title */}
+        <div className="flex flex-col items-center gap-6 pt-4 text-center">
+          <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-slate-900/60 shadow-[0_0_40px_rgba(129,140,248,0.5)] ring-2 ring-purple-400/70">
+            <div className="h-28 w-28 rounded-full bg-gradient-to-br from-slate-700 via-slate-900 to-slate-800" />
+            <div className="pointer-events-none absolute inset-0 rounded-full border border-white/10" />
           </div>
 
-          {/* Right: portrait + summary card */}
-          <div className="relative mt-10 w-full max-w-sm md:mt-0">
-            <div
-              className={`relative overflow-hidden rounded-3xl border ${
-                isDark ? 'border-slate-800 bg-slate-900/60' : 'border-slate-200 bg-white'
-              } shadow-xl`}
-            >
-              <div className="relative h-64 w-full overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1000&auto=format&fit=crop"
-                  alt="Audit-style workspace with laptop and reports"
-                  className="h-full w-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
-                <div className="absolute bottom-3 left-3 flex items-center gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-slate-200">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  <span>Review · Design · Ship</span>
-                </div>
-              </div>
-
-              <div className="space-y-4 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
-                  Systems audit summary
-                </p>
-                <p className="text-xs leading-relaxed text-slate-400">
-                  {CV_DATA.summary}
-                </p>
-                <div className="flex flex-wrap gap-2 text-[0.65rem]">
-                  <span className="rounded-full bg-emerald-500/10 px-3 py-1 font-medium text-emerald-300">
-                    Full-stack engineering
-                  </span>
-                  <span className="rounded-full bg-sky-500/10 px-3 py-1 font-medium text-sky-300">AI / ML</span>
-                  <span className="rounded-full bg-amber-500/10 px-3 py-1 font-medium text-amber-300">
-                    Data & analytics
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Scroll hint */}
-            <button
-              type="button"
-              onClick={() => {
-                const el = document.getElementById('home-overview');
-                el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="group absolute -bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-[0.6rem] font-semibold uppercase tracking-[0.25em] text-slate-500"
-            >
-              <span>Scroll to overview</span>
-              <span className="flex h-9 w-px items-center justify-center overflow-hidden rounded-full bg-slate-600/30">
-                <span className="h-5 w-[1px] animate-[scrollDot_1.4s_ease-in-out_infinite] bg-slate-400" />
-              </span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Overview / what I audit */}
-      <section
-        id="home-overview"
-        className={`border-t ${
-          isDark ? 'border-slate-800 bg-slate-950' : 'border-slate-200 bg-slate-50'
-        }`}
-      >
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-14 md:flex-row">
-          <div className="max-w-md space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Overview</p>
-            <h2 className="text-lg font-semibold tracking-tight md:text-xl">
-              From requirement to review – treating every build like a structured audit.
-            </h2>
-            <p className="text-sm leading-relaxed text-slate-500">
-              I specialise in projects where correctness, traceability and data quality matter – combining code,
-              analytics and documentation so that teams can trust what they ship and how it behaves in the wild.
+          <div className="space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+              {CV_DATA.location} · Open to remote work
             </p>
-          </div>
-
-          <div className="grid flex-1 grid-cols-1 gap-4 text-sm sm:grid-cols-2">
-            <div
-              className={`flex flex-col justify-between rounded-2xl border p-4 ${
-                isDark ? 'border-slate-800 bg-slate-900/60' : 'border-slate-200 bg-white'
-              }`}
-            >
-              <div className="space-y-2">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-slate-500">
-                  What I audit
-                </p>
-                <p className="text-sm font-medium">AI pipelines · ETL flows · dashboards · full-stack apps</p>
-                <p className="text-[0.75rem] text-slate-500">
-                  Focusing on data paths, failure modes, logging, monitoring and the real questions stakeholders want
-                  answered.
-                </p>
-              </div>
-            </div>
-
-            <div
-              className={`flex flex-col justify-between rounded-2xl border p-4 ${
-                isDark ? 'border-slate-800 bg-slate-900/60' : 'border-slate-200 bg-white'
-              }`}
-            >
-              <div className="space-y-2">
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-slate-500">
-                  How I work
-                </p>
-                <ul className="space-y-1 text-[0.75rem] text-slate-500">
-                  <li>· Short discovery → scoped checklist</li>
-                  <li>· Evidence-backed findings with concrete fixes</li>
-                  <li>· Lightweight diagrams, not 50-page PDFs</li>
-                  <li>· Paired sessions with engineers & PMs</li>
-                </ul>
-              </div>
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+              <span className="block text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+                {CV_DATA.name}
+              </span>
+              <span className="mt-2 block text-sm font-medium text-slate-300">
+                AI Engineer · Full Stack Developer · Data Systems Builder
+              </span>
+            </h1>
+            <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-300">
+              I design intelligent systems that transform real
+              world problems into scalable, data
+              driven solutions 
+            </p>
+            <div className="flex flex-wrap justify-center gap-2 pt-1 text-[0.7rem]">
+              <span className="rounded-full bg-purple-500/20 px-3 py-1 font-medium text-purple-100">
+                AI/ML Systems
+              </span>
+              <span className="rounded-full bg-sky-500/20 px-3 py-1 font-medium text-sky-100">MERN Stack</span>
+              <span className="rounded-full bg-emerald-500/20 px-3 py-1 font-medium text-emerald-100">
+                Data Engineering
+              </span>
+              <span className="rounded-full bg-amber-500/20 px-3 py-1 font-medium text-amber-100">
+                Cloud &amp; DevOps
+              </span>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Featured projects preview */}
-      <section
-        className={`border-t ${
-          isDark ? 'border-slate-800 bg-slate-950' : 'border-slate-200 bg-slate-50'
-        }`}
-      >
-        <div className="mx-auto max-w-6xl px-6 py-14">
-          <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Selected work</p>
-              <h2 className="text-lg font-semibold tracking-tight md:text-xl">Case studies worth auditing</h2>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2 text-[0.7rem]">
             <button
               onClick={() => navigate('/projects')}
-              className="text-[0.7rem] font-semibold uppercase tracking-[0.25em] text-slate-500 hover:text-slate-300"
+              className="rounded-full bg-purple-500 px-5 py-2 font-semibold uppercase tracking-[0.2em] text-slate-50 shadow-lg shadow-purple-500/40 transition hover:bg-purple-400"
             >
-              View all
+              View projects
+            </button>
+            <button
+              onClick={() => navigate('/contact')}
+              className="rounded-full border border-slate-500/60 bg-slate-900/60 px-5 py-2 font-semibold uppercase tracking-[0.2em] text-slate-300 hover:border-slate-200"
+            >
+              Let&apos;s collaborate
             </button>
           </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {featuredProjects.map((project) => (
-              <button
-                key={project.id}
-                onClick={() => navigate(`/projects/${project.id}`)}
-                className={`group flex h-full flex-col justify-between rounded-2xl border p-4 text-left transition hover:-translate-y-1 hover:shadow-lg ${
-                  isDark
-                    ? 'border-slate-800 bg-slate-900/60 hover:border-slate-600'
-                    : 'border-slate-200 bg-white hover:border-slate-400'
-                }`}
-              >
-                <div className="space-y-2">
-                  <p className="text-[0.6rem] font-semibold uppercase tracking-[0.3em] text-slate-500">
-                    Project audit · {project.id}
-                  </p>
-                  <p className="text-sm font-semibold leading-snug">{project.title}</p>
-                  {project.description && project.description[0] && (
-                    <p className="text-[0.75rem] text-slate-500 line-clamp-3">{project.description[0]}</p>
-                  )}
-                </div>
-                <div className="mt-4 flex items-center justify-between text-[0.7rem] text-slate-500">
-                  <div className="flex flex-wrap gap-1">
-                    {project.techStack.slice(0, 3).map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-full bg-slate-500/10 px-2 py-0.5 text-[0.65rem] text-slate-400"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400 group-hover:text-emerald-400">
-                    Open
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
         </div>
-      </section>
 
-      {/* Capabilities strip */}
-      <section
-        className={`border-t ${
-          isDark ? 'border-slate-800 bg-slate-950' : 'border-slate-200 bg-slate-50'
-        }`}
-      >
-        <div className="mx-auto max-w-6xl px-6 py-10">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="space-y-1">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Capability areas</p>
-              <p className="text-sm text-slate-400">Where an audit mindset meets shipping code.</p>
+        {/* Mid band: summary + experience timeline */}
+        <div className="grid gap-6 md:grid-cols-[1.2fr_1.1fr]">
+          {/* Left: abstract globe / summary card */}
+          <div className="relative overflow-hidden rounded-3xl border border-slate-700/70 bg-slate-900/70 p-5 shadow-[0_0_40px_rgba(15,23,42,0.9)]">
+            <div className="pointer-events-none absolute inset-0">
+              <div className="absolute -bottom-16 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-emerald-400/25 blur-3xl" />
+              <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_rgba(148,163,184,0.6),transparent_55%)]" />
             </div>
-            <div className="grid flex-1 grid-cols-1 gap-3 text-[0.75rem] sm:grid-cols-3">
-              {topSkillGroups.map((group) => (
-                <div
-                  key={group.name}
-                  className={`rounded-full border px-4 py-2 ${
-                    isDark ? 'border-slate-800 bg-slate-900/60' : 'border-slate-200 bg-white'
-                  }`}
-                >
-                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.25em] text-slate-500">
-                    {group.name}
-                  </p>
-                  <p className="truncate text-[0.75rem] text-slate-400">
-                    {group.skills.map((s) => s.name).join(' · ')}
-                  </p>
+            <div className="relative space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">About my work</p>
+              <p className="text-sm leading-relaxed text-slate-200">
+                {CV_DATA.summary}
+              </p>
+              <p className="pt-1 text-[0.75rem] text-slate-400">
+                I treat each project like an audit: understand the system, map the data paths, design experiments,
+                then turn that learning into production
+ready features.
+              </p>
+            </div>
+          </div>
+
+          {/* Right: experience timeline */}
+          <div className="overflow-hidden rounded-3xl border border-slate-700/70 bg-slate-900/80 p-5 shadow-[0_0_40px_rgba(15,23,42,0.9)]">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+              Experience snapshot
+            </p>
+            <div className="space-y-4 text-sm">
+              {EXPERIENCES.map((exp) => (
+                <div key={exp.id} className="relative pl-6">
+                  <div className="absolute left-0 top-1.5 h-2 w-2 rounded-full bg-emerald-400" />
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-medium text-slate-100">{exp.role}</p>
+                    <p className="text-[0.7rem] text-slate-400">{exp.duration}</p>
+                  </div>
+                  <p className="text-[0.75rem] text-slate-400">{exp.company}</p>
+                  {exp.bullets[0] && (
+                    <p className="mt-1 text-[0.75rem] text-slate-400">{exp.bullets[0]}</p>
+                  )}
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </section>
 
-      {/* CTA */}
-      <section
-        className={`border-t ${
-          isDark ? 'border-slate-800 bg-slate-950' : 'border-slate-200 bg-slate-50'
-        }`}
-      >
-        <div className="mx-auto max-w-6xl px-6 py-12">
-          <div
-            className={`flex flex-col items-start gap-4 rounded-3xl border px-6 py-6 md:flex-row md:items-center md:justify-between ${
-              isDark ? 'border-slate-800 bg-slate-900/70' : 'border-slate-200 bg-white'
-            }`}
-          >
-            <div className="space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Next step</p>
-              <p className="text-sm font-medium md:text-base">
-                Want to walk through the details like an audit? Let&apos;s step through projects, decisions and metrics
-                together.
-              </p>
+        {/* Capability tiles */}
+        <div className="grid gap-4 rounded-3xl border border-slate-700/70 bg-slate-900/60 p-5 text-left shadow-[0_0_40px_rgba(15,23,42,0.9)] md:grid-cols-4">
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">AI Systems</p>
+            <p className="text-[0.8rem] text-slate-200">
+              ML models, LLM workflows and AI tools that ship, not just notebooks.
+            </p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Full-Stack Apps</p>
+            <p className="text-[0.8rem] text-slate-200">
+              React / Next.js frontends paired with solid backend APIs and auth.
+            </p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Cloud &amp; DevOps</p>
+            <p className="text-[0.8rem] text-slate-200">
+              Deployments on AWS and modern tooling with logs, metrics and alerts.
+            </p>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Data Pipelines</p>
+            <p className="text-[0.8rem] text-slate-200">
+              ETL jobs, warehouses and dashboards that keep decision-makers in the loop.
+            </p>
+          </div>
+        </div>
+
+        {/* Featured projects row */}
+        <div className="space-y-4">
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+            Featured projects
+          </p>
+          <div className="grid gap-4 text-sm md:grid-cols-3">
+            {featuredProjects.map((project) => (
+              <button
+                key={project.id}
+                onClick={() => navigate(`/projects/${project.id}`)}
+                className="group flex flex-col overflow-hidden rounded-3xl border border-slate-700/70 bg-slate-900/70 text-left shadow-[0_0_40px_rgba(15,23,42,0.9)] transition hover:border-purple-400/80 hover:shadow-purple-500/40"
+              >
+                {project.image && (
+                  <div className="h-32 w-full overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  </div>
+                )}
+                <div className="space-y-2 p-4">
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-slate-400">
+                    Case study · {project.id}
+                  </p>
+                  <p className="text-sm font-semibold text-slate-100">{project.title}</p>
+                  {project.description && project.description[0] && (
+                    <p className="text-[0.75rem] text-slate-300 line-clamp-3">{project.description[0]}</p>
+                  )}
+                  <div className="flex flex-wrap gap-1 pt-1 text-[0.65rem] text-slate-300">
+                    {project.techStack.slice(0, 3).map((tech) => (
+                      <span key={tech} className="rounded-full bg-slate-700/70 px-2 py-0.5">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tech strip */}
+        <div className="space-y-3 rounded-3xl border border-slate-700/70 bg-slate-900/70 p-4 text-center shadow-[0_0_40px_rgba(15,23,42,0.9)]">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Technologies</p>
+          <div className="flex flex-wrap justify-center gap-2 text-[0.7rem] text-slate-200">
+            {primarySkills.map((skill) => (
+              <span key={skill.name} className="rounded-full bg-slate-800/80 px-3 py-1">
+                {skill.name}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Certifications & achievements */}
+        <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
+          <div className="rounded-3xl border border-slate-700/70 bg-slate-900/80 p-4 shadow-[0_0_40px_rgba(15,23,42,0.9)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Certifications</p>
+            <div className="mt-3 grid gap-2 text-[0.75rem] md:grid-cols-2">
+              {topCerts.map((cert) => (
+                <div key={cert.name} className="rounded-2xl bg-slate-800/80 px-3 py-2 text-left text-slate-200">
+                  {cert.name}
+                </div>
+              ))}
             </div>
-            <div className="flex flex-wrap gap-3 text-[0.75rem]">
-              <button
-                onClick={() => navigate('/contact')}
-                className="rounded-full bg-emerald-500 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-emerald-950 shadow-sm hover:bg-emerald-400"
-              >
-                Schedule a call
-              </button>
-              <button
-                onClick={() => navigate('/about')}
-                className="rounded-full border border-slate-500/40 px-4 py-2 font-semibold uppercase tracking-[0.2em] text-slate-500 hover:border-slate-400 hover:text-slate-300"
-              >
-                View full profile
-              </button>
+          </div>
+          <div className="rounded-3xl border border-slate-700/70 bg-slate-900/80 p-4 shadow-[0_0_40px_rgba(15,23,42,0.9)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">Highlights</p>
+            <div className="mt-3 space-y-2 text-[0.75rem] text-left text-slate-200">
+              {topAchievements.map((ach) => (
+                <div key={ach.title} className="rounded-2xl bg-slate-800/80 px-3 py-2">
+                  <p className="font-medium">{ach.title}</p>
+                  <p className="text-[0.7rem] text-slate-300">{ach.description}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </section>
-
-      <style>{`
-        @keyframes scrollDot {
-          0% { transform: translateY(-140%); opacity: 0; }
-          40% { opacity: 1; }
-          100% { transform: translateY(140%); opacity: 0; }
-        }
-      `}</style>
-    </div>
+      </div>
+    </section>
   );
 };
 
