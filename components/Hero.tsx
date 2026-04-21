@@ -1,24 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../App';
-import { CV_DATA, PROJECTS, SKILL_CATEGORIES, EXPERIENCES, CERTIFICATIONS, ACHIEVEMENTS } from '../constants';
+import { CV_DATA, SKILL_CATEGORIES, EXPERIENCES } from '../constants';
 
-/* ─── tiny helpers ─────────────────────────────────────────── */
-function toRad(d: number) { return (d * Math.PI) / 180; }
-function latLonToXY(
-  lat: number, lon: number,
-  cx: number, cy: number, r: number
-): [number, number] {
-  // simple equirectangular projection centred on Kolkata
-  const dLon = lon - 88.36;
-  const dLat = lat - 22.57;
-  const scale = r / 75; // 75° visible radius
-  const x = cx + dLon * scale;
-  const y = cy - dLat * scale;
-  return [x, y];
-}
-
-/* ─── Starfield Canvas ──────────────────────────────────────── */
+/* ── Starfield ─────────────────────────────────────────────── */
 const Starfield: React.FC = () => {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -26,11 +11,11 @@ const Starfield: React.FC = () => {
     const ctx = c.getContext('2d')!;
     let W = c.width = window.innerWidth;
     let H = c.height = window.innerHeight;
-    const stars = Array.from({ length: 280 }, () => ({
+    const stars = Array.from({ length: 320 }, () => ({
       x: Math.random() * W, y: Math.random() * H,
-      r: Math.random() * 1.2 + 0.2,
+      r: Math.random() * 1.4 + 0.2,
       a: Math.random(),
-      da: (Math.random() - 0.5) * 0.005,
+      da: (Math.random() - 0.5) * 0.004,
     }));
     let raf: number;
     function draw() {
@@ -40,436 +25,392 @@ const Starfield: React.FC = () => {
         if (s.a <= 0.05 || s.a >= 1) s.da *= -1;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(200,210,255,${s.a})`;
+        ctx.fillStyle = `rgba(210,220,255,${s.a})`;
         ctx.fill();
       });
       raf = requestAnimationFrame(draw);
     }
     draw();
-    const onResize = () => {
-      W = c.width = window.innerWidth;
-      H = c.height = window.innerHeight;
-    };
+    const onResize = () => { W = c.width = window.innerWidth; H = c.height = window.innerHeight; };
     window.addEventListener('resize', onResize);
     return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', onResize); };
   }, []);
   return <canvas ref={ref} className="pointer-events-none absolute inset-0 h-full w-full" />;
 };
 
-/* ─── Interactive Globe Canvas ──────────────────────────────── */
+/* ── Real Earth Globe ──────────────────────────────────────── */
 const Globe: React.FC = () => {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const c = ref.current; if (!c) return;
-    const SIZE = 320;
+    const SIZE = 380;
     c.width = SIZE; c.height = SIZE;
     const ctx = c.getContext('2d')!;
-    const cx = SIZE / 2, cy = SIZE / 2, R = SIZE / 2 - 8;
+    const cx = SIZE / 2, cy = SIZE / 2, R = SIZE / 2 - 6;
 
-    // Kolkata coords
-    const KOL_LAT = 22.57, KOL_LON = 88.36;
-    // Some world city dots (lat, lon, label)
-    const cities: [number, number, string][] = [
-      [22.57, 88.36, 'Kolkata ★'],
-      [28.61, 77.20, 'Delhi'],
-      [19.07, 72.87, 'Mumbai'],
-      [13.08, 80.27, 'Chennai'],
-      [12.97, 77.59, 'Bengaluru'],
-      [51.51, -0.12, 'London'],
-      [40.71, -74.00, 'New York'],
-      [35.68, 139.69, 'Tokyo'],
-      [1.35, 103.82, 'Singapore'],
-      [37.77, -122.41, 'SF'],
-      [48.85, 2.35, 'Paris'],
-      [-33.87, 151.21, 'Sydney'],
-      [55.75, 37.62, 'Moscow'],
-      [31.23, 121.47, 'Shanghai'],
-      [-23.55, -46.63, 'São Paulo'],
-    ];
+    function toRad(d: number) { return d * Math.PI / 180; }
 
-    // Rough world continent outlines as lat/lon polylines
-    const continentLines: [number, number][][] = [
-      // Africa outline (simplified)
-      [[37,10],[34,-5],[15,-17],[5,-5],[-5,10],[-18,12],[-34,18],[-26,32],[-11,38],[0,42],[10,51],[22,40],[30,32],[37,22],[37,10]],
-      // Eurasia
-      [[35,-5],[35,28],[37,35],[40,29],[36,36],[37,41],[41,44],[43,51],[51,60],[60,60],[70,68],[71,55],[65,37],[60,30],[55,22],[55,37],[49,31],[35,28]],
-      // India subcontinent
-      [[28,68],[28,98],[8,78],[22,68],[28,68]],
-      // SE Asia
-      [[23,100],[23,115],[5,105],[2,108],[5,115],[0,107],[-5,106],[-8,115],[-8,125],[0,132],[10,124],[15,120],[20,110],[23,100]],
-      // Americas
-      [[70,-130],[70,-90],[60,-64],[50,-57],[45,-55],[25,-77],[10,-75],[0,-50],[-10,-40],[-55,-65],[-55,-38],[-25,-43],[-5,-34],[0,-50],[10,-75]],
-      [[70,-130],[60,-140],[50,-125],[35,-120],[20,-105],[15,-90],[10,-85],[8,-77]],
-      // Australia
-      [[-17,136],[-25,130],[-35,135],[-38,143],[-25,152],[-17,136]],
-    ];
-
-    let rotY = 0;
-    let drag = false;
-    let lastX = 0;
-    let velX = 0.003;
-    let raf: number;
-
-    function projectLatLon(lat: number, lon: number, rotationY: number): [number, number, boolean] {
-      // 3D sphere projection with Y-axis rotation
+    function project(lat: number, lon: number, rotY: number): [number, number, number] {
       const phi = toRad(90 - lat);
-      const theta = toRad(lon) + rotationY;
+      const theta = toRad(lon) + rotY;
       const x3 = Math.sin(phi) * Math.cos(theta);
       const y3 = Math.cos(phi);
       const z3 = Math.sin(phi) * Math.sin(theta);
-      const visible = z3 > -0.1; // front hemisphere
-      const sx = cx + x3 * R;
-      const sy = cy - y3 * R;
-      return [sx, sy, visible];
+      return [cx + x3 * R, cy - y3 * R, z3]; // z3 > 0 = front
     }
 
-    function draw() {
+    // ── Continent polygons (filled) ──
+    // Each polygon: array of [lat, lon] forming a closed shape
+    const landPolygons: { pts: [number,number][], color: string }[] = [
+      // Europe + Western Russia
+      { color: '#2d6a2d', pts: [[71,28],[70,50],[60,60],[55,38],[50,30],[48,10],[44,3],[37,-9],[43,-8],[44,0],[50,2],[54,8],[57,12],[62,26],[65,25],[68,18],[71,28]] },
+      // Africa
+      { color: '#2d6a2d', pts: [[37,10],[38,22],[30,33],[22,37],[12,44],[0,42],[-10,40],[-26,33],[-35,18],[-34,27],[-18,37],[-5,40],[10,51],[22,40],[30,32],[37,22],[37,10]] },
+      // Africa west
+      { color: '#2d6a2d', pts: [[37,10],[30,-3],[15,-17],[5,-5],[-5,10],[-18,12],[-34,18],[-35,18],[-26,33],[-18,37],[-5,40],[10,51],[22,40],[30,32],[37,22],[37,10]] },
+      // India
+      { color: '#2d6a2d', pts: [[28,68],[32,75],[28,98],[23,92],[18,84],[8,78],[8,77],[12,75],[20,73],[22,68],[28,68]] },
+      // South Asia / SE Asia
+      { color: '#2d6a2d', pts: [[28,98],[25,96],[22,100],[20,100],[15,102],[5,103],[1,104],[-5,106],[-8,115],[0,110],[5,115],[10,123],[15,120],[20,110],[22,114],[23,113],[26,115],[28,98]] },
+      // East Asia
+      { color: '#2d6a2d', pts: [[52,140],[48,135],[40,122],[32,121],[28,121],[22,114],[26,115],[28,116],[32,119],[38,120],[41,122],[43,131],[50,142],[52,140]] },
+      // Central + East Russia
+      { color: '#2d6a2d', pts: [[60,60],[62,80],[65,90],[68,100],[70,130],[66,142],[60,150],[52,140],[50,142],[43,131],[41,122],[50,90],[55,70],[60,60]] },
+      // Scandinavia
+      { color: '#2d6a2d', pts: [[71,28],[70,18],[68,14],[62,5],[57,12],[62,26],[65,25],[68,18],[71,28]] },
+      // North America East
+      { color: '#2d6a2d', pts: [[70,-90],[60,-64],[50,-57],[45,-55],[45,-66],[42,-70],[35,-76],[30,-81],[25,-77],[20,-87],[15,-87],[10,-85],[8,-77],[10,-75],[20,-87],[30,-80],[35,-76],[42,-70],[47,-68],[60,-64],[70,-64],[70,-90]] },
+      // North America West
+      { color: '#2d6a2d', pts: [[70,-130],[70,-90],[60,-90],[50,-90],[45,-90],[40,-90],[35,-90],[30,-90],[22,-100],[18,-100],[15,-90],[10,-85],[8,-77],[10,-75],[15,-90],[22,-100],[28,-100],[32,-100],[35,-106],[35,-120],[40,-124],[48,-124],[55,-130],[60,-140],[70,-130]] },
+      // Greenland
+      { color: '#3a7a3a', pts: [[83,-40],[82,-20],[76,-18],[72,-24],[72,-52],[76,-68],[80,-60],[83,-40]] },
+      // South America
+      { color: '#2d6a2d', pts: [[10,-75],[0,-50],[0,-50],[-5,-34],[-10,-38],[-18,-40],[-25,-43],[-35,-58],[-40,-62],[-55,-65],[-55,-38],[-25,-43],[-5,-34],[0,-50],[10,-62],[10,-75]] },
+      // Australia
+      { color: '#2d6a2d', pts: [[-16,130],[-20,122],[-32,116],[-35,118],[-38,145],[-32,152],[-24,152],[-17,144],[-14,136],[-16,130]] },
+      // Japan
+      { color: '#2d6a2d', pts: [[45,141],[42,140],[35,136],[33,131],[34,130],[36,136],[38,140],[42,143],[45,141]] },
+      // UK & Ireland
+      { color: '#2d6a2d', pts: [[58,-3],[55,0],[52,-2],[50,0],[52,-5],[54,-5],[58,-3]] },
+    ];
+
+    // City markers
+    const cities: [number, number, string, boolean][] = [
+      [22.57, 88.36, 'Kolkata', true],
+      [28.61, 77.20, 'Delhi', false],
+      [19.07, 72.87, 'Mumbai', false],
+      [12.97, 77.59, 'Bengaluru', false],
+      [51.51, -0.12, 'London', false],
+      [40.71, -74.00, 'New York', false],
+      [35.68, 139.69, 'Tokyo', false],
+      [1.35, 103.82, 'Singapore', false],
+      [48.85, 2.35, 'Paris', false],
+      [-33.87, 151.21, 'Sydney', false],
+      [55.75, 37.62, 'Moscow', false],
+      [31.23, 121.47, 'Shanghai', false],
+    ];
+
+    let rotY = 0.6; // start showing India
+    let velX = 0.004;
+    let drag = false, lastX = 0;
+    let pulse = 0;
+    let raf: number;
+
+    function drawGlobe() {
       ctx.clearRect(0, 0, SIZE, SIZE);
 
-      // Globe base glow
-      const grd = ctx.createRadialGradient(cx, cy, R * 0.3, cx, cy, R);
-      grd.addColorStop(0, 'rgba(30,60,100,0.85)');
-      grd.addColorStop(0.6, 'rgba(10,20,50,0.92)');
-      grd.addColorStop(1, 'rgba(5,10,30,0.98)');
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = grd; ctx.fill();
+      // ── Clip to circle ──
+      ctx.save();
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
 
-      // Latitude grid lines
+      // ── Ocean ──
+      const ocean = ctx.createRadialGradient(cx - R * 0.3, cy - R * 0.3, R * 0.05, cx, cy, R);
+      ocean.addColorStop(0, '#1a4a8a');
+      ocean.addColorStop(0.5, '#0d2f6b');
+      ocean.addColorStop(1, '#071d4a');
+      ctx.fillStyle = ocean;
+      ctx.fillRect(0, 0, SIZE, SIZE);
+
+      // ── Grid lines ──
+      ctx.globalAlpha = 0.12;
       for (let lat = -60; lat <= 60; lat += 30) {
-        ctx.beginPath();
-        let first = true;
-        for (let lon = -180; lon <= 180; lon += 4) {
-          const [sx, sy, vis] = projectLatLon(lat, lon, rotY);
-          if (!vis) { first = true; continue; }
-          if (first) { ctx.moveTo(sx, sy); first = false; } else ctx.lineTo(sx, sy);
+        ctx.beginPath(); let first = true;
+        for (let lon = -180; lon <= 180; lon += 3) {
+          const [sx, sy, z] = project(lat, lon, rotY);
+          if (z < 0) { first = true; continue; }
+          first ? (ctx.moveTo(sx, sy), first = false) : ctx.lineTo(sx, sy);
         }
-        ctx.strokeStyle = 'rgba(100,160,255,0.12)';
-        ctx.lineWidth = 0.6; ctx.stroke();
+        ctx.strokeStyle = '#90c0ff'; ctx.lineWidth = 0.5; ctx.stroke();
       }
-      // Longitude grid lines
       for (let lon = -180; lon < 180; lon += 30) {
-        ctx.beginPath();
-        let first = true;
-        for (let lat = -90; lat <= 90; lat += 4) {
-          const [sx, sy, vis] = projectLatLon(lat, lon, rotY);
-          if (!vis) { first = true; continue; }
-          if (first) { ctx.moveTo(sx, sy); first = false; } else ctx.lineTo(sx, sy);
+        ctx.beginPath(); let first = true;
+        for (let lat = -90; lat <= 90; lat += 3) {
+          const [sx, sy, z] = project(lat, lon, rotY);
+          if (z < 0) { first = true; continue; }
+          first ? (ctx.moveTo(sx, sy), first = false) : ctx.lineTo(sx, sy);
         }
-        ctx.strokeStyle = 'rgba(100,160,255,0.12)';
-        ctx.lineWidth = 0.6; ctx.stroke();
+        ctx.strokeStyle = '#90c0ff'; ctx.lineWidth = 0.5; ctx.stroke();
       }
+      ctx.globalAlpha = 1;
 
-      // Continent lines
-      continentLines.forEach(poly => {
+      // ── Land polygons ──
+      landPolygons.forEach(({ pts, color }) => {
+        const projected = pts.map(([lat, lon]) => project(lat, lon, rotY));
+        // Only draw if most points are on front hemisphere
+        const frontCount = projected.filter(([,,z]) => z >= -0.2).length;
+        if (frontCount < 2) return;
         ctx.beginPath();
         let first = true;
-        poly.forEach(([lat, lon]) => {
-          const [sx, sy, vis] = projectLatLon(lat, lon, rotY);
-          if (!vis) { first = true; return; }
-          if (first) { ctx.moveTo(sx, sy); first = false; } else ctx.lineTo(sx, sy);
+        projected.forEach(([sx, sy, z]) => {
+          if (z < -0.3) { first = true; return; }
+          first ? (ctx.moveTo(sx, sy), first = false) : ctx.lineTo(sx, sy);
         });
-        ctx.strokeStyle = 'rgba(120,180,255,0.5)';
-        ctx.lineWidth = 1.2; ctx.stroke();
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.92;
+        ctx.fill();
+        ctx.strokeStyle = '#4aaa4a';
+        ctx.lineWidth = 0.4;
+        ctx.globalAlpha = 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
       });
 
-      // City dots & labels
-      cities.forEach(([lat, lon, label]) => {
-        const [sx, sy, vis] = projectLatLon(lat, lon, rotY);
-        if (!vis) return;
-        const isKolkata = label.startsWith('Kolkata');
-        const dotR = isKolkata ? 5 : 2.5;
-        ctx.beginPath();
-        ctx.arc(sx, sy, dotR, 0, Math.PI * 2);
+      // ── Atmosphere highlight ──
+      const atmo = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.35, 0, cx, cy, R);
+      atmo.addColorStop(0, 'rgba(180,220,255,0.18)');
+      atmo.addColorStop(0.6, 'rgba(100,160,255,0.04)');
+      atmo.addColorStop(1, 'rgba(40,80,200,0.0)');
+      ctx.fillStyle = atmo; ctx.fillRect(0, 0, SIZE, SIZE);
+
+      ctx.restore(); // remove clip
+
+      // ── Outer glow ring ──
+      const rim = ctx.createRadialGradient(cx, cy, R - 2, cx, cy, R + 14);
+      rim.addColorStop(0, 'rgba(80,140,255,0.0)');
+      rim.addColorStop(0.5, 'rgba(80,160,255,0.35)');
+      rim.addColorStop(1, 'rgba(40,80,200,0.0)');
+      ctx.beginPath(); ctx.arc(cx, cy, R + 7, 0, Math.PI * 2);
+      ctx.strokeStyle = rim; ctx.lineWidth = 14; ctx.stroke();
+
+      // ── City dots ──
+      pulse += 0.07;
+      cities.forEach(([lat, lon, label, isKolkata]) => {
+        const [sx, sy, z] = project(lat, lon, rotY);
+        if (z < 0.05) return;
         if (isKolkata) {
-          // Pulsing glow
-          const glowGrd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 16);
-          glowGrd.addColorStop(0, 'rgba(255,220,80,0.9)');
-          glowGrd.addColorStop(1, 'rgba(255,100,0,0)');
-          ctx.fillStyle = glowGrd;
-          ctx.beginPath(); ctx.arc(sx, sy, 16, 0, Math.PI * 2); ctx.fill();
-          ctx.beginPath(); ctx.arc(sx, sy, dotR, 0, Math.PI * 2);
+          // Pulsing rings
+          const p1 = (Math.sin(pulse) * 0.5 + 0.5);
+          const p2 = (Math.sin(pulse + 1.5) * 0.5 + 0.5);
+          ctx.beginPath(); ctx.arc(sx, sy, 8 + p1 * 10, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(255,220,50,${0.6 * (1 - p1)})`; ctx.lineWidth = 1.5; ctx.stroke();
+          ctx.beginPath(); ctx.arc(sx, sy, 4 + p2 * 6, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(255,200,50,${0.8 * (1 - p2)})`; ctx.lineWidth = 1; ctx.stroke();
+          // Core dot
+          const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, 10);
+          glow.addColorStop(0, 'rgba(255,230,80,1)');
+          glow.addColorStop(1, 'rgba(255,100,0,0)');
+          ctx.beginPath(); ctx.arc(sx, sy, 10, 0, Math.PI * 2);
+          ctx.fillStyle = glow; ctx.fill();
+          ctx.beginPath(); ctx.arc(sx, sy, 4, 0, Math.PI * 2);
           ctx.fillStyle = '#FFD700'; ctx.fill();
           ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.2; ctx.stroke();
+          // Label
+          ctx.font = 'bold 11px sans-serif';
           ctx.fillStyle = '#FFD700';
-          ctx.font = 'bold 10px sans-serif';
-          ctx.fillText(label, sx + 8, sy - 6);
+          ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 4;
+          ctx.fillText('Kolkata ★', sx + 8, sy - 8);
+          ctx.shadowBlur = 0;
         } else {
-          ctx.fillStyle = 'rgba(180,210,255,0.8)'; ctx.fill();
-          ctx.fillStyle = 'rgba(180,210,255,0.6)';
+          ctx.beginPath(); ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(180,220,255,0.85)'; ctx.fill();
           ctx.font = '8px sans-serif';
-          ctx.fillText(label, sx + 4, sy - 3);
+          ctx.fillStyle = 'rgba(200,225,255,0.7)';
+          ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 3;
+          ctx.fillText(label, sx + 4, sy - 2);
+          ctx.shadowBlur = 0;
         }
       });
 
-      // Outer rim glow
-      const rimGrd = ctx.createRadialGradient(cx, cy, R - 6, cx, cy, R + 4);
-      rimGrd.addColorStop(0, 'rgba(100,150,255,0)');
-      rimGrd.addColorStop(0.6, 'rgba(80,130,255,0.22)');
-      rimGrd.addColorStop(1, 'rgba(60,100,200,0)');
-      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = rimGrd; ctx.lineWidth = 8; ctx.stroke();
-
-      // Clip to circle
-      ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip(); ctx.restore();
-
       rotY += velX;
-      raf = requestAnimationFrame(draw);
+      raf = requestAnimationFrame(drawGlobe);
     }
 
-    // Drag to rotate
-    c.addEventListener('mousedown', e => { drag = true; lastX = e.clientX; velX = 0; });
-    window.addEventListener('mousemove', e => {
+    // Drag handlers
+    const onDown = (x: number) => { drag = true; lastX = x; velX = 0; };
+    const onMove = (x: number) => {
       if (!drag) return;
-      const dx = e.clientX - lastX; lastX = e.clientX;
-      rotY += dx * 0.008; velX = dx * 0.004;
-    });
-    window.addEventListener('mouseup', () => { drag = false; if (Math.abs(velX) < 0.001) velX = 0.003; });
-    c.addEventListener('touchstart', e => { drag = true; lastX = e.touches[0].clientX; velX = 0; }, { passive: true });
-    window.addEventListener('touchmove', e => {
-      if (!drag) return;
-      const dx = e.touches[0].clientX - lastX; lastX = e.touches[0].clientX;
-      rotY += dx * 0.008; velX = dx * 0.004;
-    }, { passive: true });
-    window.addEventListener('touchend', () => { drag = false; if (Math.abs(velX) < 0.001) velX = 0.003; });
+      const dx = x - lastX; lastX = x;
+      rotY += dx * 0.007; velX = dx * 0.004;
+    };
+    const onUp = () => { drag = false; if (Math.abs(velX) < 0.001) velX = 0.004; };
 
-    draw();
-    return () => { cancelAnimationFrame(raf); };
+    c.addEventListener('mousedown', e => onDown(e.clientX));
+    window.addEventListener('mousemove', e => onMove(e.clientX));
+    window.addEventListener('mouseup', onUp);
+    c.addEventListener('touchstart', e => onDown(e.touches[0].clientX), { passive: true });
+    window.addEventListener('touchmove', e => onMove(e.touches[0].clientX), { passive: true });
+    window.addEventListener('touchend', onUp);
+
+    drawGlobe();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('mousemove', e => onMove(e.clientX));
+      window.removeEventListener('mouseup', onUp);
+    };
   }, []);
 
   return (
     <canvas
       ref={ref}
       className="cursor-grab active:cursor-grabbing"
-      style={{ width: 320, height: 320, borderRadius: '50%', display: 'block' }}
+      style={{ width: 380, height: 380, borderRadius: '50%', display: 'block', maxWidth: '100%' }}
     />
   );
 };
 
-/* ─── Main Hero Component ───────────────────────────────────── */
+/* ── Main Hero ─────────────────────────────────────────────── */
 const Hero: React.FC = () => {
   const navigate = useNavigate();
-  const { theme } = useTheme();
-
-  const featuredPair = PROJECTS.slice(0, 2);
-  const projectCards = PROJECTS.slice(0, 3);
-  const primarySkills = SKILL_CATEGORIES.flatMap(g => g.skills).slice(0, 14);
-  const topCerts = CERTIFICATIONS.slice(0, 6);
-  const topAchievements = ACHIEVEMENTS.slice(0, 3);
 
   return (
-    <section
-      id="home"
-      className="relative min-h-screen overflow-x-hidden bg-slate-950 text-slate-100"
-    >
+    <section id="home" className="relative min-h-screen overflow-x-hidden bg-slate-950 text-slate-100">
+
       {/* Starfield */}
       <Starfield />
 
-      {/* Cosmic purple/blue radial glow */}
+      {/* Purple cosmic glow at top */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(88,28,135,0.55),transparent_70%)]" />
-        <div className="absolute bottom-0 left-0 right-0 h-64 bg-[radial-gradient(ellipse_80%_100%_at_50%_100%,rgba(8,47,73,0.7),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_50%_0%,rgba(88,28,135,0.6),transparent_65%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-80 bg-[radial-gradient(ellipse_70%_80%_at_50%_100%,rgba(8,47,73,0.55),transparent)]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-5xl px-4 pb-20 pt-10 space-y-10">
+      <div className="relative z-10 mx-auto max-w-5xl px-4 pb-16 pt-10 space-y-12">
 
-        {/* ── 1. AVATAR + TITLE ── */}
-        <div className="flex flex-col items-center gap-5 text-center">
-          {/* Glowing avatar ring */}
-          <div className="relative">
-            <div className="absolute -inset-3 rounded-full bg-[conic-gradient(from_0deg,rgba(168,85,247,0.8),rgba(99,102,241,0.5),rgba(59,130,246,0.7),rgba(168,85,247,0.8))] blur-sm animate-[spin_8s_linear_infinite]" />
-            <div className="relative h-28 w-28 rounded-full border-2 border-white/20 bg-gradient-to-br from-slate-700 to-slate-900 shadow-[0_0_50px_rgba(168,85,247,0.6)] overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center text-3xl font-black text-slate-400 select-none">BT</div>
+        {/* ── HERO: Avatar + Name + CTAs ── */}
+        <div className="flex flex-col items-center gap-6 text-center">
+
+          {/* Spinning conic ring + avatar */}
+          <div className="relative flex items-center justify-center">
+            {/* Outer spinning ring */}
+            <div
+              className="absolute rounded-full"
+              style={{
+                width: 132, height: 132,
+                background: 'conic-gradient(from 0deg, rgba(168,85,247,0.9), rgba(99,102,241,0.5), rgba(59,130,246,0.8), rgba(168,85,247,0.9))',
+                filter: 'blur(3px)',
+                animation: 'spinRing 7s linear infinite',
+              }}
+            />
+            {/* Avatar */}
+            <div className="relative h-28 w-28 rounded-full border border-white/20 bg-gradient-to-br from-slate-600 via-slate-800 to-slate-950 shadow-[0_0_60px_rgba(168,85,247,0.7)] overflow-hidden flex items-center justify-center z-10">
+              <span className="text-3xl font-black text-slate-300 select-none tracking-tight">BT</span>
+              {/* Shine overlay */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_30%,rgba(255,255,255,0.15),transparent_60%)]" />
             </div>
           </div>
 
+          {/* Name + subtitle */}
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{CV_DATA.name}</h1>
-            <p className="text-sm font-medium text-slate-300">AI Engineer &middot; Full Stack Developer &middot; Data Systems Builder</p>
-            <p className="mx-auto max-w-xl text-sm text-slate-400">
+            <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl">{CV_DATA.name}</h1>
+            <p className="text-sm font-medium text-slate-300 tracking-wide">
+              AI Engineer &middot; Full Stack Developer &middot; Data Systems Builder
+            </p>
+            <p className="mx-auto max-w-lg text-sm text-slate-400 leading-relaxed">
               I design intelligent systems that transform real-world problems into scalable, data-driven solutions.
             </p>
           </div>
 
           {/* Skill chips */}
-          <div className="flex flex-wrap justify-center gap-2 text-[0.7rem]">
-            {['AI/ML Systems','MERN Stack','Data Engineering','Cloud & DevOps'].map(t => (
-              <span key={t} className="rounded-full border border-white/15 bg-white/8 px-4 py-1 font-medium text-slate-200 backdrop-blur-sm">{t}</span>
+          <div className="flex flex-wrap justify-center gap-2">
+            {['AI/ML Systems', 'MERN Stack', 'Data Engineering', 'Cloud & DevOps'].map(t => (
+              <span
+                key={t}
+                className="rounded-full border border-white/20 px-4 py-1 text-[0.72rem] font-medium text-slate-200 backdrop-blur-sm"
+                style={{ background: 'rgba(255,255,255,0.07)' }}
+              >
+                {t}
+              </span>
             ))}
           </div>
 
-          {/* CTAs */}
+          {/* CTA buttons */}
           <div className="flex flex-wrap justify-center gap-3">
-            <button onClick={() => navigate('/projects')} className="rounded-full bg-violet-600 px-6 py-2 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-violet-500/40 hover:bg-violet-500 transition">
+            <button
+              onClick={() => navigate('/projects')}
+              className="rounded-full bg-violet-600 px-7 py-2.5 text-xs font-bold uppercase tracking-widest text-white shadow-lg shadow-violet-500/40 hover:bg-violet-500 transition-all duration-200"
+            >
               View Projects
             </button>
-            <button onClick={() => navigate('/contact')} className="rounded-full border border-white/20 bg-white/5 px-6 py-2 text-xs font-bold uppercase tracking-widest text-slate-200 hover:bg-white/10 transition">
+            <button
+              onClick={() => navigate('/contact')}
+              className="rounded-full border border-white/25 px-7 py-2.5 text-xs font-bold uppercase tracking-widest text-slate-200 hover:bg-white/10 transition-all duration-200"
+              style={{ background: 'rgba(255,255,255,0.05)' }}
+            >
               Let&apos;s Collaborate
             </button>
           </div>
         </div>
 
-        {/* ── 2. GLOBE + EXPERIENCE ── */}
-        <div className="grid gap-5 md:grid-cols-[1fr_1.1fr]">
+        {/* ── GLOBE + EXPERIENCE ── */}
+        <div className="grid gap-5 md:grid-cols-[1fr_1.15fr] items-start">
+
           {/* Globe card */}
-          <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-3xl border border-slate-700/60 bg-slate-900/70 p-5 shadow-[0_0_60px_rgba(15,23,42,0.9)] backdrop-blur-sm">
-            <Globe />
-            <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-amber-400">
-              <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.9)]" />
-              Based in Kolkata, India &middot; Open to remote work
+          <div
+            className="flex flex-col items-center justify-center rounded-3xl border border-slate-700/50 p-6 shadow-[0_0_80px_rgba(15,23,42,0.95)]"
+            style={{ background: 'rgba(10,15,40,0.75)', backdropFilter: 'blur(12px)' }}
+          >
+            {/* Outer glow behind globe */}
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full blur-2xl" style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 70%)' }} />
+              <Globe />
             </div>
-            <p className="mt-1 text-center text-[0.7rem] text-slate-400">Drag to rotate the globe</p>
+            <div className="mt-4 flex items-center gap-2 text-xs font-semibold text-amber-400">
+              <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,1)]" style={{ animation: 'pulse 2s infinite' }} />
+              Based in Kolkata, India &middot; Open to remote
+            </div>
+            <p className="mt-1 text-[0.68rem] text-slate-500">Drag to rotate</p>
           </div>
 
-          {/* Experience timeline card */}
-          <div className="overflow-hidden rounded-3xl border border-slate-700/60 bg-slate-900/70 p-5 shadow-[0_0_60px_rgba(15,23,42,0.9)] backdrop-blur-sm">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-slate-400">Experience</p>
-            <div className="relative space-y-5 pl-5 before:absolute before:left-[7px] before:top-2 before:h-[calc(100%-1rem)] before:w-px before:bg-slate-700">
+          {/* Experience timeline */}
+          <div
+            className="rounded-3xl border border-slate-700/50 p-6 shadow-[0_0_80px_rgba(15,23,42,0.95)]"
+            style={{ background: 'rgba(10,15,40,0.75)', backdropFilter: 'blur(12px)' }}
+          >
+            <p className="mb-5 text-[0.65rem] font-bold uppercase tracking-[0.35em] text-slate-500">Experience</p>
+            <div className="relative space-y-6 pl-6">
+              {/* Vertical line */}
+              <div className="absolute left-[9px] top-2 bottom-2 w-px bg-gradient-to-b from-emerald-500/60 via-slate-700/60 to-transparent" />
+
               {EXPERIENCES.map((exp) => (
                 <div key={exp.id} className="relative">
-                  <div className="absolute -left-5 top-1.5 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] ring-2 ring-slate-900" />
-                  <div className="flex flex-wrap items-start justify-between gap-1">
-                    <p className="text-sm font-semibold text-slate-100 leading-snug">{exp.role}</p>
-                    <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[0.65rem] text-slate-400">{exp.duration}</span>
+                  {/* Green dot */}
+                  <div className="absolute -left-6 top-1 h-3 w-3 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] ring-2 ring-slate-950" />
+
+                  <div className="flex flex-wrap items-start justify-between gap-1 mb-0.5">
+                    <p className="text-sm font-bold text-slate-100 leading-snug pr-2">{exp.role}</p>
+                    <span
+                      className="rounded-full px-2.5 py-0.5 text-[0.6rem] font-medium text-slate-400 whitespace-nowrap"
+                      style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    >
+                      {exp.duration}
+                    </span>
                   </div>
-                  <p className="text-xs text-slate-400">{exp.company} &middot; {exp.location}</p>
-                  {exp.bullets[0] && <p className="mt-1 text-[0.72rem] text-slate-300 leading-relaxed">{exp.bullets[0]}</p>}
+                  <p className="text-[0.72rem] text-slate-400 mb-1">{exp.company} &middot; {exp.location}</p>
+                  {exp.bullets[0] && (
+                    <p className="text-[0.72rem] text-slate-300 leading-relaxed">{exp.bullets[0]}</p>
+                  )}
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* ── 3. CAPABILITY TILES ── */}
-        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
-          {[
-            { label: 'AI Systems', icon: '🤖', desc: 'ML models, LLMs, RAG pipelines, GenAI tools & computer vision.' },
-            { label: 'Full-Stack Apps', icon: '🖥️', desc: 'MERN / Next.js apps with auth, REST APIs, WebSockets & real-time features.' },
-            { label: 'Cloud & DevOps', icon: '☁️', desc: 'AWS microservices, Docker, CI/CD, logs, metrics & alerts.' },
-            { label: 'Data Pipelines', icon: '📊', desc: 'ETL jobs, data warehousing, Redshift, Power BI & Tableau dashboards.' },
-          ].map(t => (
-            <div key={t.label} className="rounded-2xl border border-slate-700/60 bg-slate-900/70 p-4 backdrop-blur-sm hover:border-slate-500 transition">
-              <p className="text-2xl mb-2">{t.icon}</p>
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-slate-300 mb-1">{t.label}</p>
-              <p className="text-[0.72rem] text-slate-400 leading-relaxed">{t.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* ── 4. FEATURED PROJECTS (big cards) ── */}
-        <div>
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-slate-400 text-center">Featured Projects</p>
-          <div className="grid gap-4 md:grid-cols-2">
-            {featuredPair.map((p) => (
-              <button key={p.id} onClick={() => navigate(`/projects/${p.id}`)}
-                className="group overflow-hidden rounded-3xl border border-slate-700/60 bg-slate-900/70 text-left backdrop-blur-sm hover:border-violet-500/70 hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] transition">
-                {p.image && (
-                  <div className="h-40 overflow-hidden">
-                    <img src={p.image} alt={p.title} className="h-full w-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-500" />
-                  </div>
-                )}
-                <div className="p-4 space-y-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{p.id === 'proj1' ? '🌾' : '🎓'}</span>
-                    <p className="text-sm font-bold text-slate-100 leading-snug">{p.title}</p>
-                  </div>
-                  <p className="text-[0.73rem] text-slate-300 line-clamp-2">{p.description?.[0]}</p>
-                  <div className="flex flex-wrap gap-1">
-                    {p.techStack.slice(0, 4).map(t => (
-                      <span key={t} className="rounded-full bg-slate-800 px-2 py-0.5 text-[0.62rem] text-slate-300">{t}</span>
-                    ))}
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* ── 5. ALL PROJECTS (3-col detail cards) ── */}
-        <div>
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-slate-400 text-center">All Projects</p>
-          <div className="grid gap-4 md:grid-cols-3">
-            {projectCards.map((p) => (
-              <button key={p.id} onClick={() => navigate(`/projects/${p.id}`)}
-                className="group overflow-hidden rounded-3xl border border-slate-700/60 bg-slate-900/70 text-left backdrop-blur-sm hover:border-violet-500/70 transition">
-                {p.image && (
-                  <div className="h-28 overflow-hidden">
-                    <img src={p.image} alt={p.title} className="h-full w-full object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500" />
-                  </div>
-                )}
-                <div className="p-3 space-y-1.5">
-                  <p className="text-xs font-bold text-slate-100 leading-snug">{p.title}</p>
-                  <p className="text-[0.68rem] text-slate-400 line-clamp-2">{p.description?.[0]}</p>
-                  <div className="flex flex-wrap gap-1">
-                    {p.techStack.slice(0, 3).map(t => (
-                      <span key={t} className="rounded-full bg-slate-800 px-2 py-0.5 text-[0.6rem] text-slate-400">{t}</span>
-                    ))}
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* ── 6. TECH BADGE STRIP ── */}
-        <div className="rounded-3xl border border-slate-700/60 bg-slate-900/70 p-5 backdrop-blur-sm">
-          <p className="mb-4 text-center text-xs font-bold uppercase tracking-[0.3em] text-slate-400">Technologies</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {primarySkills.map(s => (
-              <span key={s.name} className="flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-800/80 px-3 py-1 text-[0.68rem] font-medium text-slate-200">
-                {s.name}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* ── 7. CERTIFICATIONS ── */}
-        <div className="rounded-3xl border border-slate-700/60 bg-slate-900/70 p-5 backdrop-blur-sm">
-          <p className="mb-4 text-center text-xs font-bold uppercase tracking-[0.3em] text-slate-400">Certifications</p>
-          <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
-            {topCerts.map(cert => (
-              <div key={cert.name} className="flex items-center gap-2 rounded-xl border border-slate-700/60 bg-slate-800/70 px-3 py-2">
-                <span className="text-base">🏅</span>
-                <p className="text-[0.7rem] text-slate-200 leading-snug">{cert.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── 8. ACHIEVEMENTS ── */}
-        <div className="grid gap-3 sm:grid-cols-3">
-          {topAchievements.map((ach, i) => (
-            <div key={ach.title} className="rounded-2xl border border-slate-700/60 bg-slate-900/70 p-4 backdrop-blur-sm">
-              <p className="text-2xl mb-2">{['🏆','🚀','⭐'][i]}</p>
-              <p className="text-xs font-bold text-slate-100 mb-1">{ach.title}</p>
-              <p className="text-[0.68rem] text-slate-400">{ach.description}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* ── 9. CONTACT CTA ── */}
-        <div className="flex flex-col items-center gap-4 rounded-3xl border border-violet-500/30 bg-violet-950/30 p-8 text-center backdrop-blur-sm">
-          <p className="text-lg font-bold">I&apos;m based in Kolkata, India &mdash; open to remote work worldwide 🌍</p>
-          <p className="text-sm text-slate-300">{CV_DATA.email}</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <button onClick={() => navigate('/contact')} className="rounded-full bg-violet-600 px-6 py-2 text-xs font-bold uppercase tracking-widest text-white hover:bg-violet-500 transition">
-              Let&apos;s build together
-            </button>
-            <a href={CV_DATA.links.linkedin} target="_blank" rel="noopener noreferrer"
-              className="rounded-full border border-slate-500/50 bg-slate-800/60 px-6 py-2 text-xs font-bold uppercase tracking-widest text-slate-200 hover:bg-slate-700 transition">
-              LinkedIn
-            </a>
-            <a href={CV_DATA.links.github} target="_blank" rel="noopener noreferrer"
-              className="rounded-full border border-slate-500/50 bg-slate-800/60 px-6 py-2 text-xs font-bold uppercase tracking-widest text-slate-200 hover:bg-slate-700 transition">
-              GitHub
-            </a>
-          </div>
-        </div>
-
       </div>
 
       <style>{`
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .bg-white\/8 { background-color: rgba(255,255,255,0.08); }
+        @keyframes spinRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%,100% { opacity:1; box-shadow: 0 0 10px rgba(251,191,36,1); } 50% { opacity:0.5; box-shadow: 0 0 4px rgba(251,191,36,0.4); } }
       `}</style>
     </section>
   );
