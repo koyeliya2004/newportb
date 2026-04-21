@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../App';
 import { APP_LOGO_URL } from '../constants';
 import BhumikaPortfolio from './BhumikaPortfolio';
 
@@ -349,6 +350,8 @@ const skillPoints = [
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const [activeRole, setActiveRole] = useState(0);
   const [displayed, setDisplayed] = useState('');
   const [typing, setTyping] = useState(true);
@@ -437,32 +440,32 @@ const Hero: React.FC = () => {
       : 'opacity-0 translate-y-14 scale-[0.98]';
 
   return (
-    <div className="relative overflow-x-hidden bg-black text-white">
+    <div className={`relative overflow-x-hidden ${isDark ? 'bg-black text-white' : 'bg-white text-slate-900'}`}>
       <section className="relative min-h-screen overflow-hidden">
         <div className="absolute inset-0 z-0">
           {threeReady && <GoldenNetwork />}
         </div>
-        <div className="absolute inset-0 z-[1] bg-black/45" />
+        <div className={`absolute inset-0 z-[1] ${isDark ? 'bg-black/45' : 'bg-white/40'}`} />
 
         <div className="relative z-[2] mx-auto flex min-h-screen max-w-7xl items-center px-6 sm:px-10 lg:px-14">
           <div className="grid w-full items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="transition-all duration-1000 ease-out" data-reveal="1">
-              <p className="text-xs font-bold uppercase tracking-[0.38em] text-white/55">Hey, I&apos;m</p>
+              <p className={`text-xs font-bold uppercase tracking-[0.38em] ${isDark ? 'text-white/55' : 'text-slate-600'}`}>Hey, I&apos;m</p>
 
-              <h1 className="mt-3 text-6xl font-black leading-[0.92] tracking-tight sm:text-7xl lg:text-[6.2rem]">
-                <span className="text-white">Bhumika </span>
+              <h1 className={`mt-3 text-6xl font-black leading-[0.92] tracking-tight sm:text-7xl lg:text-[6.2rem] ${isDark ? '' : 'text-slate-900'}`}>
+                <span className={isDark ? 'text-white' : 'text-slate-800'}>Bhumika </span>
                 <span className="text-[#f3c623] [text-shadow:0_0_44px_rgba(243,198,35,0.7)]">Tewari</span>
               </h1>
 
-              <div className="mt-6 flex items-center gap-3 text-base font-bold text-[#f3c623] sm:text-xl">
-                <span className="text-white/50">&gt;</span>
+              <div className={`mt-6 flex items-center gap-3 text-base font-bold sm:text-xl ${isDark ? 'text-[#f3c623]' : 'text-[#f3c623]'}`}>
+                <span className={isDark ? 'text-white/50' : 'text-slate-400'}>&gt;</span>
                 <span className="font-mono">
                   {displayed}
                   <span className="animate-pulse">|</span>
                 </span>
               </div>
 
-              <p className="mt-7 max-w-xl text-sm leading-8 text-white/62 sm:text-base">
+              <p className={`mt-7 max-w-xl text-sm leading-8 sm:text-base ${isDark ? 'text-white/62' : 'text-slate-700'}`}>
                 Building intelligent systems across AI, data, and full-stack development — from machine learning models to production-ready applications. Passionate about creating scalable, high-performance solutions with real-world impact.
               </p>
 
@@ -475,7 +478,11 @@ const Hero: React.FC = () => {
                 </button>
                 <button
                   onClick={() => navigate('/contact')}
-                  className="rounded-full border border-white/20 bg-white/6 px-9 py-4 text-xs font-black uppercase tracking-[0.28em] text-white backdrop-blur-lg transition duration-300 hover:-translate-y-1 hover:border-[#f3c623]/55 hover:text-[#f3c623]"
+                  className={`rounded-full border px-9 py-4 text-xs font-black uppercase tracking-[0.28em] backdrop-blur-lg transition duration-300 hover:-translate-y-1 ${
+                    isDark
+                      ? 'border-white/20 bg-white/6 text-white hover:border-[#f3c623]/55 hover:text-[#f3c623]'
+                      : 'border-slate-300 bg-slate-100/40 text-slate-900 hover:border-[#f3c623]/75 hover:text-[#f3c623]'
+                  }`}
                 >
                   Get In Touch
                 </button>
@@ -487,23 +494,31 @@ const Hero: React.FC = () => {
               <div className="absolute h-[300px] w-[300px] rounded-full bg-[#f3c623]/18 blur-2xl" style={{ animation: 'hazyPulse 4s ease-in-out infinite' }} />
 
               <div
-                className="relative flex h-[300px] w-[300px] flex-col items-center justify-center rounded-full border border-[#f3c623]/30 bg-[#f3c623]/5 backdrop-blur-2xl shadow-[0_0_90px_rgba(243,198,35,0.2)]"
+                className={`relative flex h-[300px] w-[300px] flex-col items-center justify-center rounded-full ${
+                  isDark
+                    ? 'border-[#f3c623]/30 bg-[#f3c623]/5'
+                    : 'border-[#f3c623]/50 bg-[#f3c623]/10'
+                } border backdrop-blur-2xl shadow-[0_0_90px_rgba(243,198,35,0.2)]`}
                 style={{ animation: 'avatarFloat 5s ease-in-out infinite' }}
               >
-                <div className="absolute inset-4 rounded-full bg-[#f3c623]/8 blur-xl" />
+                <div className={`absolute inset-4 rounded-full ${isDark ? 'bg-[#f3c623]/8' : 'bg-[#f3c623]/12'} blur-xl`} />
                 <div className="relative z-10 flex flex-col items-center gap-2">
                   <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#f3c623] to-[#c89b0a] text-3xl font-black text-black shadow-[0_0_32px_rgba(243,198,35,0.45)]">
                     BT
                   </div>
-                  <p className="mt-3 text-sm font-bold text-white/80">Bhumika Tewari</p>
+                  <p className={`mt-3 text-sm font-bold ${isDark ? 'text-white/80' : 'text-slate-800'}`}>Bhumika Tewari</p>
                   <p className="text-xs font-medium text-[#f3c623]/80">AI / Full Stack</p>
-                  <div className="mt-3 flex items-center gap-2 rounded-full border border-[#f3c623]/25 bg-[#f3c623]/8 px-4 py-1.5">
+                  <div className={`mt-3 flex items-center gap-2 rounded-full border px-4 py-1.5 ${
+                    isDark
+                      ? 'border-[#f3c623]/25 bg-[#f3c623]/8'
+                      : 'border-[#f3c623]/40 bg-[#f3c623]/15'
+                  }`}>
                     <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.9)]" />
-                    <span className="text-xs text-white/70">Available for work</span>
+                    <span className={`text-xs ${isDark ? 'text-white/70' : 'text-slate-700'}`}>Available for work</span>
                   </div>
                 </div>
 
-                <div className="absolute h-[290px] w-[290px] rounded-full border border-[#f3c623]/22" style={{ animation: 'spin 18s linear infinite' }}>
+                <div className={`absolute h-[290px] w-[290px] rounded-full ${isDark ? 'border-[#f3c623]/22' : 'border-[#f3c623]/40'} border`} style={{ animation: 'spin 18s linear infinite' }}>
                   <div className="absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-[#f3c623] shadow-[0_0_14px_rgba(243,198,35,0.95)]" />
                 </div>
               </div>
@@ -511,24 +526,24 @@ const Hero: React.FC = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 z-[2] -translate-x-1/2 flex flex-col items-center gap-2 text-white/30">
+        <div className={`absolute bottom-8 left-1/2 z-[2] -translate-x-1/2 flex flex-col items-center gap-2 ${isDark ? 'text-white/30' : 'text-slate-400'}`}>
           <span className="text-xs uppercase tracking-[0.3em]">Scroll</span>
-          <div className="h-8 w-px bg-gradient-to-b from-[#f3c623]/70 to-transparent" style={{ animation: 'scrollBlink 2s ease-in-out infinite' }} />
+          <div className={`h-8 w-px ${isDark ? 'bg-gradient-to-b from-[#f3c623]/70 to-transparent' : 'bg-gradient-to-b from-[#f3c623]/80 to-transparent'}`} style={{ animation: 'scrollBlink 2s ease-in-out infinite' }} />
         </div>
       </section>
 
-      <section className={`relative z-10 bg-black px-6 pb-10 pt-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${revealClass(3)}`} data-reveal="3">
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#f3c623]/5 to-transparent" />
+      <section className={`relative z-10 px-6 pb-10 pt-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-white'} ${revealClass(3)}`} data-reveal="3">
+        <div className={`absolute inset-x-0 top-0 h-32 ${isDark ? 'bg-gradient-to-b from-[#f3c623]/5 to-transparent' : 'bg-gradient-to-b from-[#f3c623]/8 to-transparent'}`} />
         <div className="relative mx-auto max-w-7xl">
-          <p className="text-xs font-bold uppercase tracking-[0.38em] text-[#f3c623]">// What I Do</p>
-          <h2 className="mt-5 max-w-5xl text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
-            <span className="text-white">Building intelligent systems</span><br />
+          <p className={`text-xs font-bold uppercase tracking-[0.38em] ${isDark ? 'text-[#f3c623]' : 'text-[#c89b0a]'}`}>// What I Do</p>
+          <h2 className={`mt-5 max-w-5xl text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl ${isDark ? '' : 'text-slate-900'}`}>
+            <span className={isDark ? 'text-white' : 'text-slate-800'}>Building intelligent systems</span><br />
             <span className="text-[#f3c623]">that turn ideas into real-world impact.</span>
           </h2>
-          <p className="mt-5 max-w-3xl text-base font-semibold leading-relaxed text-white/70 sm:text-lg">
+          <p className={`mt-5 max-w-3xl text-base font-semibold leading-relaxed sm:text-lg ${isDark ? 'text-white/70' : 'text-slate-600'}`}>
             Creating scalable AI and full-stack solutions that solve meaningful problems.
           </p>
-          <p className="mt-4 max-w-4xl text-sm leading-8 text-white/50 sm:text-base">
+          <p className={`mt-4 max-w-4xl text-sm leading-8 sm:text-base ${isDark ? 'text-white/50' : 'text-slate-500'}`}>
             From machine learning models to production-ready applications, I focus on building efficient,
             data-driven systems that are practical, scalable, and impactful. Every project I take on is
             built with a clear goal: real users, real results.
@@ -544,31 +559,47 @@ const Hero: React.FC = () => {
         </div>
       </section>
 
-      <section className={`relative z-10 bg-black px-6 pb-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${revealClass(4)}`} data-reveal="4">
+      <section className={`relative z-10 px-6 pb-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-slate-50'} ${revealClass(4)}`} data-reveal="4">
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[1fr_0.85fr_1.1fr_1fr]">
-          <div className="rounded-[1.6rem] border border-[#f3c623]/22 bg-[#0a0a0a] p-5 shadow-[0_0_36px_rgba(243,198,35,0.07)] transition duration-400 hover:-translate-y-1 hover:border-[#f3c623]/45 hover:shadow-[0_0_48px_rgba(243,198,35,0.12)]">
+          <div className={`rounded-[1.6rem] border px-5 py-5 transition duration-400 hover:-translate-y-1 ${
+            isDark
+              ? 'border-[#f3c623]/22 bg-[#0a0a0a] shadow-[0_0_36px_rgba(243,198,35,0.07)] hover:border-[#f3c623]/45 hover:shadow-[0_0_48px_rgba(243,198,35,0.12)]'
+              : 'border-[#f3c623]/30 bg-white shadow-[0_0_36px_rgba(243,198,35,0.05)] hover:border-[#f3c623]/50 hover:shadow-[0_0_48px_rgba(243,198,35,0.1)]'
+          }`}>
             <div className="mb-5 flex items-center gap-2">
-              <span className="text-lg text-[#f3c623]">✦</span>
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-white">Core Expertise</p>
+              <span className={`text-lg ${isDark ? 'text-[#f3c623]' : 'text-[#c89b0a]'}`}>✦</span>
+              <p className={`text-sm font-bold uppercase tracking-[0.22em] ${isDark ? 'text-white' : 'text-slate-900'}`}>Core Expertise</p>
             </div>
             <div className="space-y-4">
               {expertiseItems.map((item) => (
                 <div key={item.title} className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#f3c623]/30 bg-[#f3c623]/8 text-xs font-bold text-[#f3c623]">
+                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border text-xs font-bold ${
+                    isDark
+                      ? 'border-[#f3c623]/30 bg-[#f3c623]/8 text-[#f3c623]'
+                      : 'border-[#f3c623]/40 bg-[#f3c623]/12 text-[#c89b0a]'
+                  }`}>
                     {item.icon}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white leading-tight">{item.title}</p>
-                    <p className="mt-0.5 text-xs text-[#f3c623]/65">{item.subtitle}</p>
+                    <p className={`text-sm font-semibold leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>{item.title}</p>
+                    <p className={`mt-0.5 text-xs ${isDark ? 'text-[#f3c623]/65' : 'text-[#c89b0a]/70'}`}>{item.subtitle}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-[1.6rem] border border-[#f3c623]/22 bg-[radial-gradient(circle_at_bottom_left,rgba(243,198,35,0.18),transparent_22%),#0a0a0a] p-5 shadow-[0_0_36px_rgba(243,198,35,0.08)] transition duration-400 hover:-translate-y-1 hover:border-[#f3c623]/45">
+          <div className={`rounded-[1.6rem] border px-5 py-5 transition duration-400 hover:-translate-y-1 ${
+            isDark
+              ? 'border-[#f3c623]/22 bg-[radial-gradient(circle_at_bottom_left,rgba(243,198,35,0.18),transparent_22%),#0a0a0a] shadow-[0_0_36px_rgba(243,198,35,0.08)] hover:border-[#f3c623]/45'
+              : 'border-[#f3c623]/30 bg-gradient-to-br from-white to-[#f3c623]/8 shadow-[0_0_36px_rgba(243,198,35,0.06)] hover:border-[#f3c623]/50'
+          }`}>
             <div className="mb-5 flex items-center justify-between">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#f3c623]/35 bg-[#f3c623]/10 text-xl text-[#f3c623]">▥</div>
+              <div className={`flex h-12 w-12 items-center justify-center rounded-2xl border text-xl ${
+                isDark
+                  ? 'border-[#f3c623]/35 bg-[#f3c623]/10 text-[#f3c623]'
+                  : 'border-[#f3c623]/40 bg-[#f3c623]/15 text-[#c89b0a]'
+              }`}>▥</div>
             </div>
             <div className="space-y-4 text-center">
               {[
@@ -578,90 +609,122 @@ const Hero: React.FC = () => {
                 { val: 60, suf: '%', label: 'Performance Boost' },
               ].map((stat, i) => (
                 <div key={stat.label}>
-                  {i !== 0 && <div className="mb-4 h-px bg-gradient-to-r from-transparent via-[#f3c623]/40 to-transparent" />}
-                  <p className="text-4xl font-black text-[#f3c623]"><Counter target={stat.val} suffix={stat.suf} /></p>
-                  <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] text-white/75">{stat.label}</p>
+                  {i !== 0 && <div className={`mb-4 h-px ${isDark ? 'bg-gradient-to-r from-transparent via-[#f3c623]/40 to-transparent' : 'bg-gradient-to-r from-transparent via-[#f3c623]/30 to-transparent'}`} />}
+                  <p className={`text-4xl font-black ${isDark ? 'text-[#f3c623]' : 'text-[#c89b0a]'}`}><Counter target={stat.val} suffix={stat.suf} /></p>
+                  <p className={`mt-0.5 text-xs font-semibold uppercase tracking-[0.18em] ${isDark ? 'text-white/75' : 'text-slate-600'}`}>{stat.label}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-[1.6rem] border border-[#f3c623]/22 bg-[#0a0a0a] p-5 shadow-[0_0_36px_rgba(243,198,35,0.07)] transition duration-400 hover:-translate-y-1 hover:border-[#f3c623]/45 hover:shadow-[0_0_48px_rgba(243,198,35,0.12)]">
+          <div className={`rounded-[1.6rem] border px-5 py-5 transition duration-400 hover:-translate-y-1 ${
+            isDark
+              ? 'border-[#f3c623]/22 bg-[#0a0a0a] shadow-[0_0_36px_rgba(243,198,35,0.07)] hover:border-[#f3c623]/45 hover:shadow-[0_0_48px_rgba(243,198,35,0.12)]'
+              : 'border-[#f3c623]/30 bg-white shadow-[0_0_36px_rgba(243,198,35,0.05)] hover:border-[#f3c623]/50 hover:shadow-[0_0_48px_rgba(243,198,35,0.1)]'
+          }`}>
             <div className="mb-5 flex items-center gap-2">
-              <span className="text-lg text-[#f3c623]">▣</span>
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-white">What I Build</p>
+              <span className={`text-lg ${isDark ? 'text-[#f3c623]' : 'text-[#c89b0a]'}`}>▣</span>
+              <p className={`text-sm font-bold uppercase tracking-[0.22em] ${isDark ? 'text-white' : 'text-slate-900'}`}>What I Build</p>
             </div>
             <div className="space-y-5">
               {buildItems.map((item, index) => (
                 <div key={item.title} className="flex gap-3">
                   <div className="flex flex-col items-center">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#f3c623]/30 bg-[#f3c623]/8 text-base text-[#f3c623]">{item.icon}</div>
-                    {index !== buildItems.length - 1 && <div className="mt-1.5 h-10 w-px bg-gradient-to-b from-[#f3c623]/50 to-transparent" />}
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-full border text-base ${
+                      isDark
+                        ? 'border-[#f3c623]/30 bg-[#f3c623]/8 text-[#f3c623]'
+                        : 'border-[#f3c623]/40 bg-[#f3c623]/12 text-[#c89b0a]'
+                    }`}>{item.icon}</div>
+                    {index !== buildItems.length - 1 && <div className={`mt-1.5 h-10 w-px ${isDark ? 'bg-gradient-to-b from-[#f3c623]/50 to-transparent' : 'bg-gradient-to-b from-[#f3c623]/40 to-transparent'}`} />}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold leading-tight text-white">{item.title}</p>
-                    <p className="mt-1 text-xs leading-6 text-[#f3c623]/65">{item.description}</p>
+                    <p className={`text-sm font-semibold leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>{item.title}</p>
+                    <p className={`mt-1 text-xs leading-6 ${isDark ? 'text-[#f3c623]/65' : 'text-[#c89b0a]/70'}`}>{item.description}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-[1.6rem] border border-[#f3c623]/22 bg-[#0a0a0a] p-5 shadow-[0_0_36px_rgba(243,198,35,0.07)] transition duration-400 hover:-translate-y-1 hover:border-[#f3c623]/45 hover:shadow-[0_0_48px_rgba(243,198,35,0.12)]">
+          <div className={`rounded-[1.6rem] border px-5 py-5 transition duration-400 hover:-translate-y-1 ${
+            isDark
+              ? 'border-[#f3c623]/22 bg-[#0a0a0a] shadow-[0_0_36px_rgba(243,198,35,0.07)] hover:border-[#f3c623]/45 hover:shadow-[0_0_48px_rgba(243,198,35,0.12)]'
+              : 'border-[#f3c623]/30 bg-white shadow-[0_0_36px_rgba(243,198,35,0.05)] hover:border-[#f3c623]/50 hover:shadow-[0_0_48px_rgba(243,198,35,0.1)]'
+          }`}>
             <div className="mb-5 flex items-center gap-2">
-              <span className="text-lg text-[#f3c623]">✦</span>
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-white">Skill Distribution</p>
+              <span className={`text-lg ${isDark ? 'text-[#f3c623]' : 'text-[#c89b0a]'}`}>✦</span>
+              <p className={`text-sm font-bold uppercase tracking-[0.22em] ${isDark ? 'text-white' : 'text-slate-900'}`}>Skill Distribution</p>
             </div>
             <div className="relative mx-auto flex h-[240px] w-full max-w-[240px] items-center justify-center">
               <svg viewBox="0 0 100 100" className="h-full w-full">
                 {[8, 18, 28, 38].map((offset) => (
-                  <polygon key={offset} points={`50,${offset} ${92 - offset},${25 + offset * 0.35} ${92 - offset},${75 - offset * 0.35} 50,${100 - offset} ${8 + offset},${75 - offset * 0.35} ${8 + offset},${25 + offset * 0.35}`} fill="none" stroke="rgba(243,198,35,0.14)" />
+                  <polygon key={offset} points={`50,${offset} ${92 - offset},${25 + offset * 0.35} ${92 - offset},${75 - offset * 0.35} 50,${100 - offset} ${8 + offset},${75 - offset * 0.35} ${8 + offset},${25 + offset * 0.35}`} fill="none" stroke={isDark ? 'rgba(243,198,35,0.14)' : 'rgba(243,198,35,0.20)'} />
                 ))}
-                <line x1="50" y1="8" x2="50" y2="92" stroke="rgba(243,198,35,0.14)" />
-                <line x1="16" y1="30" x2="84" y2="70" stroke="rgba(243,198,35,0.14)" />
-                <line x1="16" y1="70" x2="84" y2="30" stroke="rgba(243,198,35,0.14)" />
-                <polygon points="50,20 71,33 67,61 50,74 33,61 29,39" fill="rgba(243,198,35,0.38)" stroke="#f3c623" strokeWidth="1.5" className="animate-pulse" />
+                <line x1="50" y1="8" x2="50" y2="92" stroke={isDark ? 'rgba(243,198,35,0.14)' : 'rgba(243,198,35,0.20)'} />
+                <line x1="16" y1="30" x2="84" y2="70" stroke={isDark ? 'rgba(243,198,35,0.14)' : 'rgba(243,198,35,0.20)'} />
+                <line x1="16" y1="70" x2="84" y2="30" stroke={isDark ? 'rgba(243,198,35,0.14)' : 'rgba(243,198,35,0.20)'} />
+                <polygon points="50,20 71,33 67,61 50,74 33,61 29,39" fill={isDark ? 'rgba(243,198,35,0.38)' : 'rgba(243,198,35,0.40)'} stroke="#f3c623" strokeWidth="1.5" className="animate-pulse" />
                 {skillPoints.map((p) => (
                   <circle key={p.label} cx={p.x} cy={p.y} r="2.2" fill="#f3c623" />
                 ))}
               </svg>
               {skillPoints.map((p) => (
-                <span key={p.label} className="absolute -translate-x-1/2 -translate-y-1/2 text-center text-[10px] font-semibold leading-tight text-white/75" style={{ left: `${p.x}%`, top: `${p.y}%` }}>
+                <span key={p.label} className={`absolute -translate-x-1/2 -translate-y-1/2 text-center text-[10px] font-semibold leading-tight ${isDark ? 'text-white/75' : 'text-slate-700'}`} style={{ left: `${p.x}%`, top: `${p.y}%` }}>
                   {p.label}
                 </span>
               ))}
             </div>
-            <div className="mt-4 rounded-full border border-[#f3c623]/28 bg-[#f3c623]/6 px-4 py-2.5 text-center text-xs text-[#f8e7a6]">✦ Always Learning, Always Building.</div>
+            <div className={`mt-4 rounded-full border px-4 py-2.5 text-center text-xs ${
+              isDark
+                ? 'border-[#f3c623]/28 bg-[#f3c623]/6 text-[#f8e7a6]'
+                : 'border-[#f3c623]/30 bg-[#f3c623]/10 text-[#c89b0a]'
+            }`}>✦ Always Learning, Always Building.</div>
           </div>
         </div>
       </section>
 
-      <section className={`relative z-10 min-h-[95vh] overflow-hidden bg-[radial-gradient(circle_at_center,#1a1a1a_0%,#000000_100%)] px-6 py-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${revealClass(5)}`} data-reveal="5">
+      <section className={`relative z-10 min-h-[95vh] overflow-hidden px-6 py-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${
+        isDark
+          ? 'bg-[radial-gradient(circle_at_center,#1a1a1a_0%,#000000_100%)]'
+          : 'bg-[radial-gradient(circle_at_center,#f3f4f6_0%,#e5e7eb_100%)]'
+      } ${revealClass(5)}`} data-reveal="5">
         <div className="pointer-events-none absolute inset-0 opacity-90">
           {threeReady && <TechStackCloud />}
         </div>
 
         <div className="relative z-10 mx-auto flex min-h-[80vh] max-w-7xl flex-col justify-between">
           <div className="pt-4 text-center">
-            <h2 className="text-4xl font-light tracking-[0.12em] text-white sm:text-5xl lg:text-6xl">
+            <h2 className={`text-4xl font-light tracking-[0.12em] sm:text-5xl lg:text-6xl ${isDark ? 'text-white' : 'text-slate-700'}`}>
               &nbsp; &nbsp;
               <br />
               &nbsp; &nbsp;
             </h2>
-            <p className="mx-auto mt-5 max-w-2xl text-sm leading-8 text-white/58 sm:text-base">
-              Focusing on the Best
-            </p>
+            <h1 className={`mx-auto mt-8 max-w-3xl text-5xl sm:text-6xl lg:text-8xl font-black tracking-tighter leading-tight ${isDark ? '' : 'text-slate-900'}`}>
+              <span className={isDark ? 'text-white' : 'text-slate-800'}>Focusing on the </span><span className="text-[#c1ff00] italic font-playfair">Best</span>
+            </h1>
           </div>
         </div>
       </section>
-      <section className="relative z-10 bg-black px-6 pb-20 sm:px-10 lg:px-14">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 border-t border-[#f3c623]/20 pt-10">
+
+      <section className={`relative z-10 px-6 py-20 transition-colors duration-700 sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-white'}`}>
+        <div className="mx-auto max-w-7xl text-center">
+          <h3 className={`text-2xl font-bold tracking-wide sm:text-3xl lg:text-4xl mb-6 ${isDark ? '' : 'text-slate-900'}`}>
+            <span className="text-[#c1ff00]">Multiple</span> <span className={isDark ? 'text-white' : 'text-slate-800'}>Tech Stack</span>
+          </h3>
+          <p className={`mx-auto max-w-3xl text-sm leading-8 sm:text-base ${isDark ? 'text-white/70' : 'text-slate-600'}`}>
+            I have worked with multiple technologies and frameworks to build scalable and efficient applications.
+          </p>
+        </div>
+      </section>
+
+      <section className={`relative z-10 px-6 pb-20 sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-white'}`}>
+        <div className={`mx-auto flex max-w-7xl flex-col items-center gap-4 border-t pt-10 ${isDark ? 'border-[#f3c623]/20' : 'border-[#f3c623]/30'}`}>
           <img
             src={APP_LOGO_URL}
             alt="App logo"
             className="h-16 w-16 rounded-lg object-cover shadow-[0_0_24px_rgba(243,198,35,0.5)]"
           />
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#f3c623]">Built with Code</p>
+          <p className={`text-xs font-bold uppercase tracking-[0.28em] ${isDark ? 'text-[#f3c623]' : 'text-[#c89b0a]'}`}>Built with Code</p>
         </div>
       </section>
 
