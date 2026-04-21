@@ -1,7 +1,7 @@
 import { Project, Experience, SkillCategory, Certification, Achievement } from './types';
 
 export const APP_LOGO_URL =
-  'https://github.com/user-attachments/assets/a759aca4-d673-4e52-b551-3b5414a9daa8';
+  '/assets/app-logo.svg';
 
 export const CV_DATA = {
   name: "Bhumika",
