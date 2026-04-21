@@ -5,8 +5,9 @@ import { useTheme } from '../App';
 
 const CertCard: React.FC<{ cert: any; isDark: boolean; index: number }> = ({ cert, isDark, index }) => {
   return (
-    <div className={`p-4 md:p-5 rounded-2xl border transition-all duration-500 flex items-center gap-4 group hover:scale-[1.02] ${isDark ? 'bg-white/5 border-white/5 hover:border-[#3b82f6]/40' : 'bg-white border-black/5 hover:border-[#3b82f6]/60 shadow-sm'}`}>
-      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#3b82f6] flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+    <div className={`relative p-4 md:p-5 rounded-2xl border transition-all duration-500 flex items-center gap-4 group hover:scale-[1.02] overflow-hidden ${isDark ? 'bg-white/5 border-white/5 hover:border-[#3b82f6]/40 backdrop-blur-xl' : 'bg-white/80 border-white/60 hover:border-[#3b82f6]/60 shadow-[0_20px_50px_rgba(15,23,42,0.12)]'}`}>
+      <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[#3b82f6] via-[#06b6d4] to-[#a855f7] opacity-70"></div>
+      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#3b82f6] flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(59,130,246,0.4)]">
         <span className="text-white font-black text-[10px] md:text-[12px]">{index + 1}</span>
       </div>
       <div className="flex-1 min-w-0">
@@ -111,19 +112,45 @@ const Certifications: React.FC = () => {
       </section>
 
       {/* 2. STACK 2: CERTIFICATIONS */}
-      <section className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center z-20 py-10 transition-colors duration-1000 shadow-[0_-50px_100px_rgba(0,0,0,0.5)] ${isDark ? 'bg-black' : 'bg-slate-50'}`}>
-        <div className="max-w-7xl mx-auto w-full px-6 overflow-y-auto max-h-[85vh] py-10">
-          <div className="text-center mb-12 md:mb-16">
+      <section className={`sticky top-0 h-screen w-full flex flex-col items-center justify-center z-20 py-10 transition-colors duration-1000 shadow-[0_-50px_100px_rgba(0,0,0,0.5)] relative overflow-hidden ${isDark ? 'bg-[#05070f]' : 'bg-slate-50'}`}>
+        <div className="absolute inset-0 z-0">
+          <div className="absolute -top-24 -left-24 w-[45vw] h-[45vw] bg-blue-500/20 rounded-full blur-[140px] animate-pulse"></div>
+          <div className="absolute -bottom-28 -right-24 w-[40vw] h-[40vw] bg-cyan-400/20 rounded-full blur-[140px] animate-bounce-slow"></div>
+          <div
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage:
+                'radial-gradient(circle at 1px 1px, rgba(59,130,246,0.35) 1px, transparent 0)',
+              backgroundSize: '26px 26px'
+            }}
+          ></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto w-full px-6 py-10 relative z-10">
+          <div className="text-center mb-10 md:mb-12">
             <h3 className={`text-3xl md:text-5xl font-black tracking-tighter uppercase ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              CREDENTIALS
+              CERTIFICATIONS & TRAININGS
             </h3>
-            <div className="w-24 h-1.5 bg-[#3b82f6] mx-auto mt-4 rounded-full shadow-[0_0_30px_rgba(59,130,246,0.5)]"></div>
+            <div className="w-28 h-1.5 bg-[#3b82f6] mx-auto mt-4 rounded-full shadow-[0_0_40px_rgba(59,130,246,0.5)]"></div>
+            <p className={`mt-4 text-sm md:text-base font-medium ${isDark ? 'text-blue-100/70' : 'text-slate-500'}`}>
+              Scroll to explore verified credentials and training milestones.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 max-w-6xl mx-auto text-left">
-             {CERTIFICATIONS.map((cert, idx) => (
-               <CertCard key={idx} cert={cert} index={idx} isDark={isDark} />
-             ))}
+          <div
+            className={`cert-scroll max-h-[70vh] overflow-y-auto rounded-[2.75rem] border px-5 md:px-8 py-8 md:py-10 ${isDark ? 'bg-white/5 border-white/10 backdrop-blur-2xl' : 'bg-white/80 border-white/60 shadow-[0_30px_80px_rgba(15,23,42,0.12)]'}`}
+            style={{
+              WebkitMaskImage:
+                'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+              maskImage:
+                'linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)'
+            }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto text-left">
+              {CERTIFICATIONS.map((cert, idx) => (
+                <CertCard key={idx} cert={cert} index={idx} isDark={isDark} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -177,6 +204,21 @@ const Certifications: React.FC = () => {
         }
         .glow-blue {
           text-shadow: 0 0 50px rgba(59, 130, 246, 0.3);
+        }
+        .cert-scroll {
+          scroll-behavior: smooth;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(59, 130, 246, 0.65) transparent;
+        }
+        .cert-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        .cert-scroll::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .cert-scroll::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, rgba(59, 130, 246, 0.9), rgba(6, 182, 212, 0.8), rgba(168, 85, 247, 0.9));
+          border-radius: 999px;
         }
         ::-webkit-scrollbar {
           width: 4px;

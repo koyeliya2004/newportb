@@ -239,24 +239,43 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
 ];
 
 export const CERTIFICATIONS: Certification[] = [
-  { name: "Machine Learning" },
-  { name: "Full Stack Web Development" },
-  { name: "Data Engineering Fundamentals" },
-  { name: "Cloud Basics" },
-  { name: "AI & NLP" }
+  { name: "AWS Certified Solutions Architect – Associate (SAA-C03)" },
+  { name: "Oracle AI Foundations Associate (OCI)" },
+  { name: "IBM AI Product Management Professional Certificate" },
+  { name: "Google Cloud GenAI + Responsible AI + Gemini Tooling" },
+  { name: "Machine Learning Crash Course (MLCC) – Google" },
+  { name: "Google Analytics Individual Qualification (GA4)" },
+  { name: "Google Advanced Data Analytics Professional Certificate" },
+  { name: "SQL for Data Science – University of California" },
+  { name: "Google Cybersecurity Professional Certificate" },
+  { name: "Harvard CS50 – Introduction to Computer Science" },
+  { name: "Cybersecurity Fundamentals—LinkedIn Learning" },
+  { name: "ISB Executive Education — Investing Fundamentals" }
 ];
 
 export const ACHIEVEMENTS: Achievement[] = [
   {
-    title: "15+ Projects Built",
-    description: "Designed and developed multiple portfolio, AI, and full-stack applications."
+    title: "Second Runner-Up — Igniters Tank Competition",
+    description: "Engineered a tech-driven solution for an impact challenge."
   },
   {
-    title: "40+ APIs Developed",
-    description: "Worked on backend systems, integrations, and production-style API development."
+    title: "Top 12 National Finalist — LaunchX",
+    description: "National Business Summit, Jadavpur University."
   },
   {
-    title: "Always Learning",
-    description: "Constantly building, exploring, and improving across AI, web, and data systems."
+    title: "Cloud & DevOps Associate — Ignite X Club",
+    description: "Focused on cloud, containerization, and CI/CD basics."
+  },
+  {
+    title: "Finalist — Innovate for Impact (Loreto College)",
+    description: "Designed a sustainable, tech-enabled cloud kitchen business model."
+  },
+  {
+    title: "Marketing Team Member — HackInverse",
+    description: "Contributed to East India’s first theme-based hackathon."
+  },
+  {
+    title: "Finalist — Market Maelstrom (ECONOVISION’25)",
+    description: "Presented a sustainability-focused market strategy case study."
   }
 ];
