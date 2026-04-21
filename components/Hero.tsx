@@ -660,9 +660,7 @@ const Hero: React.FC = () => {
             alt="App logo"
             className="h-16 w-16 rounded-lg object-cover shadow-[0_0_24px_rgba(243,198,35,0.5)]"
           />
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#f3c623]">
-            <span aria-hidden="true">&lt;/&gt;</span> Built with Code
-          </p>
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#f3c623]">Built with Code</p>
         </div>
       </section>
 
