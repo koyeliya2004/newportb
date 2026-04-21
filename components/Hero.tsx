@@ -629,7 +629,9 @@ const Hero: React.FC = () => {
         <div className="relative z-10 mx-auto flex min-h-[80vh] max-w-7xl flex-col justify-between">
           <div className="pt-4 text-center">
             <h2 className="text-4xl font-light tracking-[0.12em] text-white sm:text-5xl lg:text-6xl">
-              Focusing on the <span className="font-black text-[#f3c623]">Best</span>
+              &nbsp; &nbsp;
+              <br />
+              &nbsp; &nbsp;
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-sm leading-8 text-white/58 sm:text-base">
               A floating cloud of technologies I use to design, develop, and deploy scalable digital products.
