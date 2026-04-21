@@ -538,12 +538,6 @@ const Hero: React.FC = () => {
             >
               About Me
             </button>
-            <button
-              onClick={() => navigate('/projects')}
-              className="rounded-full border border-white/18 bg-white/5 px-8 py-4 text-xs font-black uppercase tracking-[0.28em] text-white transition duration-300 hover:-translate-y-1 hover:border-[#f3c623]/55 hover:text-[#f3c623]"
-            >
-              Explore My Work →
-            </button>
           </div>
         </div>
       </section>
@@ -653,7 +647,7 @@ const Hero: React.FC = () => {
               &nbsp; &nbsp;
             </h2>
             <p className="mx-auto mt-5 max-w-2xl text-sm leading-8 text-white/58 sm:text-base">
-              A floating cloud of technologies I use to design, develop, and deploy scalable digital products.
+              Focusing on the Best
             </p>
           </div>
         </div>
