@@ -2,6 +2,46 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
 
+const BhumikaLogo: React.FC = () => (
+  <svg
+    width="40"
+    height="40"
+    viewBox="0 0 40 40"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#d946ef" />
+        <stop offset="50%" stopColor="#a855f7" />
+        <stop offset="100%" stopColor="#3b82f6" />
+      </linearGradient>
+      <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#a855f7" />
+        <stop offset="100%" stopColor="#7c3aed" />
+      </linearGradient>
+    </defs>
+    {/* Background rounded square */}
+    <rect width="40" height="40" rx="8" fill="url(#bgGrad)" />
+    {/* Leaf shape left */}
+    <ellipse cx="13" cy="26" rx="5" ry="8" transform="rotate(-30 13 26)" fill="url(#leafGrad)" opacity="0.85" />
+    {/* Main circle body */}
+    <circle cx="24" cy="22" r="9" fill="#1e1b4b" />
+    {/* Code icon </> inside circle */}
+    <text x="24" y="26" textAnchor="middle" fontSize="7" fontWeight="bold" fill="#c4b5fd" fontFamily="monospace">&lt;/&gt;</text>
+    {/* Antenna lines */}
+    <line x1="30" y1="16" x2="36" y2="11" stroke="#a855f7" strokeWidth="1.5" strokeLinecap="round" />
+    <line x1="31" y1="19" x2="38" y2="16" stroke="#a855f7" strokeWidth="1.5" strokeLinecap="round" />
+    <line x1="30" y1="22" x2="37" y2="21" stroke="#a855f7" strokeWidth="1.5" strokeLinecap="round" />
+    {/* Antenna dots */}
+    <circle cx="36" cy="11" r="1.5" fill="#a855f7" />
+    <circle cx="38" cy="16" r="1.5" fill="#a855f7" />
+    <circle cx="37" cy="21" r="1.5" fill="#a855f7" />
+    {/* Stem / tail */}
+    <path d="M18 14 Q14 6 20 4" stroke="#c4b5fd" strokeWidth="2" strokeLinecap="round" fill="none" />
+  </svg>
+);
+
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
@@ -23,7 +63,6 @@ const Navbar: React.FC = () => {
     { name: 'Contact', path: '/contact' }
   ];
 
-  // Theme-aware styles
   const isDark = theme === 'dark';
   
   const textColor = (isHome && !isScrolled && isDark)
@@ -37,18 +76,13 @@ const Navbar: React.FC = () => {
         ? 'bg-black/90 backdrop-blur-md border-b border-white/10'
         : 'bg-white/90 backdrop-blur-md border-b border-black/10')
     : 'bg-transparent';
-  
-  // Colorful Logo Style
-  const logoStyle = 'bg-gradient-to-br from-[#d946ef] via-[#a855f7] to-[#3b82f6] text-white shadow-lg shadow-purple-500/20';
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 py-6 ${bgColor}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <NavLink to="/" className="flex items-center gap-2">
-          <div
-            className={`w-10 h-10 ${logoStyle} font-black flex items-center justify-center rounded-sm text-xl tracking-tighter transition-all hover:scale-105 active:scale-95`}
-          >
-            BT
+          <div className="transition-all hover:scale-105 active:scale-95">
+            <BhumikaLogo />
           </div>
           <span
             className={`font-black text-xl hidden sm:inline-block tracking-tighter uppercase ${textColor} transition-colors`}
