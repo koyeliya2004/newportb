@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useTheme } from '../App';
-import { APP_LOGO_URL } from '../constants';
+import { Logo } from './Logo';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -43,11 +43,7 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <NavLink to="/" className="flex items-center gap-2">
           <div className="transition-all hover:scale-105 active:scale-95">
-            <img
-              src={APP_LOGO_URL}
-              alt="App logo"
-              className="h-10 w-10 rounded-md object-cover shadow-[0_0_16px_rgba(243,198,35,0.4)]"
-            />
+            <Logo className="h-10 w-10 drop-shadow-[0_0_16px_rgba(243,198,35,0.4)]" />
           </div>
           <span
             className={`font-black text-xl hidden sm:inline-block tracking-tighter uppercase ${textColor} transition-colors`}

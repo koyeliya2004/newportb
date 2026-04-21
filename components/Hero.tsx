@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../App';
 import { APP_LOGO_URL } from '../constants';
+import { Logo } from './Logo';
 import BhumikaPortfolio from './BhumikaPortfolio';
 
 const GoldenNetwork: React.FC = () => {
@@ -95,10 +96,10 @@ const GoldenNetwork: React.FC = () => {
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
-      targetX += (mouseX - targetX) * 0.07;
-      targetY += (mouseY - targetY) * 0.07;
-      camera.position.x += (targetX * 0.08 - camera.position.x) * 0.06;
-      camera.position.y += (-targetY * 0.08 - camera.position.y) * 0.06;
+      targetX += (mouseX - targetX) * 0.15;
+      targetY += (mouseY - targetY) * 0.15;
+      camera.position.x += (targetX * 0.1 - camera.position.x) * 0.1;
+      camera.position.y += (-targetY * 0.1 - camera.position.y) * 0.1;
       camera.lookAt(scene.position);
 
       group.rotation.y += 0.0015;
@@ -113,10 +114,10 @@ const GoldenNetwork: React.FC = () => {
         positions[i * 3 + 1] += velocities[i].y;
         positions[i * 3 + 2] += velocities[i].z;
 
-        const pointerPushX = targetX * 0.00018;
-        const pointerPushY = -targetY * 0.00018;
-        positions[i * 3] += pointerPushX * (i % 5 === 0 ? 1.8 : 0.8);
-        positions[i * 3 + 1] += pointerPushY * (i % 7 === 0 ? 1.5 : 0.7);
+        const pointerPushX = targetX * 0.0008;
+        const pointerPushY = -targetY * 0.0008;
+        positions[i * 3] += pointerPushX * (i % 3 === 0 ? 3.5 : 1.2);
+        positions[i * 3 + 1] += pointerPushY * (i % 4 === 0 ? 3.5 : 1.2);
 
         if (positions[i * 3] < -450) positions[i * 3] = 450;
         if (positions[i * 3] > 450) positions[i * 3] = -450;
@@ -503,8 +504,8 @@ const Hero: React.FC = () => {
               >
                 <div className={`absolute inset-4 rounded-full ${isDark ? 'bg-[#f3c623]/8' : 'bg-[#f3c623]/12'} blur-xl`} />
                 <div className="relative z-10 flex flex-col items-center gap-2">
-                  <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#f3c623] to-[#c89b0a] text-3xl font-black text-black shadow-[0_0_32px_rgba(243,198,35,0.45)]">
-                    BT
+                  <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#f3c623] to-[#c89b0a] shadow-[0_0_32px_rgba(243,198,35,0.45)]">
+                    <Logo className="h-14 w-14 drop-shadow-[0_0_8px_rgba(0,0,0,0.5)]" />
                   </div>
                   <p className={`mt-3 text-sm font-bold ${isDark ? 'text-white/80' : 'text-slate-800'}`}>Bhumika Tewari</p>
                   <p className="text-xs font-medium text-[#f3c623]/80">AI / Full Stack</p>

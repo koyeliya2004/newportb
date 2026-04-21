@@ -115,16 +115,51 @@ const Skills: React.FC = () => {
       
       <div className="max-w-7xl mx-auto relative z-20">
         {/* Header Section with Summary */}
-        <div className="relative mb-32 md:mb-52 text-center py-24 md:py-32">
-          <div className="relative z-10">
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-none select-none text-white">
-              ABOUT <span className="text-pink-500 italic font-playfair animate-glow-pulse">ME</span>
+        <div className="relative mb-32 md:mb-52 text-left py-24 md:py-32">
+          <div className="relative z-10 max-w-4xl mx-auto pl-4 md:pl-0">
+            {/* Header */}
+            <h2 className="text-3xl md:text-5xl font-black tracking-wide flex items-center mb-8 font-sans drop-shadow-md">
+              <span className="text-transparent bg-clip-text bg-gradient-to-br from-yellow-400 to-yellow-600 mr-4">&lt;/&gt;</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-blue-500">ABOUT ME</span>
             </h2>
             
-            <div className="mt-16 max-w-4xl mx-auto px-6 text-sm md:text-lg font-medium leading-relaxed drop-shadow-sm text-gray-200">
-              <p className="italic bg-black/30 md:bg-transparent backdrop-blur-md md:backdrop-blur-none p-8 rounded-[3rem] md:p-0">
-                "{CV_DATA.summary}"
-              </p>
+            {/* Horizontal glow line under header */}
+            <div className="relative w-full md:w-[90%] h-[2px] bg-gradient-to-r from-yellow-400 via-pink-500 to-blue-500 mb-16 shadow-[0_0_15px_rgba(236,72,153,0.5)]">
+              <div className="absolute left-0 -top-[3px] w-2 h-2 rounded-full bg-yellow-400 shadow-[0_0_12px_#facc15]"></div>
+            </div>
+            
+            {/* Timeline wrapper */}
+            <div className="relative pl-10 md:pl-16 mt-16 font-sans">
+              {/* Vertical Gradient Line */}
+              <div className="absolute left-0 top-3 bottom-0 w-[2px] bg-gradient-to-b from-yellow-400 via-pink-500 to-blue-500">
+                {/* Dots */}
+                <div className="absolute -left-[3px] top-0 w-2 h-2 rounded-full bg-yellow-400 shadow-[0_0_10px_#facc15]"></div>
+                <div className="absolute -left-[3px] top-[48%] w-2 h-2 rounded-full bg-pink-500 shadow-[0_0_10px_#ec4899]"></div>
+              </div>
+              
+              {/* Text Blocks */}
+              <div className="mb-14 text-gray-300 text-base md:text-xl leading-relaxed md:leading-relaxed font-light">
+                <p>
+                  I'm a developer focused on building <span className="text-pink-400 font-normal">AI-powered</span> 
+                  <br className="hidden md:block"/>applications and scalable web systems. I enjoy 
+                  <br className="hidden md:block"/>transforming ideas into real-world products using 
+                  <br className="hidden md:block"/><span className="text-pink-400 font-normal">clean architecture</span> and <span className="text-purple-400 font-normal">modern technologies</span>.
+                </p>
+              </div>
+              
+              <div className="mb-14 text-gray-300 text-base md:text-xl leading-relaxed md:leading-relaxed font-light">
+                <p>
+                  My experience spans across <span className="text-purple-400 font-normal">full-stack development</span>,
+                  <br className="hidden md:block"/><span className="text-pink-400 font-normal">machine learning</span>, and <span className="text-purple-400 font-normal">cloud-based systems</span> — 
+                  <br className="hidden md:block"/>allowing me to design complete end-to-end
+                  <br className="hidden md:block"/>solutions.
+                </p>
+              </div>
+
+              {/* Terminal cursor part */}
+              <div className="mt-10 text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-blue-500 tracking-widest font-mono drop-shadow-md">
+                &gt;_
+              </div>
             </div>
           </div>
         </div>
@@ -141,54 +176,70 @@ const Skills: React.FC = () => {
           {[
             {
               title: 'Languages',
-              content: 'Python, JavaScript, TypeScript, C Programming.'
+              content: 'Python, JavaScript, TypeScript, C Programming.',
+              dotColor: 'bg-pink-500',
+              glowColor: 'rgba(236,72,153,0.6)'
             },
             {
               title: 'Web Development',
-              content: 'React.js, Next.js, Node.js, Express.js, MERN Stack, REST APIs, JWT Auth, WebSockets.'
+              content: 'React.js, Next.js, Node.js, Express.js, MERN Stack, REST APIs, JWT Auth, WebSockets.',
+              dotColor: 'bg-pink-500',
+              glowColor: 'rgba(236,72,153,0.6)'
             },
             {
               title: 'AI/ML & LLMs',
-              content: 'LangChain, Transformers, RAG Systems, TensorFlow, Llama/GPT/Gemini Models, Prompt Engineering, Machine Learning, Gen AI, NLP, GAN, FAISS, ChromaDB.'
+              content: 'LangChain, Transformers, RAG Systems, TensorFlow, Llama/GPT/Gemini Models, Prompt Engineering, Machine Learning, Gen AI, NLP, GAN, FAISS, ChromaDB.',
+              dotColor: 'bg-pink-500',
+              glowColor: 'rgba(236,72,153,0.6)'
             },
             {
               title: 'Data Engineering & Analysis',
-              content: 'ETL Pipelines, SQL, PostgreSQL, MongoDB, MySQL, Supabase, Power BI, DAX, Tableau, Apache Airflow, Data Modeling, Data Lakes and Warehousing, Incremental Loads, Vector Databases.'
+              content: 'ETL Pipelines, SQL, PostgreSQL, MongoDB, MySQL, Supabase, Power BI, DAX, Tableau, Apache Airflow, Data Modeling, Data Lakes and Warehousing, Incremental Loads, Vector Databases.',
+              dotColor: 'bg-pink-500',
+              glowColor: 'rgba(236,72,153,0.6)'
             },
             {
               title: 'Cloud & DevOps',
-              content: 'AWS, Docker, Kubernetes (Basics), Git/GitHub, CI/CD Mindset.'
+              content: 'AWS, Docker, Kubernetes (Basics), Git/GitHub, CI/CD Mindset.',
+              dotColor: 'bg-pink-500',
+              glowColor: 'rgba(236,72,153,0.6)'
             },
             {
               title: 'Tools & Frameworks',
-              content: 'Flask, Redis, Prisma, Streamlit, FastAPI, Tailwind CSS, Clerk/AuthJS, n8n, Zapier.'
+              content: 'Flask, Redis, Prisma, Streamlit, FastAPI, Tailwind CSS, Clerk/AuthJS, n8n, Zapier.',
+              dotColor: 'bg-pink-500',
+              glowColor: 'rgba(236,72,153,0.6)'
             },
             {
               title: 'Project Management & Collaboration',
-              content: 'Jira, Trello, Agile Practices, Stakeholder Communication.'
+              content: 'Jira, Trello, Agile Practices, Stakeholder Communication.',
+              dotColor: 'bg-pink-500',
+              glowColor: 'rgba(236,72,153,0.6)'
             },
             {
               title: 'Soft Skills',
-              content: 'Analytical Thinking, Product Thinking, Technical Mentoring, Team Collaboration, Detail-Oriented.'
+              content: 'Analytical Thinking, Product Thinking, Technical Mentoring, Team Collaboration, Detail-Oriented.',
+              dotColor: 'bg-pink-500',
+              glowColor: 'rgba(236,72,153,0.6)'
             }
           ].map((skillGroup, idx) => (
             <div
               key={skillGroup.title}
-              className={`p-8 rounded-3xl border transition-all duration-1000 transform`}
+              className={`p-[1px] rounded-3xl bg-[#1f1a18]/60 border border-white/5 transition-all duration-700 transform hover:scale-[1.02] hover:bg-white/5 hover:border-white/20`}
               style={{
                 opacity: 1,
                 transform: 'translateY(0) scale(1)',
                 transitionDelay: `${idx * 80}ms`,
               }}
             >
-              <div className="bg-white/5 border border-white/10 backdrop-blur-xl p-8 rounded-3xl">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.6)]"></div>
-                  <h4 className="text-sm md:text-base font-black uppercase tracking-[0.2em] text-white">
+              <div className="bg-transparent h-full p-8 md:p-10 rounded-3xl">
+                <div className="flex items-center gap-3 mb-6 relative">
+                  <div className={`w-2.5 h-2.5 rounded-full ${skillGroup.dotColor} shadow-[0_0_20px_${skillGroup.glowColor}]`}></div>
+                  <h4 className="text-[17px] font-black uppercase tracking-[0.25em] text-white drop-shadow-md pb-0.5">
                     {skillGroup.title}
                   </h4>
                 </div>
-                <p className="text-gray-300 text-sm md:text-base leading-relaxed">
+                <p className="text-gray-300 text-[16px] leading-relaxed font-normal opacity-95">
                   {skillGroup.content}
                 </p>
               </div>
