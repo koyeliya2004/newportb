@@ -14,7 +14,6 @@ const WaveBackground: React.FC = () => {
     let height = window.innerHeight;
     let animationId: number;
 
-    // Set canvas size
     const resizeCanvas = () => {
       width = window.innerWidth;
       height = window.innerHeight;
@@ -27,28 +26,27 @@ const WaveBackground: React.FC = () => {
     let time = 0;
 
     const drawWaves = () => {
-      // Clear with dark background
       ctx.fillStyle = '#0a0905';
       ctx.fillRect(0, 0, width, height);
 
       const waveCount = 5;
       const waveColors = [
-        { r: 255, g: 193, b: 7 },    // Gold/Yellow
-        { r: 236, g: 72, b: 153 },   // Pink
-        { r: 139, g: 92, b: 246 },   // Purple
-        { r: 59, g: 130, b: 246 },   // Blue
-        { r: 250, g: 204, b: 21 },   // Yellow
+        { r: 255, g: 193, b: 7 },
+        { r: 236, g: 72, b: 153 },
+        { r: 139, g: 92, b: 246 },
+        { r: 59, g: 130, b: 246 },
+        { r: 250, g: 204, b: 21 },
       ];
 
       for (let waveIdx = 0; waveIdx < waveCount; waveIdx++) {
         const waveColor = waveColors[waveIdx % waveColors.length];
         const yOffset = (height / waveCount) * waveIdx + height / 3;
-        const amplitude = 35 + Math.sin(time * speed * 2) * 15 + waveIdx * 10;
+        // FIX: declare frequency, speed, opacity BEFORE amplitude so no TDZ error
         const frequency = 0.007 - waveIdx * 0.001;
         const speed = 0.01 + waveIdx * 0.008;
         const opacity = 0.18 - waveIdx * 0.015;
+        const amplitude = 35 + Math.sin(time * speed * 2) * 15 + waveIdx * 10;
 
-        // More vibrant and glowing
         ctx.strokeStyle = `rgba(${waveColor.r}, ${waveColor.g}, ${waveColor.b}, ${opacity + 0.1})`;
         ctx.lineWidth = 3 + waveIdx * 0.7;
         ctx.shadowBlur = 15;
@@ -66,7 +64,6 @@ const WaveBackground: React.FC = () => {
 
         ctx.stroke();
 
-        // Increase fill transparency and remove shadow for the fill part
         ctx.shadowBlur = 0;
         ctx.fillStyle = `rgba(${waveColor.r}, ${waveColor.g}, ${waveColor.b}, ${opacity * 0.4})`;
         ctx.beginPath();
@@ -86,7 +83,6 @@ const WaveBackground: React.FC = () => {
         ctx.fill();
       }
 
-      // Add subtle mesh gradient overlay
       const gradient = ctx.createLinearGradient(0, 0, width, height);
       gradient.addColorStop(0, 'rgba(236, 72, 153, 0.05)');
       gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
