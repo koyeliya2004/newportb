@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { SKILL_CATEGORIES, CV_DATA } from '../constants';
 import WaveBackground from './WaveBackground';
 import TechStack from './TechStack';
+import { useTheme } from '../App';
 
 const useScrollReveal = () => {
   const [active, setActive] = useState(false);
@@ -46,6 +47,8 @@ const ColorfulSkillIcon: React.FC<{ icon: string; index: number }> = ({ icon, in
 };
 
 const Skills: React.FC = () => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   
   const techStack = [
     'py',
@@ -106,10 +109,20 @@ const Skills: React.FC = () => {
     }
   ];
 
+  // Theme-aware class helpers
+  const bodyText = isDark ? 'text-gray-300' : 'text-slate-700';
+  const headingText = isDark ? 'text-white' : 'text-slate-900';
+  const cardBg = isDark ? 'bg-white/5 border-white/10 text-gray-200' : 'bg-black/5 border-black/10 text-slate-800';
+  const sectionDivider = isDark
+    ? 'bg-gradient-to-r from-gray-500 via-blue-500 to-transparent opacity-30'
+    : 'bg-gradient-to-r from-slate-400 via-blue-400 to-transparent opacity-40';
+
   return (
     <section
       id="about"
-      className="relative py-32 px-6 overflow-hidden min-h-screen"
+      className={`relative py-32 px-6 overflow-hidden min-h-screen transition-colors duration-500 ${
+        isDark ? 'bg-black' : 'bg-[#fff8df]'
+      }`}
     >
       <WaveBackground />
       
@@ -138,7 +151,7 @@ const Skills: React.FC = () => {
               </div>
               
               {/* Text Blocks */}
-              <div className="mb-14 text-gray-300 text-base md:text-xl leading-relaxed md:leading-relaxed font-light">
+              <div className={`mb-14 ${bodyText} text-base md:text-xl leading-relaxed md:leading-relaxed font-light transition-colors duration-500`}>
                 <p>
                   I'm a developer focused on building <span className="text-pink-400 font-normal">AI-powered</span> 
                   <br className="hidden md:block"/>applications and scalable web systems. I enjoy 
@@ -147,7 +160,7 @@ const Skills: React.FC = () => {
                 </p>
               </div>
               
-              <div className="mb-14 text-gray-300 text-base md:text-xl leading-relaxed md:leading-relaxed font-light">
+              <div className={`mb-14 ${bodyText} text-base md:text-xl leading-relaxed md:leading-relaxed font-light transition-colors duration-500`}>
                 <p>
                   My experience spans across <span className="text-purple-400 font-normal">full-stack development</span>,
                   <br className="hidden md:block"/><span className="text-pink-400 font-normal">machine learning</span>, and <span className="text-purple-400 font-normal">cloud-based systems</span> — 
@@ -166,10 +179,10 @@ const Skills: React.FC = () => {
 
         {/* Knowledge Matrix Section */}
         <div className="text-left mb-20 flex items-center gap-6">
-          <h3 className="text-2xl md:text-3xl font-black tracking-tight text-white">
+          <h3 className={`text-2xl md:text-3xl font-black tracking-tight ${headingText} transition-colors duration-500`}>
             KNOWLEDGE MATRIX
           </h3>
-          <div className="h-0.5 flex-1 bg-gradient-to-r from-gray-500 via-blue-500 to-transparent opacity-30"></div>
+          <div className={`h-0.5 flex-1 ${sectionDivider}`}></div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-32">
@@ -225,7 +238,11 @@ const Skills: React.FC = () => {
           ].map((skillGroup, idx) => (
             <div
               key={skillGroup.title}
-              className={`p-[1px] rounded-3xl bg-[#1f1a18]/60 border border-white/5 transition-all duration-700 transform hover:scale-[1.02] hover:bg-white/5 hover:border-white/20`}
+              className={`p-[1px] rounded-3xl border transition-all duration-700 transform hover:scale-[1.02] ${
+                isDark
+                  ? 'bg-[#1f1a18]/60 border-white/5 hover:bg-white/5 hover:border-white/20'
+                  : 'bg-black/5 border-black/10 hover:bg-black/10 hover:border-black/20'
+              }`}
               style={{
                 opacity: 1,
                 transform: 'translateY(0) scale(1)',
@@ -234,12 +251,12 @@ const Skills: React.FC = () => {
             >
               <div className="bg-transparent h-full p-8 md:p-10 rounded-3xl">
                 <div className="flex items-center gap-3 mb-6 relative">
-                  <div className={`w-2.5 h-2.5 rounded-full ${skillGroup.dotColor} shadow-[0_0_20px_${skillGroup.glowColor}]`}></div>
-                  <h4 className="text-[17px] font-black uppercase tracking-[0.25em] text-white drop-shadow-md pb-0.5">
+                  <div className={`w-2.5 h-2.5 rounded-full ${skillGroup.dotColor}`}></div>
+                  <h4 className={`text-[17px] font-black uppercase tracking-[0.25em] ${headingText} drop-shadow-md pb-0.5 transition-colors duration-500`}>
                     {skillGroup.title}
                   </h4>
                 </div>
-                <p className="text-gray-300 text-[16px] leading-relaxed font-normal opacity-95">
+                <p className={`${bodyText} text-[16px] leading-relaxed font-normal opacity-95 transition-colors duration-500`}>
                   {skillGroup.content}
                 </p>
               </div>
@@ -250,10 +267,10 @@ const Skills: React.FC = () => {
         {/* Career Roadmap Section */}
         <div className="mb-32">
           <div className="flex items-center gap-6 mb-12">
-            <h3 className="text-2xl md:text-3xl font-black tracking-tight text-white">
+            <h3 className={`text-2xl md:text-3xl font-black tracking-tight ${headingText} transition-colors duration-500`}>
               CAREER ROADMAP
             </h3>
-            <div className="h-0.5 flex-1 bg-gradient-to-r from-pink-500 via-blue-500 to-transparent opacity-40"></div>
+            <div className={`h-0.5 flex-1 ${sectionDivider}`}></div>
           </div>
 
           <div className="relative pl-6 md:pl-10">
@@ -261,21 +278,27 @@ const Skills: React.FC = () => {
             <div className="space-y-10">
               {careerRoadmap.map((step, idx) => (
                 <div key={step.label} className="relative flex flex-col md:flex-row gap-4 md:gap-10">
-                  <div className="absolute -left-[11px] top-1 w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.6)]">
+                  <div className={`absolute -left-[11px] top-1 w-5 h-5 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.6)] ${
+                    isDark ? 'bg-slate-900' : 'bg-[#fff8df]'
+                  }`}>
                     <div className="w-2 h-2 rounded-full bg-pink-500" />
                   </div>
                   <div className="md:w-48 text-xs uppercase tracking-[0.25em] font-black text-pink-500/80 pt-1">
                     {step.label}
                   </div>
                   <div
-                    className="flex-1 p-6 md:p-8 rounded-3xl border backdrop-blur-xl transition-all bg-white/5 border-white/10 text-gray-200"
+                    className={`flex-1 p-6 md:p-8 rounded-3xl border backdrop-blur-xl transition-all ${
+                      isDark
+                        ? 'bg-white/5 border-white/10 text-gray-200'
+                        : 'bg-black/5 border-black/10 text-slate-800'
+                    }`}
                     style={{ transitionDelay: `${idx * 80}ms` }}
                   >
-                    <h4 className="text-lg md:text-xl font-black mb-1">{step.title}</h4>
+                    <h4 className={`text-lg md:text-xl font-black mb-1 ${headingText}`}>{step.title}</h4>
                     <p className="text-xs md:text-sm font-semibold text-pink-500/60 mb-4">{step.company}</p>
                     <ul className="space-y-3">
                       {step.bullets?.map((bullet, bulletIdx) => (
-                        <li key={bulletIdx} className="flex gap-3 text-sm md:text-base leading-relaxed opacity-80">
+                        <li key={bulletIdx} className={`flex gap-3 text-sm md:text-base leading-relaxed opacity-80 ${bodyText}`}>
                           <span className="text-pink-500 font-bold mt-1 flex-shrink-0">•</span>
                           <span>{bullet}</span>
                         </li>
@@ -287,16 +310,20 @@ const Skills: React.FC = () => {
 
               {/* More to Come Indicator */}
               <div className="relative flex flex-col md:flex-row gap-4 md:gap-10">
-                <div className="absolute -left-[11px] top-1 w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.6)]">
+                <div className={`absolute -left-[11px] top-1 w-5 h-5 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.6)] ${
+                  isDark ? 'bg-slate-900' : 'bg-[#fff8df]'
+                }`}>
                   <div className="w-2 h-2 rounded-full bg-pink-500" />
                 </div>
                 <div className="md:w-48 text-xs uppercase tracking-[0.25em] font-black text-pink-500/80 pt-1">
                   2026 →
                 </div>
-                <div className="flex-1 p-6 md:p-8 rounded-3xl border backdrop-blur-xl bg-white/5 border-white/10 text-gray-200 flex items-center justify-center min-h-[120px]">
+                <div className={`flex-1 p-6 md:p-8 rounded-3xl border backdrop-blur-xl flex items-center justify-center min-h-[120px] ${
+                  isDark ? 'bg-white/5 border-white/10 text-gray-200' : 'bg-black/5 border-black/10 text-slate-800'
+                }`}>
                   <div className="flex flex-col items-center gap-3">
                     <div className="text-4xl font-black text-pink-500">+</div>
-                    <p className="text-xs uppercase tracking-[0.2em] font-bold text-gray-400">More Opportunities Coming</p>
+                    <p className={`text-xs uppercase tracking-[0.2em] font-bold ${isDark ? 'text-gray-400' : 'text-slate-500'}`}>More Opportunities Coming</p>
                   </div>
                 </div>
               </div>
