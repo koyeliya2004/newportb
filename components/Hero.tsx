@@ -581,7 +581,7 @@ const Hero: React.FC = () => {
     <div className={`relative overflow-x-hidden ${isDark ? 'bg-[#030307] text-white' : 'bg-white text-slate-900'}`}>
       <section className="relative min-h-screen overflow-hidden" style={{ perspective: '1200px' }}>
         <div className="absolute inset-0 z-0">
-          {threeReady && vantaReady ? <PremiumWavesBackground isDark={isDark} enabled /> : threeReady && <GoldenNetwork />}
+          {threeReady && <GoldenNetwork />}
         </div>
         <div className={`absolute inset-0 z-[1] ${isDark ? 'bg-[#02030a]/28' : 'bg-white/28'}`} />
         {isDark && (
