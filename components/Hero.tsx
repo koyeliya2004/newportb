@@ -415,6 +415,7 @@ const Hero: React.FC = () => {
   const [displayed, setDisplayed] = useState('');
   const [typing, setTyping] = useState(true);
   const [visibleSections, setVisibleSections] = useState<number[]>([]);
+  const [scrollDepth, setScrollDepth] = useState(0);
   const [threeReady, setThreeReady] = useState(!!(window as any).THREE);
   const threeLoaded = useRef(false);
 
@@ -493,6 +494,19 @@ const Hero: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
+
+  useEffect(() => {
+    const onScroll = () => {
+      const maxScroll = Math.max(window.innerHeight * 1.4, 1);
+      const progress = Math.min(window.scrollY / maxScroll, 1);
+      setScrollDepth(progress);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const revealClass = (id: number) =>
     visibleSections.includes(id)
       ? 'opacity-100 translate-y-0 scale-100'
@@ -500,7 +514,7 @@ const Hero: React.FC = () => {
 
   return (
     <div className={`relative overflow-x-hidden ${isDark ? 'bg-[#030307] text-white' : 'bg-white text-slate-900'}`}>
-      <section className="relative min-h-screen overflow-hidden">
+      <section className="relative min-h-screen overflow-hidden" style={{ perspective: '1200px' }}>
         <div className="absolute inset-0 z-0">
           {threeReady && <GoldenNetwork />}
         </div>
@@ -509,7 +523,7 @@ const Hero: React.FC = () => {
           <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_18%_20%,rgba(251,191,36,0.2),transparent_40%),radial-gradient(circle_at_78%_22%,rgba(59,130,246,0.18),transparent_42%),radial-gradient(circle_at_50%_82%,rgba(236,72,153,0.16),transparent_45%)]" />
         )}
 
-        <div className="relative z-[2] mx-auto flex min-h-screen max-w-7xl items-center px-6 sm:px-10 lg:px-14">
+        <div className="relative z-[2] mx-auto flex min-h-screen max-w-7xl items-center px-6 sm:px-10 lg:px-14" style={{ transform: `translate3d(0, ${scrollDepth * -30}px, 0)` }}>
           <div className="grid w-full items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="transition-all duration-1000 ease-out" data-reveal="1">
               <p className={`text-xs font-bold uppercase tracking-[0.38em] ${isDark ? 'text-white/55' : 'text-slate-600'}`}>Hey, I&apos;m</p>
@@ -560,11 +574,23 @@ const Hero: React.FC = () => {
 
         <div className={`absolute bottom-8 left-1/2 z-[2] -translate-x-1/2 flex flex-col items-center gap-2 ${isDark ? 'text-white/30' : 'text-slate-400'}`}>
           <span className="text-xs uppercase tracking-[0.3em]">Scroll</span>
-          <div className={`h-8 w-px ${isDark ? 'bg-gradient-to-b from-[#f3c623]/70 to-transparent' : 'bg-gradient-to-b from-[#f3c623]/80 to-transparent'}`} style={{ animation: 'scrollBlink 2s ease-in-out infinite' }} />
+          <div className="relative h-12 w-8 rounded-full border border-[#f3c623]/50 bg-black/20 p-1">
+            <div
+              className="h-3 w-3 rounded-full bg-gradient-to-br from-[#f3c623] to-[#60a5fa] shadow-[0_0_16px_rgba(243,198,35,0.75)]"
+              style={{
+                transform: `translateY(${scrollDepth * 26}px) scale(${1 - scrollDepth * 0.15})`,
+                transition: 'transform 0.1s linear',
+              }}
+            />
+            <div
+              className="absolute inset-0 rounded-full border border-[#60a5fa]/40"
+              style={{ transform: `scale(${1 + scrollDepth * 0.35}) rotate(${scrollDepth * 120}deg)` }}
+            />
+          </div>
         </div>
       </section>
 
-      <section className={`relative z-10 px-6 pb-10 pt-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-white'} ${revealClass(3)}`} data-reveal="3">
+      <section className={`relative z-10 px-6 pb-10 pt-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-white'} ${revealClass(3)}`} data-reveal="3" style={{ transform: `translate3d(0, ${scrollDepth * 18}px, 0)` }}>
         <div className={`absolute inset-x-0 top-0 h-32 ${isDark ? 'bg-gradient-to-b from-[#f3c623]/5 to-transparent' : 'bg-gradient-to-b from-[#f3c623]/8 to-transparent'}`} />
         <div className="relative mx-auto max-w-7xl">
           <p className={`text-xs font-bold uppercase tracking-[0.38em] ${isDark ? 'text-[#f3c623]' : 'text-[#c89b0a]'}`}>// What I Do</p>
@@ -591,7 +617,7 @@ const Hero: React.FC = () => {
         </div>
       </section>
 
-      <section className={`relative z-10 px-6 pb-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-slate-50'} ${revealClass(4)}`} data-reveal="4">
+      <section className={`relative z-10 px-6 pb-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-slate-50'} ${revealClass(4)}`} data-reveal="4" style={{ transform: `translate3d(0, ${scrollDepth * 24}px, 0)` }}>
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[1fr_0.85fr_1.1fr_1fr]">
           <div className={`rounded-[1.6rem] border px-5 py-5 transition duration-400 hover:-translate-y-1 ${
             isDark

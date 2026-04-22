@@ -3,6 +3,7 @@ import { EXPERIENCES, VIRTUAL_SIMULATIONS } from '../constants';
 import { useTheme } from '../App';
 import { BarChart3, BriefcaseBusiness, CloudCog, Rocket } from 'lucide-react';
 import ExperienceGoldBlueBackground from './ExperienceGoldBlueBackground';
+import BlobFieldBackground from './BlobFieldBackground';
 
 const SPIRAL_PATH =
   'M 300 0 C 450 150, 450 250, 300 400 C 150 550, 150 650, 300 800 C 450 950, 450 1050, 300 1200 C 150 1350, 150 1450, 300 1600';
@@ -148,10 +149,18 @@ const Experience: React.FC = () => {
     >
       <div className="pointer-events-none absolute inset-0">
         <ExperienceGoldBlueBackground />
+        <BlobFieldBackground variant="experience" scrollProgress={trajectoryProgress} />
         <div className={`${isDark ? 'bg-gradient-to-b from-black/35 via-transparent to-black/45' : 'bg-gradient-to-b from-white/10 via-transparent to-slate-950/20'} absolute inset-0`} />
       </div>
 
-      <div className="relative mx-auto max-w-7xl">
+      <div className="relative mx-auto max-w-7xl" style={{ transform: `translateY(${(1 - trajectoryProgress) * 10}px)` }}>
+        <div className="absolute right-2 top-24 hidden h-[65vh] w-2 md:block">
+          <div className={`absolute inset-0 rounded-full ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
+          <div
+            className="absolute left-1/2 h-12 w-12 -translate-x-1/2 rounded-full border border-amber-200/60 bg-gradient-to-br from-blue-400/80 to-amber-300/80 shadow-[0_0_25px_rgba(250,204,21,0.5)]"
+            style={{ top: `calc(${trajectoryProgress * 100}% - 1.5rem)` }}
+          />
+        </div>
         <ScrollReveal>
           <div className="mb-32">
             <p className="mb-4 text-[11px] font-black uppercase tracking-[0.4em] text-amber-300">Career Roadmap</p>

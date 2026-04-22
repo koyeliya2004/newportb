@@ -3,6 +3,7 @@ import { SKILL_CATEGORIES, CV_DATA } from '../constants';
 import WaveBackground from './WaveBackground';
 import TechStack from './TechStack';
 import { useTheme } from '../App';
+import BlobFieldBackground from './BlobFieldBackground';
 
 const useScrollReveal = () => {
   const [active, setActive] = useState(false);
@@ -49,6 +50,8 @@ const ColorfulSkillIcon: React.FC<{ icon: string; index: number }> = ({ icon, in
 const Skills: React.FC = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const sectionRef = useRef<HTMLElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
   
   const techStack = [
     'py',
@@ -85,6 +88,21 @@ const Skills: React.FC = () => {
   ];
 
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const total = rect.height + window.innerHeight;
+      const viewed = window.innerHeight - rect.top;
+      const progress = Math.min(Math.max(viewed / total, 0), 1);
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Theme-aware class helpers
   const bodyText = isDark ? 'text-gray-300' : 'text-slate-700';
   const headingText = isDark ? 'text-white' : 'text-slate-900';
@@ -95,14 +113,23 @@ const Skills: React.FC = () => {
 
   return (
     <section
+      ref={sectionRef}
       id="about"
       className={`relative py-32 px-6 overflow-hidden min-h-screen transition-colors duration-500 ${
         isDark ? 'bg-black' : 'bg-[#fff8df]'
       }`}
     >
       <WaveBackground />
+      <BlobFieldBackground variant="about" scrollProgress={scrollProgress} />
+      <div className="absolute right-4 top-24 z-20 hidden h-[70vh] w-px md:block">
+        <div className={`absolute inset-0 ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
+        <div
+          className="absolute left-1/2 h-10 w-10 -translate-x-1/2 rounded-full border border-white/30 bg-gradient-to-br from-pink-500/70 to-blue-500/60 blur-[1px]"
+          style={{ top: `calc(${scrollProgress * 100}% - 1.25rem)` }}
+        />
+      </div>
       
-      <div className="max-w-7xl mx-auto relative z-20">
+      <div className="max-w-7xl mx-auto relative z-20" style={{ transform: `translateY(${(1 - scrollProgress) * 16}px)` }}>
         {/* Header Section with Summary */}
         <div className="relative mb-32 md:mb-52 text-left py-24 md:py-32">
           <div className="relative z-10 max-w-4xl mx-auto pl-4 md:pl-0">
