@@ -2,6 +2,7 @@
 import React from 'react';
 import { CERTIFICATIONS, ACHIEVEMENTS } from '../constants';
 import { useTheme } from '../App';
+import CertificationWaveBackground from './CertificationWaveBackground';
 
 const CertCard: React.FC<{ cert: any; isDark: boolean; index: number }> = ({ cert, isDark, index }) => {
   return (
@@ -65,19 +66,18 @@ const Certifications: React.FC = () => {
       
       {/* 1. STACK 1: HERO (REFINED BLUE TECH SECTION) */}
       <section className="sticky top-0 h-screen w-full flex flex-col items-center justify-center z-10 bg-gradient-to-br from-[#1e3a8a] via-[#3b82f6] to-[#1d4ed8] overflow-hidden px-6">
+        <CertificationWaveBackground />
+
         {/* Animated Background Layers */}
-        <div className="absolute inset-0 z-0">
-          {/* Glass Orbs */}
+        <div className="absolute inset-0 z-[1]">
           <div className="absolute top-[-10%] left-[-5%] w-[40vw] h-[40vw] bg-white/10 rounded-full blur-[120px] animate-pulse"></div>
           <div className="absolute bottom-[-10%] right-[-5%] w-[35vw] h-[35vw] bg-blue-400/20 rounded-full blur-[100px] animate-bounce-slow"></div>
-          
-          {/* Tech Grid */}
+
           <div className="absolute inset-0 opacity-20" style={{ 
             backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', 
             backgroundSize: '60px 60px' 
           }}></div>
-          
-          {/* Scanning Line */}
+
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent animate-scan-line"></div>
         </div>
 
