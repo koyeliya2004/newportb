@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { EXPERIENCES, VIRTUAL_SIMULATIONS } from '../constants';
 import { useTheme } from '../App';
 import { BarChart3, BriefcaseBusiness, CloudCog, Rocket } from 'lucide-react';
-import ExperienceThreeBackground from './ExperienceThreeBackground';
+import ExperienceGoldBlueBackground from './ExperienceGoldBlueBackground';
 
 const SPIRAL_PATH =
   'M 300 0 C 450 150, 450 250, 300 400 C 150 550, 150 650, 300 800 C 450 950, 450 1050, 300 1200 C 150 1350, 150 1450, 300 1600';
@@ -144,28 +144,20 @@ const Experience: React.FC = () => {
   return (
     <section
       id="experience"
-      className={`relative overflow-hidden px-6 py-32 transition-colors duration-700 ${
-        isDark
-          ? 'bg-[#02040a]'
-          : 'bg-[radial-gradient(circle_at_12%_0%,rgba(56,189,248,0.15),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(244,114,182,0.13),transparent_34%),radial-gradient(circle_at_50%_95%,rgba(129,140,248,0.10),transparent_35%),#f8fafc]'
-      }`}
+      className="relative overflow-hidden px-6 py-32 transition-colors duration-700"
     >
       <div className="pointer-events-none absolute inset-0">
-        {isDark ? (
-          <>
-            <ExperienceThreeBackground />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/40" />
-          </>
-        ) : null}
+        <ExperienceGoldBlueBackground />
+        <div className={`${isDark ? 'bg-gradient-to-b from-black/35 via-transparent to-black/45' : 'bg-gradient-to-b from-white/10 via-transparent to-slate-950/20'} absolute inset-0`} />
       </div>
 
       <div className="relative mx-auto max-w-7xl">
         <ScrollReveal>
           <div className="mb-32">
-            <p className="mb-4 text-[11px] font-black uppercase tracking-[0.4em] text-pink-500">Career Roadmap</p>
+            <p className="mb-4 text-[11px] font-black uppercase tracking-[0.4em] text-amber-300">Career Roadmap</p>
             <h2 className={`text-3xl font-black leading-none tracking-tighter md:text-5xl ${isDark ? 'text-white' : 'text-slate-900'}`}>
               CAREER <br />
-              <span className="font-playfair font-light italic text-blue-500">ROADMAP</span>
+              <span className="font-playfair font-light italic text-blue-300">ROADMAP</span>
             </h2>
           </div>
         </ScrollReveal>
@@ -173,7 +165,7 @@ const Experience: React.FC = () => {
         <div ref={trajectoryRef} className="relative mb-64 space-y-24">
           <div className={`absolute left-[23px] top-4 hidden w-px overflow-hidden md:block ${isDark ? 'bottom-4 bg-white/5' : 'bottom-4 bg-slate-300/40'}`}>
             <div
-              className="absolute left-0 w-full bg-gradient-to-b from-blue-500 via-pink-500 to-blue-500 shadow-[0_0_22px_rgba(236,72,153,0.8)]"
+              className="absolute left-0 w-full bg-gradient-to-b from-blue-400 via-amber-300 to-blue-500 shadow-[0_0_24px_rgba(250,204,21,0.75)]"
               style={{
                 height: '120px',
                 transform: `translate3d(0, ${trajectoryProgress * 100}%, 0)`,
@@ -182,7 +174,7 @@ const Experience: React.FC = () => {
               }}
             />
             <div
-              className="absolute left-0 top-0 w-full bg-gradient-to-b from-blue-500 via-pink-500 to-transparent"
+              className="absolute left-0 top-0 w-full bg-gradient-to-b from-blue-400 via-amber-300 to-transparent"
               style={{
                 height: `${trajectoryProgress * 100}%`,
                 opacity: 0.36,
@@ -193,7 +185,7 @@ const Experience: React.FC = () => {
           {EXPERIENCES.map((exp, idx) => (
             <ScrollReveal key={exp.id} delay={idx * 150}>
               <div className="group relative md:pl-24">
-                <div className={`absolute left-0 top-2 z-10 hidden h-12 w-12 items-center justify-center rounded-full border transition-all duration-500 md:flex ${isDark ? 'border-white/10 bg-black group-hover:border-pink-500' : 'border-black/10 bg-white shadow-lg group-hover:border-pink-500'}`}>
+                <div className={`absolute left-0 top-2 z-10 hidden h-12 w-12 items-center justify-center rounded-full border transition-all duration-500 md:flex ${isDark ? 'border-white/10 bg-black group-hover:border-amber-300' : 'border-black/10 bg-white shadow-lg group-hover:border-amber-300'}`}>
                   <div className={`h-2 w-2 rounded-full transition-all duration-500 group-hover:scale-150 ${isDark ? 'bg-white' : 'bg-slate-900'}`}></div>
                 </div>
                 <div className="grid gap-4 md:grid-cols-[200px_1fr] md:gap-16">
@@ -203,7 +195,7 @@ const Experience: React.FC = () => {
                   </div>
                   <div className={`rounded-[2.5rem] border p-10 transition-all duration-500 hover:-translate-y-1 ${isDark ? 'border-white/5 bg-[#0a0a0a]/90 shadow-2xl hover:border-white/10' : 'border-black/5 bg-white/95 shadow-xl hover:shadow-2xl'}`}>
                     <h3 className={`mb-1 text-2xl font-black ${isDark ? 'text-white' : 'text-slate-900'}`}>{exp.role}</h3>
-                    <p className="mb-8 text-[11px] font-bold uppercase tracking-widest text-pink-600">{exp.company}</p>
+                    <p className="mb-8 text-[11px] font-bold uppercase tracking-widest text-amber-400">{exp.company}</p>
                     <ul className="space-y-4">
                       {exp.bullets.map((bullet, bIdx) => (
                         <li key={bIdx} className={`flex gap-4 text-sm leading-relaxed ${isDark ? 'text-gray-400' : 'text-slate-600'}`}>
@@ -222,9 +214,9 @@ const Experience: React.FC = () => {
         <div ref={spiralRef} className="relative pt-20">
           <ScrollReveal>
             <div className="mb-48 text-center">
-              <p className="mb-4 text-[10px] font-black uppercase tracking-[0.5em] text-blue-500">Knowledge Nexus</p>
+              <p className="mb-4 text-[10px] font-black uppercase tracking-[0.5em] text-blue-300">Knowledge Nexus</p>
               <h3 className={`text-3xl font-black tracking-tighter md:text-5xl ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                VIRTUAL <span className="italic text-pink-600">HUB</span>
+                VIRTUAL <span className="italic text-amber-300">HUB</span>
               </h3>
               <p className={`mx-auto mt-6 max-w-2xl text-lg font-light ${isDark ? 'text-gray-400' : 'text-slate-500'}`}>
                 A professional spiral of cross-industry virtual work simulations.
@@ -235,10 +227,10 @@ const Experience: React.FC = () => {
           <div className="relative mx-auto flex min-h-[1600px] w-full max-w-6xl justify-center">
             <div className="pointer-events-none absolute inset-0 flex justify-center">
               <svg width="600" height="1600" viewBox="0 0 600 1600" fill="none" className="h-full">
-                <path d={SPIRAL_PATH} stroke={isDark ? 'rgba(59,130,246,0.17)' : 'rgba(15,23,42,0.08)'} strokeWidth="4" strokeLinecap="round" />
+                <path d={SPIRAL_PATH} stroke={isDark ? 'rgba(96,165,250,0.28)' : 'rgba(15,23,42,0.18)'} strokeWidth="4" strokeLinecap="round" />
                 <path
                   d={SPIRAL_PATH}
-                  stroke={isDark ? 'rgba(236,72,153,0.35)' : 'rgba(236,72,153,0.28)'}
+                  stroke={isDark ? 'rgba(250,204,21,0.45)' : 'rgba(245,158,11,0.4)'}
                   strokeWidth="9"
                   strokeLinecap="round"
                   filter="url(#glowRoad)"
@@ -262,12 +254,12 @@ const Experience: React.FC = () => {
                   strokeDasharray="16 24"
                   className="road-dash"
                 />
-                <circle cx={orbPosition.x} cy={orbPosition.y} r="10" fill="#EC4899" filter="url(#orbGlow)" />
+                <circle cx={orbPosition.x} cy={orbPosition.y} r="10" fill="#FACC15" filter="url(#orbGlow)" />
 
                 <defs>
                   <linearGradient id="spiralGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                     <stop offset="0%" stopColor="#3B82F6" />
-                    <stop offset="50%" stopColor="#EC4899" />
+                    <stop offset="50%" stopColor="#FACC15" />
                     <stop offset="100%" stopColor="#3B82F6" />
                   </linearGradient>
                   <filter id="glowRoad" x="-100%" y="-100%" width="300%" height="300%">
