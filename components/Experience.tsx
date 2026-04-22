@@ -108,7 +108,7 @@ const TechNode: React.FC<{ color: string; icon: string; number: number; isDark: 
 
 const StopCard: React.FC<{ index: number; simulation: any; isDark: boolean }> = ({ index, simulation, isDark }) => (
   <div
-    className={`group relative max-w-sm overflow-hidden rounded-3xl border p-8 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-2 hover:scale-[1.02] md:p-10 ${
+    className={`group relative w-[84vw] max-w-sm overflow-hidden rounded-3xl border p-5 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-2 hover:scale-[1.02] sm:p-8 md:p-10 ${
       isDark ? 'border-white/5 bg-black/60 hover:border-white/10' : 'border-black/5 bg-white/90 shadow-2xl'
     }`}
   >
@@ -163,6 +163,7 @@ const PremiumWavesBackground: React.FC<{ isDark: boolean; enabled: boolean }> = 
 const Experience: React.FC = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const spiralRef = useRef<HTMLDivElement>(null);
   const trajectoryRef = useRef<HTMLDivElement>(null);
   const spiralPathRef = useRef<SVGPathElement>(null);
@@ -229,11 +230,14 @@ const Experience: React.FC = () => {
     setOrbPosition({ x: point.x, y: point.y });
   }, [scrollProgress]);
 
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   return (
-    <section
-      id="experience"
-      className="relative overflow-hidden px-6 py-32 transition-colors duration-700"
-    >
+    <section id="experience" className="relative overflow-x-hidden overflow-y-hidden px-4 py-24 sm:px-6 sm:py-32 transition-colors duration-700">
       <div className="pointer-events-none absolute inset-0">
         {threeReady && vantaReady ? <PremiumWavesBackground isDark={isDark} enabled /> : <ExperienceGoldBlueBackground />}
         <BlobFieldBackground variant="experience" scrollProgress={trajectoryProgress} />
@@ -320,9 +324,15 @@ const Experience: React.FC = () => {
             </div>
           </ScrollReveal>
 
-          <div className="relative mx-auto flex min-h-[1600px] w-full max-w-6xl justify-center">
+          <div className="relative mx-auto flex w-full max-w-6xl justify-center" style={{ minHeight: isMobile ? '1280px' : '1600px' }}>
             <div className="pointer-events-none absolute inset-0 flex justify-center">
-              <svg width="600" height="1600" viewBox="0 0 600 1600" fill="none" className="h-full">
+              <svg
+                width={isMobile ? '320' : '600'}
+                height={isMobile ? '1280' : '1600'}
+                viewBox="0 0 600 1600"
+                fill="none"
+                className="h-full"
+              >
                 <path d={SPIRAL_PATH} stroke={isDark ? 'rgba(96,165,250,0.28)' : 'rgba(15,23,42,0.18)'} strokeWidth="4" strokeLinecap="round" />
                 <path
                   d={SPIRAL_PATH}
@@ -384,14 +394,14 @@ const Experience: React.FC = () => {
                     scrollProgress > i * 0.2 ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                   }`}
                   style={{
-                    top: `${180 + i * 400}px`,
-                    left: i % 2 === 0 ? '55%' : 'auto',
-                    right: i % 2 === 1 ? '55%' : 'auto',
-                    alignItems: i % 2 === 0 ? 'flex-start' : 'flex-end',
+                    top: `${isMobile ? 120 + i * 300 : 180 + i * 400}px`,
+                    left: isMobile ? '50%' : i % 2 === 0 ? '55%' : 'auto',
+                    right: isMobile ? 'auto' : i % 2 === 1 ? '55%' : 'auto',
+                    alignItems: isMobile ? 'center' : i % 2 === 0 ? 'flex-start' : 'flex-end',
                   }}
                 >
                   <TechNode color={VIRTUAL_SIMULATIONS[i].color} icon={VIRTUAL_SIMULATIONS[i].icon} number={i + 1} isDark={isDark} />
-                  <div className="mt-4">
+                  <div className="mt-3 sm:mt-4">
                     <StopCard index={i + 1} simulation={VIRTUAL_SIMULATIONS[i]} isDark={isDark} />
                   </div>
                 </div>
