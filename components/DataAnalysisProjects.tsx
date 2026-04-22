@@ -49,6 +49,7 @@ const DataAnalysisProjects: React.FC = () => {
   const isDark = theme === 'dark';
   const [previewSrc, setPreviewSrc] = React.useState(BLINKIT_PROJECT.previewImage);
   const [detailSrc, setDetailSrc] = React.useState(BLINKIT_PROJECT.detailImage);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <section
@@ -63,6 +64,13 @@ const DataAnalysisProjects: React.FC = () => {
           </p>
 
           <article className={`mt-10 overflow-hidden rounded-3xl border ${isDark ? 'border-white/10 bg-slate-950/40' : 'border-slate-200 bg-slate-50/80'}`}>
+            <button
+              type="button"
+              onClick={() => setIsOpen((prev) => !prev)}
+              className="w-full text-left"
+              aria-expanded={isOpen}
+              aria-controls="blinkit-project-details"
+            >
             <div className="grid gap-0 lg:grid-cols-[1fr_1.1fr]">
               <div className="relative aspect-[16/10] w-full overflow-hidden">
                 <img
@@ -82,10 +90,15 @@ const DataAnalysisProjects: React.FC = () => {
                 <h4 className={`mt-5 text-sm font-black uppercase tracking-[0.2em] ${isDark ? 'text-amber-300' : 'text-amber-700'}`}>Project Overview</h4>
                 <p className={`mt-2 text-sm leading-7 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{BLINKIT_PROJECT.overview}</p>
                 <p className={`mt-3 text-sm leading-7 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{BLINKIT_PROJECT.dataset}</p>
+                <p className={`mt-5 text-xs font-black uppercase tracking-[0.18em] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                  {isOpen ? 'Tap to hide full details' : 'Tap to open full details'}
+                </p>
               </div>
             </div>
+            </button>
 
-            <div className="border-t border-white/10 p-6 md:p-8">
+            {isOpen && (
+            <div id="blinkit-project-details" className="border-t border-white/10 p-6 md:p-8">
               <div className={`mb-8 overflow-hidden rounded-2xl border ${isDark ? 'border-white/10 bg-black/30' : 'border-slate-200 bg-white'}`}>
                 <img
                   src={detailSrc}
@@ -122,6 +135,7 @@ const DataAnalysisProjects: React.FC = () => {
                 ))}
               </div>
             </div>
+            )}
           </article>
         </div>
       </div>
