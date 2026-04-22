@@ -108,16 +108,16 @@ const TechNode: React.FC<{ color: string; icon: string; number: number; isDark: 
 
 const StopCard: React.FC<{ index: number; simulation: any; isDark: boolean }> = ({ index, simulation, isDark }) => (
   <div
-    className={`group relative w-[84vw] max-w-sm overflow-hidden rounded-3xl border p-5 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-2 hover:scale-[1.02] sm:p-8 md:p-10 ${
+    className={`group relative w-[90vw] max-w-sm overflow-hidden rounded-3xl border p-5 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-2 hover:scale-[1.02] sm:w-[84vw] sm:p-8 md:p-10 ${
       isDark ? 'border-white/5 bg-black/60 hover:border-white/10' : 'border-black/5 bg-white/90 shadow-2xl'
     }`}
   >
     <div className="absolute -right-24 -top-24 h-48 w-48 rounded-full blur-[80px] opacity-10" style={{ backgroundColor: simulation.color }}></div>
-    <div className="relative z-10 mb-6 flex items-center gap-4">
+    <div className="relative z-10 mb-5 flex items-center gap-3 sm:mb-6 sm:gap-4">
       <div className="flex h-10 w-10 items-center justify-center rounded-xl text-sm font-black text-white shadow-lg" style={{ backgroundColor: simulation.color }}>
         0{index}
       </div>
-      <h4 className={`text-xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>{simulation.category}</h4>
+      <h4 className={`text-lg font-black tracking-tight sm:text-xl ${isDark ? 'text-white' : 'text-slate-900'}`}>{simulation.category}</h4>
     </div>
     <p className={`text-[14px] font-medium leading-relaxed ${isDark ? 'text-gray-400' : 'text-slate-600'}`}>{simulation.companies}</p>
   </div>
@@ -237,7 +237,7 @@ const Experience: React.FC = () => {
   }, []);
 
   return (
-    <section id="experience" className="relative overflow-x-hidden overflow-y-hidden px-4 py-24 sm:px-6 sm:py-32 transition-colors duration-700">
+    <section id="experience" className="relative overflow-x-hidden px-4 py-24 sm:px-6 sm:py-32 transition-colors duration-700">
       <div className="pointer-events-none absolute inset-0">
         {threeReady && vantaReady ? <PremiumWavesBackground isDark={isDark} enabled /> : <ExperienceGoldBlueBackground />}
         <BlobFieldBackground variant="experience" scrollProgress={trajectoryProgress} />
@@ -390,7 +390,7 @@ const Experience: React.FC = () => {
               {[0, 1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className={`absolute left-1/2 flex -translate-x-1/2 flex-col items-center transition-all duration-1000 md:translate-x-0 ${
+                  className={`absolute left-1/2 flex w-full max-w-[92vw] -translate-x-1/2 flex-col items-center transition-all duration-1000 md:w-auto md:max-w-none md:translate-x-0 ${
                     scrollProgress > i * 0.2 ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                   }`}
                   style={{
