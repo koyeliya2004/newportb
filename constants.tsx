@@ -87,8 +87,8 @@ export const VIRTUAL_SIMULATIONS = [
 export const PROJECTS: Project[] = [
   {
     id: "proj1",
-    title: "AI-Driven Precision Agriculture Decision Support System",
-    subtitle: "End-to-end AI platform for precision farming intelligence",
+    title: "AgriSense AI",
+    subtitle: "AI-powered precision agriculture platform",
     description: [
       "Designed and developed an AI-powered end-to-end decision support platform for precision agriculture, integrating crop recommendation, fertilizer optimization, disease detection, pest outbreak prediction, and market price forecasting into a unified system.",
       "Built and trained machine learning models for crop selection, fertilizer dosage, loan eligibility scoring, and yield-linked decision support using soil, weather, and historical crop datasets.",
@@ -131,8 +131,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "proj2",
-    title: "Next-Gen Classroom Automation System",
-    subtitle: "AI-powered academic integrity and educator intelligence platform",
+    title: "Classroom Automate",
+    subtitle: "AI-driven classroom automation platform",
     description: [
       "Designed and implemented an AI-driven classroom automation platform to support academic integrity, assessment evaluation, and data-driven educator decision-making using LLMs and ML models.",
       "Built a scalable plagiarism detection pipeline using FAISS + BM25 and an AI-generated text detection workflow using NLP preprocessing with transformer models.",
@@ -174,8 +174,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: "proj3",
-    title: "Automated ETL Data Engineering Pipeline",
-    subtitle: "Cloud-scale ETL, warehousing, and analytics workflow",
+    title: "Data Pipeline",
+    subtitle: "Automated ETL pipeline for analytics",
     description: [
       "Designed and implemented an end-to-end ETL pipeline to ingest, clean, transform, and store large volumes of structured and semi-structured data using AWS Lambda, AWS Glue, and Python.",
       "Built a cloud-based data warehouse using Amazon Redshift with Athena-based validation and analytics-ready Parquet transformation workflows.",
@@ -257,6 +257,50 @@ export const PROJECTS: Project[] = [
         "How to handle real-world dataset limitations in applied AI projects."
       ],
       outcome: "Built a scalable AI-based diagnostic system that automates chest disease detection, improves diagnostic efficiency, and can be extended into real healthcare workflows."
+    }
+  },
+  {
+    id: "proj5",
+    title: "AI-Powered Stock Analysis Chatbot",
+    subtitle: "Conversational stock insights with technical indicators",
+    description: [
+      "Developed an AI-powered stock analysis chatbot that lets users query stock data, analyze trends, and generate investment insights using natural language.",
+      "Integrated real-time Yahoo Finance data retrieval, technical indicator computation, and AI response generation in one interactive workflow.",
+      "Built a Streamlit interface with chat history, stock charts, and session-based conversations for fast and intuitive analysis."
+    ],
+    techStack: ["Python", "Pandas", "NumPy", "Streamlit", "Yahoo Finance API", "OpenAI", "GPT4All", "Technical Analysis"],
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1400&auto=format&fit=crop",
+    github: "https://github.com/Bhumika2006-hue/Stock-Chatbot-AI-1",
+    fullDetails: {
+      intro: "Developed an AI-powered stock analysis chatbot that enables users to query stock data, analyze trends, and generate investment insights using natural language.",
+      overview: "The system combines natural language intent handling, real-time market data retrieval, technical analysis computation, and AI-based response generation in one streamlined workflow.",
+      features: [
+        { title: "AI Chatbot Interface", description: "Accepts natural language stock queries, responds conversationally, and supports session-based interactions." },
+        { title: "Real-Time Stock Data Analysis", description: "Fetches stock data through Yahoo Finance APIs, including latest values and historical price data for dynamic analysis." },
+        { title: "Technical Indicators", description: "Implements SMA, EMA, RSI, and MACD to evaluate momentum, trend direction, and potential buy/sell signals." },
+        { title: "Interactive Visualizations", description: "Generates stock price and indicator charts directly in the UI to help users interpret market movement quickly." },
+        { title: "Flexible AI Backend", description: "Initially built for OpenAI APIs and later adapted to local GPT4All models with structured function-style responses." },
+        { title: "Streamlit Web App", description: "Provides a clean web interface for query input, chat history, and integrated chart display." }
+      ],
+      systemArchitecture: "User Query (Chat Input) → LLM Processing (Intent + Ticker Extraction) → Stock Data API (Yahoo Finance) → Technical Indicator Calculation → Visualization (Charts) → Response Generation (Chatbot Output) → Streamlit UI",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "Pandas", "NumPy"] },
+        { category: "AI / ML", items: ["OpenAI API", "GPT4All", "Function-based prompting"] },
+        { category: "Frontend", items: ["Streamlit"] },
+        { category: "APIs & Data", items: ["Yahoo Finance API", "Time-series price data"] },
+        { category: "Concepts", items: ["Technical Analysis", "Time Series Data", "Chatbot Systems"] }
+      ],
+      challenges: [
+        "Handling API rate limits and occasional quota constraints during real-time fetches.",
+        "Aligning LLM-generated responses with current market data for reliable outputs.",
+        "Keeping financial insights meaningful while maintaining concise conversational responses."
+      ],
+      learnings: [
+        "How to build conversational AI systems grounded in structured external data.",
+        "How technical indicators like RSI and MACD can be integrated into interactive workflows.",
+        "How to combine API integrations, visualization, and LLM orchestration in a single app."
+      ],
+      outcome: "Built an intelligent financial assistant that analyzes stock trends, generates AI-driven insights, and visualizes signals interactively for end users."
     }
   }
 ];
