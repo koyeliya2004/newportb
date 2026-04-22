@@ -212,7 +212,7 @@ const CosmicBackground: React.FC = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 z-0 bg-[#020205]" />;
+  return <canvas ref={canvasRef} className="absolute inset-0 z-0 bg-[#040611]" />;
 };
 
 interface ContactCardProps {
@@ -289,8 +289,9 @@ const SocialLink: React.FC<SocialLinkProps> = ({ href, icon: Icon, label }) => (
 
 const Contact: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#020205] text-white font-sans selection:bg-blue-500/30 overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#040611] text-white font-sans selection:bg-blue-500/30 overflow-x-hidden relative">
       <CosmicBackground />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_15%_18%,rgba(251,191,36,0.16),transparent_42%),radial-gradient(circle_at_85%_20%,rgba(59,130,246,0.18),transparent_44%),radial-gradient(circle_at_55%_90%,rgba(217,70,239,0.14),transparent_50%)]" />
 
       <main className="relative z-10 max-w-7xl mx-auto px-6 py-24 flex flex-col items-center">
         {/* Header */}

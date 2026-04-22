@@ -499,12 +499,15 @@ const Hero: React.FC = () => {
       : 'opacity-0 translate-y-14 scale-[0.98]';
 
   return (
-    <div className={`relative overflow-x-hidden ${isDark ? 'bg-black text-white' : 'bg-white text-slate-900'}`}>
+    <div className={`relative overflow-x-hidden ${isDark ? 'bg-[#030307] text-white' : 'bg-white text-slate-900'}`}>
       <section className="relative min-h-screen overflow-hidden">
         <div className="absolute inset-0 z-0">
           {threeReady && <GoldenNetwork />}
         </div>
-        <div className={`absolute inset-0 z-[1] ${isDark ? 'bg-black/45' : 'bg-white/40'}`} />
+        <div className={`absolute inset-0 z-[1] ${isDark ? 'bg-[#02030a]/28' : 'bg-white/28'}`} />
+        {isDark && (
+          <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_18%_20%,rgba(251,191,36,0.2),transparent_40%),radial-gradient(circle_at_78%_22%,rgba(59,130,246,0.18),transparent_42%),radial-gradient(circle_at_50%_82%,rgba(236,72,153,0.16),transparent_45%)]" />
+        )}
 
         <div className="relative z-[2] mx-auto flex min-h-screen max-w-7xl items-center px-6 sm:px-10 lg:px-14">
           <div className="grid w-full items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
@@ -518,7 +521,7 @@ const Hero: React.FC = () => {
 
               <div className={`mt-6 flex items-center gap-3 text-base font-bold sm:text-xl ${isDark ? 'text-[#f3c623]' : 'text-[#f3c623]'}`}>
                 <span className={isDark ? 'text-white/50' : 'text-slate-400'}>&gt;</span>
-                <span className="font-mono">
+                <span className={`font-mono ${isDark ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#f3c623] via-[#60a5fa] to-[#f472b6] [text-shadow:0_0_28px_rgba(243,198,35,0.2)]' : ''}`}>
                   {displayed}
                   <span className="animate-pulse">|</span>
                 </span>
