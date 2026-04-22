@@ -3,8 +3,8 @@ import { useTheme } from '../App';
 
 const BLINKIT_PROJECT = {
   title: 'Blinkit Sales Data Analysis Dashboard',
-  previewImage: '/assets/Screenshot 2026-04-22 232649.png',
-  detailImage: '/assets/Screenshot 2026-04-22 232627.png',
+  previewImage: 'https://raw.githubusercontent.com/koyeliya2004/newportb/main/Screenshot%202026-04-22%20232627.png',
+  detailImage: 'https://raw.githubusercontent.com/koyeliya2004/newportb/main/Screenshot%202026-04-22%20232627.png',
   overview:
     'Comprehensive business intelligence analysis of Blinkit transactional sales data to derive insights on performance, customer behavior, and operations.',
   dataset:
