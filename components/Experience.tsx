@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { EXPERIENCES, VIRTUAL_SIMULATIONS } from '../constants';
 import { useTheme } from '../App';
+import { BarChart3, BriefcaseBusiness, CloudCog, Rocket } from 'lucide-react';
+import ExperienceThreeBackground from './ExperienceThreeBackground';
 
 const SPIRAL_PATH =
   'M 300 0 C 450 150, 450 250, 300 400 C 150 550, 150 650, 300 800 C 450 950, 450 1050, 300 1200 C 150 1350, 150 1450, 300 1600';
@@ -69,6 +71,13 @@ const ScrollReveal: React.FC<{ children: React.ReactNode; delay?: number }> = ({
   );
 };
 
+const iconMap: Record<string, React.ReactNode> = {
+  cloud: <CloudCog className="h-6 w-6" />,
+  analytics: <BarChart3 className="h-6 w-6" />,
+  consulting: <BriefcaseBusiness className="h-6 w-6" />,
+  leadership: <Rocket className="h-6 w-6" />,
+};
+
 const TechNode: React.FC<{ color: string; icon: string; number: number; isDark: boolean }> = ({ color, icon, number, isDark }) => (
   <div className="relative z-30 flex cursor-pointer flex-col items-center group">
     <div className="absolute inset-0 flex items-center justify-center">
@@ -84,7 +93,7 @@ const TechNode: React.FC<{ color: string; icon: string; number: number; isDark: 
         boxShadow: `0 0 30px ${color}33`,
       }}
     >
-      <span>{icon}</span>
+      <span className="text-white">{iconMap[icon] ?? <CloudCog className="h-6 w-6" />}</span>
       <div
         className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-black shadow-lg"
         style={{ backgroundColor: color, color: 'white' }}
@@ -137,14 +146,16 @@ const Experience: React.FC = () => {
       id="experience"
       className={`relative overflow-hidden px-6 py-32 transition-colors duration-700 ${
         isDark
-          ? 'bg-[radial-gradient(circle_at_20%_10%,rgba(59,130,246,0.16),transparent_32%),radial-gradient(circle_at_90%_30%,rgba(236,72,153,0.14),transparent_36%),#000]'
-          : 'bg-[radial-gradient(circle_at_10%_0%,rgba(59,130,246,0.08),transparent_28%),radial-gradient(circle_at_95%_20%,rgba(236,72,153,0.09),transparent_35%),#f8fafc]'
+          ? 'bg-[radial-gradient(circle_at_15%_8%,rgba(34,211,238,0.16),transparent_32%),radial-gradient(circle_at_80%_25%,rgba(244,114,182,0.14),transparent_34%),radial-gradient(circle_at_50%_95%,rgba(99,102,241,0.12),transparent_35%),#020617]'
+          : 'bg-[radial-gradient(circle_at_10%_0%,rgba(56,189,248,0.11),transparent_28%),radial-gradient(circle_at_90%_20%,rgba(244,114,182,0.11),transparent_34%),radial-gradient(circle_at_50%_90%,rgba(129,140,248,0.10),transparent_35%),#f8fafc]'
       }`}
     >
       <div className="pointer-events-none absolute inset-0">
-        <div className={`absolute inset-0 ${isDark ? 'bg-[linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)]' : 'bg-[linear-gradient(rgba(15,23,42,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.03)_1px,transparent_1px)]'} bg-[size:56px_56px]`} />
-        <div className="absolute -left-24 top-40 h-96 w-96 rounded-full bg-blue-500/20 blur-[120px] animate-drift-slow" />
-        <div className="absolute -right-24 top-[35%] h-[26rem] w-[26rem] rounded-full bg-pink-500/20 blur-[120px] animate-drift-reverse" />
+        <ExperienceThreeBackground />
+        <div className={`absolute inset-0 ${isDark ? 'bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)]' : 'bg-[linear-gradient(rgba(15,23,42,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.035)_1px,transparent_1px)]'} bg-[size:56px_56px]`} />
+        <div className="absolute -left-24 top-40 h-96 w-96 rounded-full bg-cyan-500/20 blur-[120px] animate-drift-slow" />
+        <div className="absolute -right-24 top-[35%] h-[26rem] w-[26rem] rounded-full bg-fuchsia-500/20 blur-[120px] animate-drift-reverse" />
+        <div className="absolute left-1/3 top-2/3 h-80 w-80 rounded-full bg-indigo-500/15 blur-[120px] animate-drift-slow" />
       </div>
 
       <div className="relative mx-auto max-w-7xl">
