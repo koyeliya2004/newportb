@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { EXPERIENCES, VIRTUAL_SIMULATIONS } from '../constants';
 import { useTheme } from '../App';
 import { BarChart3, BriefcaseBusiness, CloudCog, Rocket } from 'lucide-react';
+import ExperienceThreeBackground from './ExperienceThreeBackground';
 
 const SPIRAL_PATH =
   'M 300 0 C 450 150, 450 250, 300 400 C 150 550, 150 650, 300 800 C 450 950, 450 1050, 300 1200 C 150 1350, 150 1450, 300 1600';
@@ -150,6 +151,7 @@ const Experience: React.FC = () => {
       }`}
     >
       <div className="pointer-events-none absolute inset-0">
+        <ExperienceThreeBackground />
         <div className={`absolute inset-0 ${isDark ? 'bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)]' : 'bg-[linear-gradient(rgba(15,23,42,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.035)_1px,transparent_1px)]'} bg-[size:56px_56px]`} />
         <div className="absolute -left-24 top-40 h-96 w-96 rounded-full bg-cyan-500/20 blur-[120px] animate-drift-slow" />
         <div className="absolute -right-24 top-[35%] h-[26rem] w-[26rem] rounded-full bg-fuchsia-500/20 blur-[120px] animate-drift-reverse" />
