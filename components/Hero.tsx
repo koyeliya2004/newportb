@@ -407,14 +407,14 @@ const skillPoints = [
 // ── Profile Photo ───────────────────────────────────────────────────────────
 const HexProfilePhoto: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   return (
-    <div className="relative flex items-center justify-center" style={{ width: 390, height: 430 }}>
+    <div className="relative flex items-center justify-center" style={{ width: 'min(390px, 92vw)', height: 'min(430px, 112vw)' }}>
       <div
         className={`relative z-10 overflow-hidden rounded-3xl border-2 ${
           isDark ? 'border-[#f3c623]/70 bg-black/40' : 'border-[#f3c623]/70 bg-white/80'
         }`}
         style={{
-          width: 320,
-          height: 400,
+          width: 'min(320px, 82vw)',
+          height: 'min(400px, 98vw)',
           boxShadow: '0 0 30px rgba(243,198,35,0.35)',
         }}
       >
@@ -424,7 +424,7 @@ const HexProfilePhoto: React.FC<{ isDark: boolean }> = ({ isDark }) => {
           className="h-full w-full"
           style={{
             objectFit: 'cover',
-            objectPosition: 'center top',
+            objectPosition: 'center 18%',
             filter: isDark
               ? 'brightness(1.08) contrast(1.12) saturate(1.08)'
               : 'brightness(1.02) contrast(1.05) saturate(1.02)',
@@ -457,6 +457,7 @@ const Hero: React.FC = () => {
   const [typing, setTyping] = useState(true);
   const [visibleSections, setVisibleSections] = useState<number[]>([]);
   const [scrollDepth, setScrollDepth] = useState(0);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640);
   const [threeReady, setThreeReady] = useState(!!(window as any).THREE);
   const [vantaReady, setVantaReady] = useState(!!(window as any).VANTA?.WAVES);
   const threeLoaded = useRef(false);
@@ -572,6 +573,12 @@ const Hero: React.FC = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const revealClass = (id: number) =>
     visibleSections.includes(id)
       ? 'opacity-100 translate-y-0 scale-100'
@@ -588,12 +595,15 @@ const Hero: React.FC = () => {
           <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_18%_20%,rgba(251,191,36,0.2),transparent_40%),radial-gradient(circle_at_78%_22%,rgba(59,130,246,0.18),transparent_42%),radial-gradient(circle_at_50%_82%,rgba(236,72,153,0.16),transparent_45%)]" />
         )}
 
-        <div className="relative z-[2] mx-auto flex min-h-screen max-w-7xl items-center px-6 sm:px-10 lg:px-14" style={{ transform: `translate3d(0, ${scrollDepth * -30}px, 0)` }}>
+        <div
+          className="relative z-[2] mx-auto flex min-h-screen max-w-7xl items-start px-6 pt-28 sm:items-center sm:pt-0 sm:px-10 lg:px-14"
+          style={{ transform: `translate3d(0, ${isMobile ? 0 : scrollDepth * -30}px, 0)` }}
+        >
           <div className="grid w-full items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="transition-all duration-1000 ease-out" data-reveal="1">
               <p className={`text-xs font-bold uppercase tracking-[0.38em] ${isDark ? 'text-white/55' : 'text-slate-600'}`}>Hey, I&apos;m</p>
 
-              <h1 className={`mt-3 text-6xl font-black leading-[0.92] tracking-tight sm:text-7xl lg:text-[6.2rem] ${isDark ? '' : 'text-slate-900'}`}>
+              <h1 className={`mt-3 text-5xl font-black leading-[0.92] tracking-tight sm:text-7xl lg:text-[6.2rem] ${isDark ? '' : 'text-slate-900'}`}>
                 <span className={isDark ? 'text-white' : 'text-slate-800'}>Bhumika </span>
                 <span className="text-[#f3c623] [text-shadow:0_0_44px_rgba(243,198,35,0.7)]">Tewari</span>
               </h1>
@@ -655,7 +665,11 @@ const Hero: React.FC = () => {
         </div>
       </section>
 
-      <section className={`relative z-10 px-6 pb-10 pt-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-white'} ${revealClass(3)}`} data-reveal="3" style={{ transform: `translate3d(0, ${scrollDepth * 18}px, 0)` }}>
+      <section
+        className={`relative z-10 px-6 pb-10 pt-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-white'} ${revealClass(3)}`}
+        data-reveal="3"
+        style={{ transform: `translate3d(0, ${isMobile ? 0 : scrollDepth * 18}px, 0)` }}
+      >
         <div className={`absolute inset-x-0 top-0 h-32 ${isDark ? 'bg-gradient-to-b from-[#f3c623]/5 to-transparent' : 'bg-gradient-to-b from-[#f3c623]/8 to-transparent'}`} />
         <div className="relative mx-auto max-w-7xl">
           <p className={`text-xs font-bold uppercase tracking-[0.38em] ${isDark ? 'text-[#f3c623]' : 'text-[#c89b0a]'}`}>// What I Do</p>
@@ -682,7 +696,11 @@ const Hero: React.FC = () => {
         </div>
       </section>
 
-      <section className={`relative z-10 px-6 pb-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-slate-50'} ${revealClass(4)}`} data-reveal="4" style={{ transform: `translate3d(0, ${scrollDepth * 24}px, 0)` }}>
+      <section
+        className={`relative z-10 px-6 pb-24 transition-all duration-1000 ease-out sm:px-10 lg:px-14 ${isDark ? 'bg-black' : 'bg-slate-50'} ${revealClass(4)}`}
+        data-reveal="4"
+        style={{ transform: `translate3d(0, ${isMobile ? 0 : scrollDepth * 24}px, 0)` }}
+      >
         <div className="mx-auto grid max-w-7xl gap-4 lg:grid-cols-[1fr_0.85fr_1.1fr_1fr]">
           <div className={`rounded-[1.6rem] border px-5 py-5 transition duration-400 hover:-translate-y-1 ${
             isDark
