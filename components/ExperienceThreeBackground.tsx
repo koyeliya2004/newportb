@@ -7,10 +7,12 @@ declare global {
 }
 
 const THREE_SCRIPT_ID = 'threejs-cdn-r128';
-const SYMBOL_TEXTS = ['{ }', '[ ]', '</>', '#', '>', '()', '&&', '||', '!=', '=>', 'func', '01', 'var'];
+const SYMBOL_TEXTS = ['{ }', '[ ]', '</>', 'AI', 'MERN', '01', 'func', '=>', '&&', '||', '#'];
 
 const ExperienceThreeBackground: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const coreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let rafId = 0;
@@ -21,13 +23,26 @@ const ExperienceThreeBackground: React.FC = () => {
       const THREE = window.THREE;
       const container = containerRef.current;
 
-      const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x000105, 0.015);
+      let isMobile = window.innerWidth < 768;
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let targetX = 0;
+      let targetY = 0;
 
-      const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-      camera.position.z = 45;
-      camera.position.y = 10;
-      camera.lookAt(0, 0, 0);
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x000105, 0.012);
+
+      const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+      const updateView = () => {
+        isMobile = window.innerWidth < 768;
+        if (isMobile) {
+          camera.position.set(0, 30, 75);
+        } else {
+          camera.position.set(0, 18, 52);
+        }
+        camera.lookAt(0, 0, 0);
+      };
+      updateView();
 
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(container.clientWidth, container.clientHeight);
@@ -37,86 +52,114 @@ const ExperienceThreeBackground: React.FC = () => {
       const clock = new THREE.Clock();
       const symbols: any[] = [];
 
-      scene.add(new THREE.AmbientLight(0x0a1a4a, 2));
-      const goldLight = new THREE.PointLight(0xffcc00, 10, 180);
-      goldLight.position.set(40, 20, 15);
-      scene.add(goldLight);
-      const blueLight = new THREE.PointLight(0x0088ff, 10, 180);
-      blueLight.position.set(-40, 10, 15);
+      scene.add(new THREE.AmbientLight(0x0a1535, 1.8));
+      const blueLight = new THREE.PointLight(0x00aaff, 12, 140);
+      blueLight.position.set(-50, 20, 20);
       scene.add(blueLight);
+      const orangeLight = new THREE.PointLight(0xff9900, 12, 140);
+      orangeLight.position.set(50, 15, 20);
+      scene.add(orangeLight);
 
-      const geometry = new THREE.PlaneGeometry(160, 160, 110, 110);
-      const material = new THREE.PointsMaterial({ size: 0.28, vertexColors: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending });
+      const width = 180;
+      const height = 180;
+      const segments = isMobile ? 70 : 130;
+      const geometry = new THREE.PlaneGeometry(width, height, segments, segments);
+      const material = new THREE.PointsMaterial({
+        size: isMobile ? 0.28 : 0.2,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.9,
+        blending: THREE.AdditiveBlending,
+      });
+
+      const getWaveHeight = (x: number, y: number, t: number) =>
+        Math.sin(x * 0.07 + t) * Math.cos(y * 0.07 + t * 0.7) * 10 + Math.sin(x * 0.03 + y * 0.03 + t * 1.1) * 5;
+
       const positions = geometry.attributes.position.array;
       const colors: number[] = [];
-      const colorDeepBlue = new THREE.Color(0x0044ff);
-      const colorGold = new THREE.Color(0xffbb00);
+      const colorIndigo = new THREE.Color(0x1a237e);
+      const colorGold = new THREE.Color(0xffa000);
 
       for (let i = 0; i < positions.length; i += 3) {
         const x = positions[i];
         const y = positions[i + 1];
-        positions[i + 2] = Math.sin(x * 0.1) * Math.cos(y * 0.1) * 8 + Math.sin(x * 0.05 + y * 0.05) * 5;
-        const height = positions[i + 2];
-        const lerpFactor = THREE.MathUtils.clamp((height + 3) / 14, 0, 1);
-        const mixedColor = colorDeepBlue.clone().lerp(colorGold, lerpFactor);
+        positions[i + 2] = getWaveHeight(x, y, 0);
+
+        const lerpFactor = THREE.MathUtils.mapLinear(x, -width / 2, width / 2, 0, 1);
+        const mixedColor = colorIndigo.clone().lerp(colorGold, lerpFactor);
+        if (positions[i + 2] > 5) mixedColor.multiplyScalar(1.2);
         colors.push(mixedColor.r, mixedColor.g, mixedColor.b);
       }
 
       geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
       const terrain = new THREE.Points(geometry, material);
-      terrain.rotation.x = -Math.PI / 2.3;
-      terrain.position.y = -6;
+      terrain.rotation.x = -Math.PI / 2.2;
+      terrain.position.y = -10;
       scene.add(terrain);
 
-      const starGeometry = new THREE.BufferGeometry();
-      const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.12, transparent: true, opacity: 0.35 });
-      const starVertices: number[] = [];
-      for (let i = 0; i < 2200; i++) {
-        starVertices.push((Math.random() - 0.5) * 400, (Math.random() - 0.5) * 400, (Math.random() - 0.5) * 400);
-      }
-      starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-      scene.add(new THREE.Points(starGeometry, starMaterial));
-
-      const createTextSprite = (text: string, isGold: boolean) => {
+      const createTextSprite = (text: string, isOrange: boolean) => {
         const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        if (!context) return null;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return null;
+
         canvas.width = 512;
         canvas.height = 512;
-        context.font = 'Bold 160px Arial';
-        context.textAlign = 'center';
-        context.textBaseline = 'middle';
-        context.shadowBlur = 40;
-        context.shadowColor = isGold ? 'rgba(255, 200, 0, 1)' : 'rgba(0, 140, 255, 1)';
-        context.fillStyle = isGold ? '#ffcc00' : '#ffffff';
-        context.fillText(text, 256, 256);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.font = 'Bold 120px "Inter", Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        const glowColor = isOrange ? 'rgba(255, 100, 0, 0.6)' : 'rgba(0, 100, 255, 0.6)';
+        ctx.shadowBlur = 45;
+        ctx.shadowColor = glowColor;
+        ctx.fillStyle = isOrange ? '#ffcc80' : '#ffffff';
+        ctx.fillText(text, 256, 256);
+
         const texture = new THREE.CanvasTexture(canvas);
-        const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.65, blending: THREE.AdditiveBlending });
+        const spriteMaterial = new THREE.SpriteMaterial({
+          map: texture,
+          transparent: true,
+          opacity: 0.8,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          depthTest: true,
+        });
+
         const sprite = new THREE.Sprite(spriteMaterial);
-        sprite.scale.set(4.8, 4.8, 1);
+        const scale = isMobile ? 4.5 : 7;
+        sprite.scale.set(scale, scale, 1);
         return sprite;
       };
 
+      const countPerSymbol = isMobile ? 3 : 7;
       SYMBOL_TEXTS.forEach((text) => {
-        for (let j = 0; j < 4; j++) {
-          const sprite = createTextSprite(text, Math.random() > 0.6);
+        for (let j = 0; j < countPerSymbol; j += 1) {
+          const sprite = createTextSprite(text, Math.random() > 0.45);
           if (!sprite) continue;
-          sprite.position.set((Math.random() - 0.5) * 140, Math.random() * 50 - 15, (Math.random() - 0.5) * 60);
+
+          sprite.position.set((Math.random() - 0.5) * 160, Math.random() * 45 - 5, (Math.random() - 0.5) * 100);
           sprite.userData = {
-            speed: 0.008 + Math.random() * 0.012,
-            oscillation: Math.random() * Math.PI * 2,
-            phase: Math.random() * 100,
+            speed: 0.006 + Math.random() * 0.018,
+            osc: Math.random() * Math.PI * 2,
+            phase: Math.random() * 50,
           };
+
           scene.add(sprite);
           symbols.push(sprite);
         }
       });
 
-      let mouseX = 0;
-      let mouseY = 0;
-      const onMouseMove = (event: MouseEvent) => {
-        mouseX = (event.clientX - window.innerWidth / 2) / 120;
-        mouseY = (event.clientY - window.innerHeight / 2) / 120;
+      const onPointerMove = (event: MouseEvent | Touch) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+        targetX = (event.clientX - window.innerWidth / 2) / 120;
+        targetY = (event.clientY - window.innerHeight / 2) / 120;
+      };
+
+      const onMouseMove = (event: MouseEvent) => onPointerMove(event);
+      const onTouchMove = (event: TouchEvent) => {
+        if (event.touches.length > 0) onPointerMove(event.touches[0]);
       };
 
       const onWindowResize = () => {
@@ -124,35 +167,57 @@ const ExperienceThreeBackground: React.FC = () => {
         camera.aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(containerRef.current.clientWidth, containerRef.current.clientHeight);
+        updateView();
       };
 
       document.addEventListener('mousemove', onMouseMove, false);
+      document.addEventListener('touchmove', onTouchMove, { passive: true });
       window.addEventListener('resize', onWindowResize, false);
 
       const animate = () => {
         if (disposed) return;
         rafId = requestAnimationFrame(animate);
+
         const time = clock.getElapsedTime();
 
         for (let i = 0; i < positions.length; i += 3) {
           const x = positions[i];
           const y = positions[i + 1];
-          positions[i + 2] = Math.sin(x * 0.1 + time * 0.2) * Math.cos(y * 0.1 + time * 0.15) * 8 + Math.sin(x * 0.05 + y * 0.08 + time * 0.3) * 4;
+          positions[i + 2] = getWaveHeight(x, y, time * 0.35);
         }
         terrain.geometry.attributes.position.needsUpdate = true;
 
         symbols.forEach((sprite) => {
           const data = sprite.userData;
-          sprite.position.y += Math.sin(time * 0.4 + data.oscillation) * 0.012;
+          sprite.position.y += Math.sin(time * 0.4 + data.osc) * 0.02;
           sprite.position.x += data.speed;
-          if (sprite.position.x > 70) sprite.position.x = -70;
-          const pulse = 0.45 + Math.sin(time * 1.2 + data.phase) * 0.32;
-          sprite.material.opacity = pulse;
+
+          if (sprite.position.x > 85) sprite.position.x = -85;
+
+          const opacity = 0.4 + Math.sin(time * 0.9 + data.phase) * 0.4;
+          sprite.material.opacity = opacity;
+
+          const pulseScale = (isMobile ? 4.5 : 7) + Math.sin(time * 0.5 + data.phase) * 0.5;
+          sprite.scale.set(pulseScale, pulseScale, 1);
         });
 
-        camera.position.x += (mouseX - camera.position.x) * 0.02;
-        camera.position.y += (-mouseY + 10 - camera.position.y) * 0.02;
-        camera.lookAt(0, 2, 0);
+        camera.position.x += (targetX - camera.position.x) * 0.04;
+        camera.position.y += (-targetY + (isMobile ? 30 : 18) - camera.position.y) * 0.04;
+        camera.lookAt(0, 0, 0);
+
+        if (glowRef.current && coreRef.current) {
+          const curX = parseFloat(glowRef.current.style.left || '0');
+          const curY = parseFloat(glowRef.current.style.top || '0');
+          const lerp = 0.18;
+          const smoothX = curX + (mouseX - curX) * lerp;
+          const smoothY = curY + (mouseY - curY) * lerp;
+
+          glowRef.current.style.left = `${smoothX}px`;
+          glowRef.current.style.top = `${smoothY}px`;
+          coreRef.current.style.left = `${mouseX}px`;
+          coreRef.current.style.top = `${mouseY}px`;
+        }
+
         renderer.render(scene, camera);
       };
 
@@ -162,19 +227,18 @@ const ExperienceThreeBackground: React.FC = () => {
         disposed = true;
         cancelAnimationFrame(rafId);
         document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('touchmove', onTouchMove);
         window.removeEventListener('resize', onWindowResize);
+
         renderer.dispose();
         geometry.dispose();
         material.dispose();
-        starGeometry.dispose();
-        starMaterial.dispose();
         symbols.forEach((sprite) => {
           sprite.material?.map?.dispose?.();
           sprite.material?.dispose?.();
         });
-        if (renderer.domElement.parentNode === container) {
-          container.removeChild(renderer.domElement);
-        }
+
+        if (renderer.domElement.parentNode === container) container.removeChild(renderer.domElement);
       };
     };
 
@@ -210,7 +274,24 @@ const ExperienceThreeBackground: React.FC = () => {
     };
   }, []);
 
-  return <div ref={containerRef} className="absolute inset-0 opacity-60" aria-hidden="true" />;
+  return (
+    <>
+      <div ref={containerRef} className="absolute inset-0 opacity-70" aria-hidden="true" />
+      <div
+        ref={glowRef}
+        className="pointer-events-none fixed z-40 hidden h-[140px] w-[140px] -translate-x-1/2 -translate-y-1/2 rounded-full mix-blend-screen md:block md:h-[200px] md:w-[200px]"
+        style={{
+          background: 'radial-gradient(circle, rgba(0,150,255,0.12) 0%, rgba(255,100,0,0.04) 45%, transparent 75%)',
+          willChange: 'transform',
+        }}
+      />
+      <div
+        ref={coreRef}
+        className="pointer-events-none fixed z-[41] hidden h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white md:block md:h-[6px] md:w-[6px]"
+        style={{ boxShadow: '0 0 15px 2px white, 0 0 30px 8px rgba(0, 180, 255, 0.5)' }}
+      />
+    </>
+  );
 };
 
 export default ExperienceThreeBackground;
