@@ -456,17 +456,18 @@ const HexProfilePhoto: React.FC<{ isDark: boolean }> = ({ isDark }) => {
           }}
         />
 
-        {/* Actual photo — updated src to match repo image */}
+        {/* Actual photo */}
         <img
-          src="/cf48e077-c375-4024-9826-950fffdda2f4.png"
+          src="/assets/hero-portrait.png"
           alt="Bhumika Tewari"
           style={{
             position: 'absolute',
             inset: 4,
             width: 'calc(100% - 8px)',
             height: 'calc(100% - 8px)',
-            objectFit: 'cover',
-            objectPosition: 'top center',
+            objectFit: 'contain',
+            objectPosition: 'center',
+            background: isDark ? 'linear-gradient(180deg, #0d0d0d 0%, #131313 100%)' : 'linear-gradient(180deg, #fffdf4 0%, #fff7de 100%)',
             clipPath: 'polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%)',
             filter: isDark
               ? 'brightness(1.12) contrast(1.18) saturate(1.25)'
