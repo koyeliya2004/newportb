@@ -10,7 +10,7 @@ export const CV_DATA = {
   location: "Kolkata, India",
   links: {
     github: "https://github.com/Bhumika2006-hue",
-    linkedin: "https://www.linkedin.com/in/bhumika",
+    linkedin: "https://www.linkedin.com/in/bhumika-tewari-21294027a/",
     whatsapp: "https://wa.me/910000000000"
   },
   summary:
@@ -20,19 +20,42 @@ export const CV_DATA = {
 export const EXPERIENCES: Experience[] = [
   {
     id: "exp1",
-    role: "AI/ML Developer",
-    company: "Self Projects & Open Source",
-    duration: "2023 – Present",
+    role: "MERN Stack and AI Engineer (Teaching Assistant)",
+    company: "Stealth Startup (Ed-Tech Platform)",
+    duration: "Nov 2025 – Dec 2025",
     location: "Kolkata, India",
     bullets: [
-      "Built multiple ML classification models and real-world AI applications.",
-      "Developed interactive apps with modern UI and full-stack integration.",
-      "Created intelligent systems using machine learning, deep learning, and computer vision.",
-      "Worked on scalable apps and deployable products.",
-      "Focused on practical, impactful solutions for real users."
+      "Mentored 120+ learners in MERN development, simplifying full-stack architecture, debugging workflows.",
+      "Resolved 250+ frontend/backend issues and delivered 20+ sessions on APIs, routing, authentication, and schemas.",
+      "Developed and trained LLM-powered chat assistants to support student queries, improving explanation accuracy.",
+      "Designed AI-driven learning workflows using structured prompts and contextual retrieval to improve chatbot performance."
+    ]
+  },
+  {
+    id: "exp2",
+    role: "SDE Intern (Full Stack)",
+    company: "Bihar Innovation",
+    duration: "Feb 2025 – Oct 2025",
+    location: "Kolkata, India",
+    bullets: [
+      "Developed 30+ full-stack applications using React.js, Node.js, Express.js, MongoDB, MySQL.",
+      "Built 45+ REST APIs improving data flow & response time across multiple feature modules.",
+      "Improved query performance by 40–60% with optimized indexing and schema-level refactors.",
+      "Integrated AWS/Azure microservices & external API layers enhancing platform reliability."
+    ]
+  },
+  {
+    id: "exp3",
+    role: "More Opportunities Coming",
+    company: "Career Roadmap",
+    duration: "2026 →",
+    location: "Kolkata, India",
+    bullets: [
+      "+"
     ]
   }
 ];
+
 
 export const VIRTUAL_SIMULATIONS = [
   {

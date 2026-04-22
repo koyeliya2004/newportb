@@ -150,10 +150,10 @@ const Experience: React.FC = () => {
       <div className="relative mx-auto max-w-7xl">
         <ScrollReveal>
           <div className="mb-32">
-            <p className="mb-4 text-[11px] font-black uppercase tracking-[0.4em] text-pink-500">Trajectory</p>
+            <p className="mb-4 text-[11px] font-black uppercase tracking-[0.4em] text-pink-500">Career Roadmap</p>
             <h2 className={`text-3xl font-black leading-none tracking-tighter md:text-5xl ${isDark ? 'text-white' : 'text-slate-900'}`}>
               CAREER <br />
-              <span className="font-playfair font-light italic text-blue-500">EVOLUTION</span>
+              <span className="font-playfair font-light italic text-blue-500">ROADMAP</span>
             </h2>
           </div>
         </ScrollReveal>

@@ -84,30 +84,6 @@ const Skills: React.FC = () => {
     'sklearn'
   ];
 
-  const careerRoadmap = [
-    {
-      label: 'Nov 2025 – Dec 2025',
-      title: 'MERN Stack and AI Engineer (Teaching Assistant)',
-      company: 'Stealth Startup (Ed-Tech Platform)',
-      bullets: [
-        'Mentored 120+ learners in MERN development, simplifying full-stack architecture, debugging workflows.',
-        'Resolved 250+ frontend/backend issues and delivered 20+ sessions on APIs, routing, authentication, and schemas.',
-        'Developed and trained LLM-powered chat assistants to support student queries, improving explanation accuracy.',
-        'Designed AI-driven learning workflows using structured prompts and contextual retrieval to improve chatbot performance.'
-      ]
-    },
-    {
-      label: 'Feb 2025 – Oct 2025',
-      title: 'SDE Intern (Full Stack)',
-      company: 'Bihar Innovation',
-      bullets: [
-        'Developed 30+ full-stack applications using React.js, Node.js, Express.js, MongoDB, MySQL.',
-        'Built 45+ REST APIs improving data flow & response time across multiple feature modules.',
-        'Improved query performance by 40–60% with optimized indexing and schema-level refactors.',
-        'Integrated AWS/Azure microservices & external API layers enhancing platform reliability.'
-      ]
-    }
-  ];
 
   // Theme-aware class helpers
   const bodyText = isDark ? 'text-gray-300' : 'text-slate-700';
@@ -264,11 +240,11 @@ const Skills: React.FC = () => {
           ))}
         </div>
 
-        {/* Career Roadmap Section */}
+        {/* Education Section */}
         <div className="mb-32">
           <div className="flex items-center gap-6 mb-12">
             <h3 className={`text-2xl md:text-3xl font-black tracking-tight ${headingText} transition-colors duration-500`}>
-              CAREER ROADMAP
+              EDUCATION
             </h3>
             <div className={`h-0.5 flex-1 ${sectionDivider}`}></div>
           </div>
@@ -276,15 +252,32 @@ const Skills: React.FC = () => {
           <div className="relative pl-6 md:pl-10">
             <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-pink-500 via-blue-500 to-transparent opacity-40" />
             <div className="space-y-10">
-              {careerRoadmap.map((step, idx) => (
-                <div key={step.label} className="relative flex flex-col md:flex-row gap-4 md:gap-10">
+              {[
+                {
+                  label: 'Aug 2024 – Aug 2028',
+                  title: 'Bachelor of Technology (B.Tech) – Information Technology',
+                  institute: 'RCC Institute of Information Technology, Kolkata'
+                },
+                {
+                  label: 'Mar 2021 – Mar 2023',
+                  title: 'ISC',
+                  institute: 'St. Thomas School'
+                },
+                {
+                  label: 'Mar 2009 – Mar 2021',
+                  title: 'ICSE',
+                  institute: 'St. Thomas School',
+                  score: 'Score: 95%'
+                }
+              ].map((item, idx) => (
+                <div key={item.title + item.label} className="relative flex flex-col md:flex-row gap-4 md:gap-10">
                   <div className={`absolute -left-[11px] top-1 w-5 h-5 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.6)] ${
                     isDark ? 'bg-slate-900' : 'bg-[#fff8df]'
                   }`}>
                     <div className="w-2 h-2 rounded-full bg-pink-500" />
                   </div>
-                  <div className="md:w-48 text-xs uppercase tracking-[0.25em] font-black text-pink-500/80 pt-1">
-                    {step.label}
+                  <div className="md:w-56 text-xs uppercase tracking-[0.2em] font-black text-pink-500/80 pt-1">
+                    {item.label}
                   </div>
                   <div
                     className={`flex-1 p-6 md:p-8 rounded-3xl border backdrop-blur-xl transition-all ${
@@ -294,38 +287,18 @@ const Skills: React.FC = () => {
                     }`}
                     style={{ transitionDelay: `${idx * 80}ms` }}
                   >
-                    <h4 className={`text-lg md:text-xl font-black mb-1 ${headingText}`}>{step.title}</h4>
-                    <p className="text-xs md:text-sm font-semibold text-pink-500/60 mb-4">{step.company}</p>
-                    <ul className="space-y-3">
-                      {step.bullets?.map((bullet, bulletIdx) => (
-                        <li key={bulletIdx} className={`flex gap-3 text-sm md:text-base leading-relaxed opacity-80 ${bodyText}`}>
-                          <span className="text-pink-500 font-bold mt-1 flex-shrink-0">•</span>
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <h4 className={`text-lg md:text-xl font-black mb-2 ${headingText}`}>{item.title}</h4>
+                    <p className="text-sm md:text-base font-semibold text-pink-500/70 mb-2">{item.institute}</p>
+                    {item.score && <p className={`text-sm ${bodyText}`}>{item.score}</p>}
                   </div>
                 </div>
               ))}
 
-              {/* More to Come Indicator */}
-              <div className="relative flex flex-col md:flex-row gap-4 md:gap-10">
-                <div className={`absolute -left-[11px] top-1 w-5 h-5 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(236,72,153,0.6)] ${
-                  isDark ? 'bg-slate-900' : 'bg-[#fff8df]'
-                }`}>
-                  <div className="w-2 h-2 rounded-full bg-pink-500" />
-                </div>
-                <div className="md:w-48 text-xs uppercase tracking-[0.25em] font-black text-pink-500/80 pt-1">
-                  2026 →
-                </div>
-                <div className={`flex-1 p-6 md:p-8 rounded-3xl border backdrop-blur-xl flex items-center justify-center min-h-[120px] ${
-                  isDark ? 'bg-white/5 border-white/10 text-gray-200' : 'bg-black/5 border-black/10 text-slate-800'
-                }`}>
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="text-4xl font-black text-pink-500">+</div>
-                    <p className={`text-xs uppercase tracking-[0.2em] font-bold ${isDark ? 'text-gray-400' : 'text-slate-500'}`}>More Opportunities Coming</p>
-                  </div>
-                </div>
+              <div className={`ml-0 md:ml-[15.5rem] mt-2 p-6 md:p-8 rounded-3xl border backdrop-blur-xl ${
+                isDark ? 'bg-white/5 border-white/10 text-gray-300' : 'bg-black/5 border-black/10 text-slate-700'
+              }`}>
+                <p className="text-xs uppercase tracking-[0.2em] font-black text-pink-500/80 mb-3">Activities</p>
+                <p className="text-sm md:text-base">Content Writing, Script Writing, Journalism</p>
               </div>
             </div>
           </div>
