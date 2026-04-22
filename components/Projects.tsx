@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import { useTheme } from '../App';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react';
 
 const cardAccentMap = [
   {
@@ -113,6 +113,11 @@ const ProjectCard: React.FC<{ proj: any; isDark: boolean; index: number }> = ({ 
 const Projects: React.FC = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const [currentPage, setCurrentPage] = React.useState(1);
+
+  const PROJECTS_PER_PAGE = 12;
+  const totalPages = Math.ceil(PROJECTS.length / PROJECTS_PER_PAGE);
+  const pageProjects = PROJECTS.slice((currentPage - 1) * PROJECTS_PER_PAGE, currentPage * PROJECTS_PER_PAGE);
 
   return (
     <section
@@ -182,10 +187,46 @@ const Projects: React.FC = () => {
         </div>
 
         <div className="grid gap-6 xl:grid-cols-3 md:grid-cols-2">
-          {PROJECTS.map((proj, index) => (
+          {pageProjects.map((proj, index) => (
             <ProjectCard key={proj.id} proj={proj} isDark={isDark} index={index} />
           ))}
         </div>
+
+        {totalPages > 1 && (
+          <div className="mt-14 flex flex-col items-center gap-4">
+            <p className={`text-[11px] font-black uppercase tracking-[0.28em] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+              Page {currentPage} of {totalPages}
+            </p>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className={`inline-flex items-center gap-2 rounded-full border px-5 py-2 text-xs font-black uppercase tracking-[0.22em] transition-all disabled:cursor-not-allowed disabled:opacity-45 ${
+                  isDark
+                    ? 'border-white/20 bg-white/[0.04] text-white hover:bg-white/[0.08]'
+                    : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className={`inline-flex items-center gap-2 rounded-full border px-5 py-2 text-xs font-black uppercase tracking-[0.22em] transition-all disabled:cursor-not-allowed disabled:opacity-45 ${
+                  isDark
+                    ? 'border-lime-300/30 bg-lime-300/10 text-lime-200 hover:bg-lime-300/20'
+                    : 'border-lime-500/30 bg-lime-50 text-lime-700 hover:bg-lime-100'
+                }`}
+              >
+                Next Page
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
