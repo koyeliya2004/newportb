@@ -708,6 +708,328 @@ export const PROJECTS: Project[] = [
       ],
       outcome: "Built a real-world AI security system that detects manipulated videos and showcases advanced ML + computer vision skills."
     }
+  },
+  {
+    id: "proj16",
+    title: "Quick QR – QR Code Generator Tool",
+    subtitle: "Fast and simple tool for generating QR codes from text and URLs",
+    description: [
+      "Developed a lightweight application that converts user input (text/URL) into scannable QR codes for quick sharing and access.",
+      "Built a tool to instantly generate QR codes from user input such as URLs, text, or data.",
+      "Implemented download functionality and a clean UI for easy usage and sharing."
+    ],
+    techStack: ["Python", "Flask / Streamlit", "QR Libraries", "PIL", "HTML", "CSS"],
+    image: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed a QR code generator application that converts user input into scannable QR codes for quick information sharing.",
+      overview: "The system provides a simple and efficient interface for generating and downloading QR codes used for URLs, text, and custom data.",
+      features: [
+        { title: "QR Code Generation", description: "Converts URLs, text, and custom input into scannable QR images instantly using QR libraries." },
+        { title: "Instant Output", description: "Generates QR codes in real time with fast response and no noticeable processing delay." },
+        { title: "Download Functionality", description: "Allows users to download generated QR codes as image files such as PNG/JPG for easy sharing." },
+        { title: "Simple Web Interface", description: "Provides an input field, generate button, and output preview in a clean and minimal interface." },
+        { title: "Lightweight & Efficient", description: "Uses minimal dependencies, easy deployment, and supports browser or local usage." }
+      ],
+      systemArchitecture: "User Input (Text / URL) → Data Processing → QR Code Generation (Library) → Image Output (QR Code) → Display & Download",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python"] },
+        { category: "Frameworks", items: ["Flask / Streamlit"] },
+        { category: "Libraries", items: ["qrcode", "PIL"] },
+        { category: "Frontend", items: ["HTML", "CSS"] }
+      ],
+      challenges: [
+        "Handling different input formats safely and consistently.",
+        "Ensuring QR readability across varied content lengths.",
+        "Maintaining fast generation speed with a smooth user experience."
+      ],
+      learnings: [
+        "Building utility-based applications for practical daily use.",
+        "Working with image and QR generation libraries.",
+        "Designing simple and efficient UI flows."
+      ],
+      outcome: "Built a practical utility tool that generates QR codes instantly, simplifies data sharing, and demonstrates real-world usability."
+    }
+  },
+  {
+    id: "proj17",
+    title: "Xcoder – Online Coding Platform",
+    subtitle: "Web-based coding platform for writing, executing, and testing code in real time",
+    description: [
+      "Developed an interactive coding platform that allows users to write, execute, and test code in a browser-based environment with real-time feedback.",
+      "Built a web-based code editor supporting real-time code execution and output display.",
+      "Integrated backend services to handle code compilation/execution and manage user interactions efficiently."
+    ],
+    techStack: ["JavaScript", "Node.js", "Express", "HTML", "CSS", "API Integration"],
+    image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed a web-based coding platform that enables users to write, execute, and test code directly in the browser.",
+      overview: "The system simulates an online coding environment with API-driven execution and real-time result rendering for practice and interview-style workflows.",
+      features: [
+        { title: "In-Browser Code Editor", description: "Provides a clean and responsive code editor experience with real-time writing support." },
+        { title: "Code Execution Engine", description: "Sends code to a backend runtime, executes securely, and returns output quickly." },
+        { title: "API-Based Execution Flow", description: "Implements frontend-to-backend API communication for code submission and output retrieval." },
+        { title: "Real-Time Output Display", description: "Displays program output and runtime errors instantly for fast user feedback." },
+        { title: "Full Stack Integration", description: "Combines frontend (HTML/CSS/JS) with Node.js/Express backend services." }
+      ],
+      systemArchitecture: "User (Browser Editor) → Frontend (Code Input UI) → API Request (Send Code) → Backend Server (Execution Engine) → Code Execution (Sandbox / Runtime) → Output Response → Frontend Display",
+      techStackDetails: [
+        { category: "Frontend", items: ["HTML", "CSS", "JavaScript"] },
+        { category: "Backend", items: ["Node.js", "Express"] },
+        { category: "Concepts", items: ["API Integration", "Code Execution Systems", "Client-Server Architecture"] }
+      ],
+      challenges: [
+        "Designing secure code execution workflows.",
+        "Handling varied programming inputs and errors.",
+        "Managing low-latency real-time responses."
+      ],
+      learnings: [
+        "Full-stack system design for developer tools.",
+        "API integration for real-time systems.",
+        "Practical architecture patterns for interactive coding platforms."
+      ],
+      outcome: "Built a developer-focused coding platform that enables real-time execution, simulates online coding environments, and demonstrates strong full-stack skills."
+    }
+  },
+  {
+    id: "proj18",
+    title: "Credit Risk Prediction System",
+    subtitle: "Machine learning system for predicting loan default risk and creditworthiness",
+    description: [
+      "Developed a predictive model to assess the risk of loan default using financial and customer data, helping institutions make smarter lending decisions.",
+      "Built classification models to predict whether a borrower is likely to default on a loan using financial datasets.",
+      "Performed feature engineering and data analysis to identify key factors affecting credit risk and improve prediction accuracy."
+    ],
+    techStack: ["Python", "Scikit-learn", "Logistic Regression", "Pandas", "NumPy", "EDA"],
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed a machine learning-based credit risk prediction system to evaluate whether a borrower is likely to default on a loan.",
+      overview: "The model analyzes financial data and outputs default risk probabilities to support informed lending decisions in financial institutions.",
+      features: [
+        { title: "ML-Based Risk Classification", description: "Implemented Logistic Regression and tree-based models to classify default risk as high or low." },
+        { title: "Probability-Based Scoring", description: "Generates probability of default scores to quantify borrower risk levels." },
+        { title: "Data Preprocessing", description: "Handled missing values, encoded categorical variables, and applied scaling/normalization." },
+        { title: "Feature Engineering", description: "Focused on factors like income, credit history, loan amount, and employment status." },
+        { title: "Model Evaluation & Visualization", description: "Used metrics such as Accuracy, Precision, Recall, ROC-AUC, and plotted confusion matrix/ROC." }
+      ],
+      systemArchitecture: "Customer Financial Data → Data Cleaning & Preprocessing → Feature Engineering → Model Training (Classification) → Prediction Output (Default Risk) → Evaluation & Visualization",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "Pandas", "NumPy"] },
+        { category: "Machine Learning", items: ["Scikit-learn", "Logistic Regression", "Decision Tree / Random Forest"] },
+        { category: "Concepts", items: ["Classification", "Risk Analysis", "Probability Modeling"] }
+      ],
+      challenges: [
+        "Handling class imbalance in default datasets.",
+        "Selecting the most meaningful risk features.",
+        "Reducing bias risk in financial prediction workflows."
+      ],
+      learnings: [
+        "Financial risk modeling techniques.",
+        "Classification model selection and evaluation.",
+        "Applying ML in real-world banking use cases."
+      ],
+      outcome: "Built a financial risk prediction system that assesses borrower reliability and supports lending decisions with practical ML outputs."
+    }
+  },
+  {
+    id: "proj19",
+    title: "Maritime Intelligence & Monitoring System",
+    subtitle: "Data-driven system for maritime tracking, monitoring, and analytics",
+    description: [
+      "Developed a system to monitor maritime activities, track vessels, and analyze marine data for improving navigation safety and operational efficiency.",
+      "Built a system to track and analyze maritime vessel data for monitoring and decision-making.",
+      "Integrated data processing and visualization to provide insights into marine operations and logistics."
+    ],
+    techStack: ["Python", "Data Analysis", "APIs", "GIS", "Visualization", "Pandas"],
+    image: "https://images.unsplash.com/photo-1475776408506-9a5371e7a068?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed a maritime intelligence system to monitor vessel movements, analyze marine data, and improve operational efficiency.",
+      overview: "The system uses location and maritime data flows to track vessel movement, identify traffic patterns, and provide operational insights for safety and logistics.",
+      features: [
+        { title: "Vessel Tracking", description: "Tracks ship movement in near real time using location-based data such as GPS/AIS feeds." },
+        { title: "Data Analysis & Insights", description: "Analyzes traffic patterns and route efficiency to support decision-making." },
+        { title: "Maritime Monitoring", description: "Helps detect congestion and irregular movement patterns for safer operations." },
+        { title: "Visualization Dashboard", description: "Provides maps, charts, and analytics views with periodic updates." },
+        { title: "Scalable System Design", description: "Supports API/data-feed integration and extensibility for logistics/security use cases." }
+      ],
+      systemArchitecture: "Maritime Data Input (AIS / GPS / API) → Data Processing & Cleaning → Analysis & Pattern Detection → Visualization (Dashboard / Map) → Insights (Tracking / Monitoring)",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "Pandas"] },
+        { category: "Concepts", items: ["Geospatial Analysis", "Real-Time Systems", "Data Visualization"] },
+        { category: "Integrations", items: ["APIs", "GIS / Mapping"] }
+      ],
+      challenges: [
+        "Handling real-time maritime data streams.",
+        "Visualizing geospatial information clearly.",
+        "Maintaining tracking accuracy at scale."
+      ],
+      learnings: [
+        "Geospatial data processing patterns.",
+        "Design of real-time analytics systems.",
+        "Industry-style monitoring architecture."
+      ],
+      outcome: "Built a maritime monitoring solution that tracks vessels, surfaces operational insights, and demonstrates real-world system design."
+    }
+  },
+  {
+    id: "proj20",
+    title: "Construction Pulse – Smart Construction Management System",
+    subtitle: "Digital platform for managing construction workflows, tasks, and worker coordination",
+    description: [
+      "Developed a system to streamline construction site operations by managing tasks, documents, and communication between workers and managers.",
+      "Built a centralized platform to manage construction workflows, worker data, and project tasks.",
+      "Designed a system to improve communication, document handling, and operational efficiency on construction sites."
+    ],
+    techStack: ["JavaScript", "Node.js", "Express", "MongoDB", "HTML", "CSS"],
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed a construction management platform to digitize and streamline operations on construction sites.",
+      overview: "The system enables workers and managers to track tasks, manage documents, and communicate through a centralized interface.",
+      features: [
+        { title: "Task & Workflow Management", description: "Assigns and tracks tasks, monitors progress, and improves team coordination." },
+        { title: "Worker Management", description: "Stores worker data, tracks attendance/activity, and manages roles/responsibilities." },
+        { title: "Document Handling", description: "Supports upload and management of certifications, reports, and site documents in one place." },
+        { title: "Communication System", description: "Improves interactions between workers and supervisors to reduce delays and confusion." },
+        { title: "Full Stack Architecture", description: "Built with HTML/CSS/JS frontend, Node.js/Express backend, and MongoDB storage." }
+      ],
+      systemArchitecture: "User (Worker / Manager) → Frontend Interface (Dashboard) → API Requests → Backend Server (Node.js / Express) → Database (MongoDB) → Response (Tasks / Data / Updates)",
+      techStackDetails: [
+        { category: "Frontend", items: ["HTML", "CSS", "JavaScript"] },
+        { category: "Backend", items: ["Node.js", "Express"] },
+        { category: "Database", items: ["MongoDB"] }
+      ],
+      challenges: [
+        "Managing real-time data updates across users.",
+        "Designing scalable backend services for site workflows.",
+        "Handling multi-role permissions and access."
+      ],
+      learnings: [
+        "Full-stack product development for operations workflows.",
+        "Designing workflow-centric platforms.",
+        "Building practical systems for real-world domain needs."
+      ],
+      outcome: "Built a practical construction management system that improves operational efficiency, centralizes project data, and demonstrates real-world software value."
+    }
+  },
+  {
+    id: "proj21",
+    title: "Rainwater Harvesting & Groundwater Recharge System",
+    subtitle: "Sustainable water management system for rainwater collection and groundwater recharge analysis",
+    description: [
+      "Developed a system to analyze rainwater harvesting potential and optimize storage and groundwater recharge using rainfall and catchment data.",
+      "Built a model to estimate rainwater collection and optimize tank storage capacity based on rainfall and catchment area.",
+      "Analyzed groundwater recharge potential and water demand to support sustainable resource management."
+    ],
+    techStack: ["Python", "Data Analysis", "Simulation", "GIS / Mapping", "NumPy", "Pandas"],
+    image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed a data-driven water management system to assess rainwater harvesting potential and groundwater recharge efficiency.",
+      overview: "The system simulates how rainwater can be collected, stored, and reused to improve sustainability and reduce pressure on traditional water sources.",
+      features: [
+        { title: "Rainwater Collection Modeling", description: "Estimates harvestable water volume based on rainfall and catchment area inputs." },
+        { title: "Tank Storage Optimization", description: "Determines optimal tank sizing and storage efficiency while reducing overflow/wastage." },
+        { title: "Groundwater Recharge Analysis", description: "Evaluates recharge potential and support for long-term water table improvement." },
+        { title: "Data Analysis & Simulation", description: "Runs scenario-based simulations to support planning and policy decisions." },
+        { title: "Real-World Application", description: "Applicable to urban planning, smart city programs, rural conservation, and agriculture." }
+      ],
+      systemArchitecture: "Rainfall Data Input → Catchment Area Calculation → Water Collection Estimation → Tank Storage Optimization → Groundwater Recharge Model → Output (Water Availability & Efficiency)",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "NumPy", "Pandas"] },
+        { category: "Concepts", items: ["Simulation Modeling", "Environmental Analytics", "Resource Optimization"] },
+        { category: "Domain", items: ["GIS / Mapping", "Water Sustainability"] }
+      ],
+      challenges: [
+        "Handling variable and seasonal rainfall patterns.",
+        "Estimating catchment parameters accurately.",
+        "Balancing storage decisions against demand variability."
+      ],
+      learnings: [
+        "Environmental data analysis approaches.",
+        "Simulation-based planning techniques.",
+        "Applying software and analytics beyond traditional ML-only use cases."
+      ],
+      outcome: "Built a sustainable water management solution that optimizes rainwater usage, supports groundwater recharge, and demonstrates tangible social impact."
+    }
+  },
+  {
+    id: "proj22",
+    title: "Diamond Price Prediction System (Web App)",
+    subtitle: "End-to-end ML web application for predicting diamond prices",
+    description: [
+      "Developed a machine learning-based web application that predicts diamond prices based on features like carat, cut, clarity, and color using regression models.",
+      "Built a complete ML pipeline from data preprocessing to model deployment using regression techniques.",
+      "Developed a web interface where users input diamond attributes and receive real-time price predictions."
+    ],
+    techStack: ["Python", "Scikit-learn", "Flask", "HTML", "CSS", "Pandas", "NumPy"],
+    image: "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed an end-to-end machine learning web application to predict diamond prices based on physical and quality attributes.",
+      overview: "The system takes user inputs such as carat, cut, color, and clarity, processes features, and predicts price through trained regression models.",
+      features: [
+        { title: "Regression-Based Price Prediction", description: "Implemented Linear Regression, Ridge/Lasso, and tree-based approaches for continuous price estimation." },
+        { title: "Feature Engineering", description: "Worked on influential pricing features including carat, cut quality, color, and clarity." },
+        { title: "Data Preprocessing", description: "Handled missing data, encoded categorical inputs, and applied feature scaling." },
+        { title: "Web Application Interface", description: "Built a simple input form with instant prediction output using Flask-backed inference." },
+        { title: "End-to-End Pipeline", description: "Integrated preprocessing, model inference, and UI into a deployable workflow." }
+      ],
+      systemArchitecture: "User Input (Diamond Features) → Data Preprocessing → Feature Engineering → Model Prediction (Regression) → Output (Predicted Price) → Web Interface (Flask)",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "Pandas", "NumPy"] },
+        { category: "Machine Learning", items: ["Scikit-learn", "Regression Models"] },
+        { category: "Backend", items: ["Flask"] },
+        { category: "Frontend", items: ["HTML", "CSS"] }
+      ],
+      challenges: [
+        "Handling categorical features such as cut, color, and clarity.",
+        "Improving regression performance and generalization.",
+        "Integrating model inference smoothly with web UI."
+      ],
+      learnings: [
+        "End-to-end ML product lifecycle implementation.",
+        "Model deployment using Flask.",
+        "Applied feature engineering for regression systems."
+      ],
+      outcome: "Built a production-style ML application that predicts diamond prices in real time and demonstrates complete ML-to-web integration."
+    }
+  },
+  {
+    id: "proj23",
+    title: "PDF Explainer AI Chatbot",
+    subtitle: "AI chatbot for interacting with and understanding PDF documents",
+    description: [
+      "Developed an AI-powered chatbot that allows users to upload PDF documents and ask questions, generating contextual answers and summaries.",
+      "Built document parsing, embedding generation, and retrieval-based question-answering workflows.",
+      "Implemented contextual retrieval with vector search and LLM response generation in a chat-style UI."
+    ],
+    techStack: ["Python", "NLP", "LLM", "LangChain", "Streamlit", "FAISS / Vector DB"],
+    image: "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed an AI-powered document understanding system that enables users to interact with PDF files through natural language queries.",
+      overview: "The application follows a retrieval-augmented generation (RAG) pipeline to extract relevant content from uploaded PDFs and generate contextual answers.",
+      features: [
+        { title: "Chat with PDF", description: "Allows users to upload PDF files and ask questions in natural language." },
+        { title: "Document Processing", description: "Extracts PDF text, performs chunking, and prepares content for embedding workflows." },
+        { title: "Embedding & Retrieval (RAG)", description: "Converts chunks into embeddings, stores them in FAISS, and retrieves relevant context." },
+        { title: "AI Response Generation", description: "Uses LLM inference for context-aware answers and summaries." },
+        { title: "Interactive Interface", description: "Provides a Streamlit/web chat interface with fast response rendering." }
+      ],
+      systemArchitecture: "PDF Upload → Text Extraction → Chunking & Preprocessing → Embedding Generation → Vector Database (FAISS) → User Query → Relevant Chunk Retrieval → LLM Response Generation → Chat Interface Output",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python"] },
+        { category: "AI / NLP", items: ["LLM", "LangChain", "FAISS"] },
+        { category: "Frontend", items: ["Streamlit"] }
+      ],
+      challenges: [
+        "Handling large PDF documents efficiently.",
+        "Improving retrieval precision for better answer quality.",
+        "Managing context windows for accurate responses."
+      ],
+      learnings: [
+        "Practical RAG pipeline implementation.",
+        "NLP workflows for long-document processing.",
+        "Designing AI-assisted chat systems for real-world utility."
+      ],
+      outcome: "Built a smart document assistant that extracts knowledge from PDFs, answers questions quickly, and demonstrates practical AI application."
+    }
   }
 ];
 
