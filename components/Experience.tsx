@@ -123,6 +123,42 @@ const StopCard: React.FC<{ index: number; simulation: any; isDark: boolean }> = 
   </div>
 );
 
+const PremiumWavesBackground: React.FC<{ isDark: boolean; enabled: boolean }> = ({ isDark, enabled }) => {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const vantaRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (!enabled || !mountRef.current) return;
+    const vanta = (window as any).VANTA;
+    if (!vanta?.WAVES) return;
+
+    vantaRef.current = vanta.WAVES({
+      el: mountRef.current,
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200,
+      minWidth: 200,
+      scale: 1,
+      scaleMobile: 1,
+      color: isDark ? 0x0b1d3a : 0x214f9b,
+      shininess: 30,
+      waveHeight: isDark ? 10 : 8,
+      waveSpeed: 0.6,
+      zoom: 1.1,
+    });
+
+    return () => {
+      if (vantaRef.current) {
+        vantaRef.current.destroy();
+        vantaRef.current = null;
+      }
+    };
+  }, [enabled, isDark]);
+
+  return <div ref={mountRef} className="absolute inset-0 h-full w-full" />;
+};
+
 const Experience: React.FC = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
@@ -132,6 +168,54 @@ const Experience: React.FC = () => {
   const trajectoryProgress = useScrollProgress(trajectoryRef);
   const scrollProgress = useScrollProgress(spiralRef);
   const [orbPosition, setOrbPosition] = useState({ x: 300, y: 0 });
+  const [threeReady, setThreeReady] = useState(!!(window as any).THREE);
+  const [vantaReady, setVantaReady] = useState(!!(window as any).VANTA?.WAVES);
+
+  useEffect(() => {
+    if ((window as any).THREE) {
+      setThreeReady(true);
+      return;
+    }
+
+    const existingScript = document.querySelector('script[data-threejs="true"]') as HTMLScriptElement | null;
+    const handleLoad = () => setThreeReady(true);
+
+    if (existingScript) {
+      existingScript.addEventListener('load', handleLoad);
+      return () => existingScript.removeEventListener('load', handleLoad);
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    script.async = true;
+    script.dataset.threejs = 'true';
+    script.onload = handleLoad;
+    document.head.appendChild(script);
+    return () => script.removeEventListener('load', handleLoad);
+  }, []);
+
+  useEffect(() => {
+    if ((window as any).VANTA?.WAVES) {
+      setVantaReady(true);
+      return;
+    }
+
+    const existingScript = document.querySelector('script[data-vanta="waves"]') as HTMLScriptElement | null;
+    const handleLoad = () => setVantaReady(!!(window as any).VANTA?.WAVES);
+
+    if (existingScript) {
+      existingScript.addEventListener('load', handleLoad);
+      return () => existingScript.removeEventListener('load', handleLoad);
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js';
+    script.async = true;
+    script.dataset.vanta = 'waves';
+    script.onload = handleLoad;
+    document.head.appendChild(script);
+    return () => script.removeEventListener('load', handleLoad);
+  }, []);
 
   useEffect(() => {
     const path = spiralPathRef.current;
@@ -148,7 +232,7 @@ const Experience: React.FC = () => {
       className="relative overflow-hidden px-6 py-32 transition-colors duration-700"
     >
       <div className="pointer-events-none absolute inset-0">
-        <ExperienceGoldBlueBackground />
+        {threeReady && vantaReady ? <PremiumWavesBackground isDark={isDark} enabled /> : threeReady && <ExperienceGoldBlueBackground />}
         <BlobFieldBackground variant="experience" scrollProgress={trajectoryProgress} />
         <div className={`${isDark ? 'bg-gradient-to-b from-black/35 via-transparent to-black/45' : 'bg-gradient-to-b from-white/10 via-transparent to-slate-950/20'} absolute inset-0`} />
       </div>
