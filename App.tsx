@@ -53,21 +53,23 @@ const CustomCursor: React.FC = () => {
     <>
       {trail.map((dot, index) => {
         const ratio = 1 - index / trail.length;
-        const size = (isHovering ? 18 : 12) * Math.pow(ratio, 1.5);
-        const opacity = Math.pow(ratio, 2) * (isHovering ? 0.65 : 0.45);
+        const size = (isHovering ? 12 : 8) * Math.pow(ratio, 1.4);
+        const opacity = Math.pow(ratio, 1.9) * (isHovering ? 0.75 : 0.55);
+        const hue = 38 + index * 8;
         return (
           <div
             key={dot.id}
-            className={`fixed top-0 left-0 rounded-full z-[9998] pointer-events-none blur-[2px] ${
-              theme === 'dark' ? 'bg-[#f3c623]' : 'bg-black'
-            }`}
+            className="fixed top-0 left-0 rounded-full z-[9998] pointer-events-none blur-[1.5px]"
             style={{
               width: `${size}px`,
               height: `${size}px`,
               transform: `translate(${dot.x}px, ${dot.y}px) translate(-50%, -50%)`,
               opacity,
-              transition: 'opacity 0.3s ease, width 0.3s ease, height 0.3s ease',
-              boxShadow: theme === 'dark' ? '0 0 20px rgba(243,198,35,0.4)' : '0 0 12px rgba(0,0,0,0.15)',
+              transition: 'opacity 0.25s ease, width 0.25s ease, height 0.25s ease',
+              background: theme === 'dark'
+                ? `radial-gradient(circle, hsla(${hue}, 95%, 70%, 1), hsla(${hue + 28}, 95%, 62%, 0.7))`
+                : 'radial-gradient(circle, rgba(17,24,39,1), rgba(17,24,39,0.45))',
+              boxShadow: theme === 'dark' ? '0 0 18px rgba(243,198,35,0.42), 0 0 26px rgba(59,130,246,0.22)' : '0 0 10px rgba(17,24,39,0.18)',
             }}
           />
         );
@@ -137,7 +139,7 @@ const App: React.FC = () => {
               <p className={`${theme === 'dark' ? 'text-white/40' : 'text-slate-500'} text-sm transition-colors`}>© 2026 Bhumika. All rights reserved.</p>
 
               <div className={`flex gap-8 text-sm ${theme === 'dark' ? 'text-white/70' : 'text-slate-600'} font-bold uppercase tracking-widest text-[10px] transition-colors`}>
-                <a href="https://www.linkedin.com/in/bhumika" target="_blank" rel="noopener noreferrer" className="hover:text-[#f3c623] transition-colors">LinkedIn</a>
+                <a href="https://www.linkedin.com/in/bhumika-tewari-21294027a/" target="_blank" rel="noopener noreferrer" className="hover:text-[#f3c623] transition-colors">LinkedIn</a>
                 <a href="https://github.com/Bhumika2006-hue" target="_blank" rel="noopener noreferrer" className="hover:text-[#f3c623] transition-colors">GitHub</a>
               </div>
             </div>
