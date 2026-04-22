@@ -178,6 +178,47 @@ const GoldenNetwork: React.FC = () => {
   return <div ref={mountRef} className="absolute inset-0 w-full h-full" />;
 };
 
+const PremiumWavesBackground: React.FC<{ isDark: boolean; enabled: boolean }> = ({ isDark, enabled }) => {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const vantaRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (!enabled || !mountRef.current) return;
+    const vanta = (window as any).VANTA;
+    if (!vanta?.WAVES) return;
+
+    vantaRef.current = vanta.WAVES({
+      el: mountRef.current,
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200,
+      minWidth: 200,
+      scale: 1,
+      scaleMobile: 1,
+      color: isDark ? 0x0b1d3a : 0x214f9b,
+      shininess: 30,
+      waveHeight: isDark ? 10 : 8,
+      waveSpeed: 0.6,
+      zoom: 1.1,
+    });
+
+    return () => {
+      if (vantaRef.current) {
+        vantaRef.current.destroy();
+        vantaRef.current = null;
+      }
+    };
+  }, [enabled, isDark]);
+
+  return (
+    <div id="bg" ref={mountRef} className="absolute inset-0 h-full w-full">
+      <div className="pointer-events-none absolute -left-28 -top-28 h-[600px] w-[600px] blur-[100px] bg-[radial-gradient(circle,rgba(255,200,0,0.18),transparent_70%)]" />
+      <div className="pointer-events-none absolute -bottom-28 -right-28 h-[600px] w-[600px] blur-[120px] bg-[radial-gradient(circle,rgba(0,100,255,0.18),transparent_70%)]" />
+    </div>
+  );
+};
+
 const techIcons = [
   'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
   'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
@@ -417,6 +458,7 @@ const Hero: React.FC = () => {
   const [visibleSections, setVisibleSections] = useState<number[]>([]);
   const [scrollDepth, setScrollDepth] = useState(0);
   const [threeReady, setThreeReady] = useState(!!(window as any).THREE);
+  const [vantaReady, setVantaReady] = useState(!!(window as any).VANTA?.WAVES);
   const threeLoaded = useRef(false);
 
   useEffect(() => {
@@ -450,6 +492,29 @@ const Hero: React.FC = () => {
     script.onload = handleLoad;
     document.head.appendChild(script);
 
+    return () => script.removeEventListener('load', handleLoad);
+  }, []);
+
+  useEffect(() => {
+    if ((window as any).VANTA?.WAVES) {
+      setVantaReady(true);
+      return;
+    }
+
+    const existingScript = document.querySelector('script[data-vanta="waves"]') as HTMLScriptElement | null;
+    const handleLoad = () => setVantaReady(!!(window as any).VANTA?.WAVES);
+
+    if (existingScript) {
+      existingScript.addEventListener('load', handleLoad);
+      return () => existingScript.removeEventListener('load', handleLoad);
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js';
+    script.async = true;
+    script.dataset.vanta = 'waves';
+    script.onload = handleLoad;
+    document.head.appendChild(script);
     return () => script.removeEventListener('load', handleLoad);
   }, []);
 
@@ -516,7 +581,7 @@ const Hero: React.FC = () => {
     <div className={`relative overflow-x-hidden ${isDark ? 'bg-[#030307] text-white' : 'bg-white text-slate-900'}`}>
       <section className="relative min-h-screen overflow-hidden" style={{ perspective: '1200px' }}>
         <div className="absolute inset-0 z-0">
-          {threeReady && <GoldenNetwork />}
+          {threeReady && vantaReady ? <PremiumWavesBackground isDark={isDark} enabled /> : threeReady && <GoldenNetwork />}
         </div>
         <div className={`absolute inset-0 z-[1] ${isDark ? 'bg-[#02030a]/28' : 'bg-white/28'}`} />
         {isDark && (
