@@ -35,10 +35,11 @@ const GoldenNetwork: React.FC = () => {
     scene.add(group);
 
     const glowMaterial = new THREE.PointsMaterial({
-      color: 0xf3c623,
+      color: 0xff5db1,
       size: 4.2,
       transparent: true,
       opacity: 1,
+      blending: THREE.AdditiveBlending,
     });
     const particlesGeom = new THREE.BufferGeometry();
 
@@ -62,7 +63,7 @@ const GoldenNetwork: React.FC = () => {
     const lineColors = new Float32Array(particleCount * particleCount * 3);
     lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3).setUsage(THREE.DynamicDrawUsage));
     lineGeometry.setAttribute('color', new THREE.BufferAttribute(lineColors, 3).setUsage(THREE.DynamicDrawUsage));
-    const lineMaterial = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.82 });
+    const lineMaterial = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.9 });
     const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
     group.add(lineMesh);
 
@@ -90,9 +91,14 @@ const GoldenNetwork: React.FC = () => {
     window.addEventListener('touchmove', onTouchMove);
     window.addEventListener('resize', onResize);
 
-    const GR = 0.9569, GG = 0.7765, GB = 0.1373;
+    const vibrantPalette = [
+      { r: 0.2, g: 0.63, b: 1.0 },   // electric blue
+      { r: 0.99, g: 0.36, b: 0.75 }, // golden pink
+      { r: 0.98, g: 0.79, b: 0.2 },  // warm gold accent
+    ];
 
     let animId: number;
+    let time = 0;
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
@@ -104,6 +110,7 @@ const GoldenNetwork: React.FC = () => {
 
       group.rotation.y += 0.0015;
       group.rotation.x += 0.0004;
+      time += 1;
 
       const linePosAttr = lineMesh.geometry.attributes.position as any;
       const lineColAttr = lineMesh.geometry.attributes.color as any;
@@ -136,8 +143,14 @@ const GoldenNetwork: React.FC = () => {
             linePosAttr.setXYZ(vi++, positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
             linePosAttr.setXYZ(vi++, positions[j * 3], positions[j * 3 + 1], positions[j * 3 + 2]);
             const alpha = Math.pow(1 - dist / maxDistance, 0.6);
-            lineColAttr.setXYZ(ci++, GR * alpha, GG * alpha, GB * alpha);
-            lineColAttr.setXYZ(ci++, GR * alpha, GG * alpha, GB * alpha);
+            const colorA = vibrantPalette[i % vibrantPalette.length];
+            const colorB = vibrantPalette[j % vibrantPalette.length];
+            const mix = 0.5 + 0.5 * Math.sin((i + j) * 0.12 + time * 0.02);
+            const r = ((colorA.r * mix + colorB.r * (1 - mix)) * alpha);
+            const g = ((colorA.g * mix + colorB.g * (1 - mix)) * alpha);
+            const b = ((colorA.b * mix + colorB.b * (1 - mix)) * alpha);
+            lineColAttr.setXYZ(ci++, r, g, b);
+            lineColAttr.setXYZ(ci++, r, g, b);
             lineCount++;
           }
         }
@@ -260,6 +273,7 @@ const TechStackCloud: React.FC = () => {
     document.addEventListener('mousemove', onMouseMove);
 
     let animId: number;
+    let time = 0;
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
