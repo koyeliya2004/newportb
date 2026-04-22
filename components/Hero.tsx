@@ -349,6 +349,154 @@ const skillPoints = [
   { label: 'System\nDesign', x: 18, y: 32 },
 ];
 
+// ── Hexagonal Profile Photo with Hazy Glow ─────────────────────────────────
+const HexProfilePhoto: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+  return (
+    <div className="relative flex items-center justify-center" style={{ width: 340, height: 360 }}>
+      {/* Outer hazy aura layers */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: 340, height: 340,
+          background: 'radial-gradient(circle, rgba(243,198,35,0.28) 0%, rgba(243,198,35,0.10) 55%, transparent 75%)',
+          filter: 'blur(28px)',
+          animation: 'hexAura1 4s ease-in-out infinite',
+        }}
+      />
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: 280, height: 280,
+          background: 'radial-gradient(circle, rgba(243,198,35,0.38) 0%, rgba(255,220,80,0.12) 50%, transparent 72%)',
+          filter: 'blur(18px)',
+          animation: 'hexAura2 3s ease-in-out infinite',
+        }}
+      />
+
+      {/* Spinning hexagon ring */}
+      <svg
+        className="absolute"
+        width="330" height="330"
+        style={{ animation: 'hexSpin 16s linear infinite' }}
+        viewBox="0 0 330 330"
+      >
+        <polygon
+          points="165,8 305,87 305,243 165,322 25,243 25,87"
+          fill="none"
+          stroke="rgba(243,198,35,0.55)"
+          strokeWidth="2"
+          strokeDasharray="8 6"
+        />
+        {/* Glowing dots on corners */}
+        {[
+          [165,8],[305,87],[305,243],[165,322],[25,243],[25,87]
+        ].map(([cx,cy], i) => (
+          <circle key={i} cx={cx} cy={cy} r="5" fill="#f3c623"
+            style={{ filter: 'drop-shadow(0 0 6px rgba(243,198,35,1))' }}
+          />
+        ))}
+      </svg>
+
+      {/* Inner counter-spinning hex ring */}
+      <svg
+        className="absolute"
+        width="290" height="290"
+        style={{ animation: 'hexSpinReverse 22s linear infinite' }}
+        viewBox="0 0 290 290"
+      >
+        <polygon
+          points="145,6 268,73 268,217 145,284 22,217 22,73"
+          fill="none"
+          stroke="rgba(243,198,35,0.28)"
+          strokeWidth="1.2"
+          strokeDasharray="4 10"
+        />
+      </svg>
+
+      {/* Hexagonal photo clip */}
+      <div className="relative z-10" style={{ width: 240, height: 240 }}>
+        <svg width="0" height="0" style={{ position: 'absolute' }}>
+          <defs>
+            <clipPath id="hexClip" clipPathUnits="objectBoundingBox">
+              <polygon points="0.5,0 0.933,0.25 0.933,0.75 0.5,1 0.067,0.75 0.067,0.25" />
+            </clipPath>
+          </defs>
+        </svg>
+
+        {/* Glow border behind photo */}
+        <div
+          className="absolute inset-0"
+          style={{
+            clipPath: 'polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%)',
+            background: 'linear-gradient(135deg, #f3c623 0%, #ffea70 40%, #c89b0a 100%)',
+            padding: 3,
+            filter: 'drop-shadow(0 0 18px rgba(243,198,35,0.9)) drop-shadow(0 0 40px rgba(243,198,35,0.5))',
+            animation: 'hexGlow 3s ease-in-out infinite',
+          }}
+        />
+
+        {/* Actual photo */}
+        <img
+          src="/assets/profile.jpg"
+          alt="Profile"
+          style={{
+            position: 'absolute',
+            inset: 3,
+            width: 'calc(100% - 6px)',
+            height: 'calc(100% - 6px)',
+            objectFit: 'cover',
+            objectPosition: 'top center',
+            clipPath: 'polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%)',
+            filter: isDark
+              ? 'brightness(1.05) contrast(1.08) saturate(1.1)'
+              : 'brightness(1.02) contrast(1.05)',
+          }}
+        />
+
+        {/* Hazy overlay shimmer */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            clipPath: 'polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%)',
+            background: 'linear-gradient(180deg, rgba(243,198,35,0.15) 0%, transparent 40%, rgba(243,198,35,0.08) 100%)',
+            animation: 'shimmerOverlay 4s ease-in-out infinite',
+          }}
+        />
+      </div>
+
+      {/* Floating sparkle particles */}
+      {[...Array(6)].map((_, i) => (
+        <div
+          key={i}
+          className="absolute rounded-full bg-[#f3c623]"
+          style={{
+            width: i % 2 === 0 ? 6 : 4,
+            height: i % 2 === 0 ? 6 : 4,
+            top: `${[8,18,72,82,42,58][i]}%`,
+            left: `${[48,80,85,48,10,15][i]}%`,
+            boxShadow: '0 0 8px 3px rgba(243,198,35,0.85)',
+            animation: `sparkle${i} ${2.5 + i * 0.4}s ease-in-out infinite`,
+            animationDelay: `${i * 0.3}s`,
+          }}
+        />
+      ))}
+
+      {/* Status badge */}
+      <div
+        className={`absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-full border px-4 py-1.5 backdrop-blur-md z-20 ${
+          isDark
+            ? 'border-[#f3c623]/30 bg-black/60 text-white/80'
+            : 'border-[#f3c623]/40 bg-white/70 text-slate-700'
+        }`}
+        style={{ boxShadow: '0 0 16px rgba(243,198,35,0.3)' }}
+      >
+        <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.9)]" />
+        <span className="text-xs font-semibold">Available for work</span>
+      </div>
+    </div>
+  );
+};
+
 const Hero: React.FC = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
@@ -490,39 +638,9 @@ const Hero: React.FC = () => {
               </div>
             </div>
 
+            {/* ── PROFILE PHOTO SECTION (replaces old circle logo) ── */}
             <div className="relative mx-auto flex w-full max-w-sm items-center justify-center transition-all duration-1000 ease-out" data-reveal="2">
-              <div className="absolute h-[360px] w-[360px] rounded-full bg-[#f3c623]/15 blur-3xl animate-pulse" />
-              <div className="absolute h-[300px] w-[300px] rounded-full bg-[#f3c623]/18 blur-2xl" style={{ animation: 'hazyPulse 4s ease-in-out infinite' }} />
-
-              <div
-                className={`relative flex h-[300px] w-[300px] flex-col items-center justify-center rounded-full ${
-                  isDark
-                    ? 'border-[#f3c623]/30 bg-[#f3c623]/5'
-                    : 'border-[#f3c623]/50 bg-[#f3c623]/10'
-                } border backdrop-blur-2xl shadow-[0_0_90px_rgba(243,198,35,0.2)]`}
-                style={{ animation: 'avatarFloat 5s ease-in-out infinite' }}
-              >
-                <div className={`absolute inset-4 rounded-full ${isDark ? 'bg-[#f3c623]/8' : 'bg-[#f3c623]/12'} blur-xl`} />
-                <div className="relative z-10 flex flex-col items-center gap-2">
-                  <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#f3c623] to-[#c89b0a] shadow-[0_0_32px_rgba(243,198,35,0.45)]">
-                    <Logo className="h-14 w-14 drop-shadow-[0_0_8px_rgba(0,0,0,0.5)]" />
-                  </div>
-                  <p className={`mt-3 text-sm font-bold ${isDark ? 'text-white/80' : 'text-slate-800'}`}>Bhumika Tewari</p>
-                  <p className="text-xs font-medium text-[#f3c623]/80">AI / Full Stack</p>
-                  <div className={`mt-3 flex items-center gap-2 rounded-full border px-4 py-1.5 ${
-                    isDark
-                      ? 'border-[#f3c623]/25 bg-[#f3c623]/8'
-                      : 'border-[#f3c623]/40 bg-[#f3c623]/15'
-                  }`}>
-                    <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.9)]" />
-                    <span className={`text-xs ${isDark ? 'text-white/70' : 'text-slate-700'}`}>Available for work</span>
-                  </div>
-                </div>
-
-                <div className={`absolute h-[290px] w-[290px] rounded-full ${isDark ? 'border-[#f3c623]/22' : 'border-[#f3c623]/40'} border`} style={{ animation: 'spin 18s linear infinite' }}>
-                  <div className="absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-[#f3c623] shadow-[0_0_14px_rgba(243,198,35,0.95)]" />
-                </div>
-              </div>
+              <HexProfilePhoto isDark={isDark} />
             </div>
           </div>
         </div>
@@ -748,6 +866,36 @@ const Hero: React.FC = () => {
           0%, 100% { opacity: 0.3; }
           50% { opacity: 1; }
         }
+        @keyframes hexSpin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes hexSpinReverse {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(-360deg); }
+        }
+        @keyframes hexAura1 {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.12); }
+        }
+        @keyframes hexAura2 {
+          0%, 100% { opacity: 0.5; transform: scale(0.95); }
+          50% { opacity: 0.85; transform: scale(1.06); }
+        }
+        @keyframes hexGlow {
+          0%, 100% { filter: drop-shadow(0 0 14px rgba(243,198,35,0.8)) drop-shadow(0 0 30px rgba(243,198,35,0.4)); }
+          50% { filter: drop-shadow(0 0 28px rgba(243,198,35,1)) drop-shadow(0 0 60px rgba(243,198,35,0.65)); }
+        }
+        @keyframes shimmerOverlay {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 0.85; }
+        }
+        @keyframes sparkle0 { 0%,100%{opacity:0.3;transform:scale(0.7)} 50%{opacity:1;transform:scale(1.4)} }
+        @keyframes sparkle1 { 0%,100%{opacity:0.5;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.5)} }
+        @keyframes sparkle2 { 0%,100%{opacity:0.2;transform:scale(0.6)} 50%{opacity:0.9;transform:scale(1.3)} }
+        @keyframes sparkle3 { 0%,100%{opacity:0.4;transform:scale(0.9)} 50%{opacity:1;transform:scale(1.4)} }
+        @keyframes sparkle4 { 0%,100%{opacity:0.3;transform:scale(0.7)} 50%{opacity:0.95;transform:scale(1.6)} }
+        @keyframes sparkle5 { 0%,100%{opacity:0.5;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.3)} }
       `}</style>
     </div>
   );
