@@ -203,6 +203,19 @@ const Projects: React.FC = () => {
             <div className="flex flex-wrap justify-end gap-3">
               <button
                 type="button"
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-3 text-sm font-black transition-all disabled:cursor-not-allowed disabled:opacity-45 ${
+                  isDark
+                    ? 'border-white/20 bg-white/[0.04] text-white hover:bg-white/[0.08]'
+                    : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Previous Page
+              </button>
+              <button
+                type="button"
                 onClick={() => navigate('/projects/data-analysis')}
                 className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-3 text-sm font-black transition-all duration-300 ${
                   isDark

@@ -433,7 +433,7 @@ export const PROJECTS: Project[] = [
       "Implemented a Flask interface where users enter health parameters and receive instant diabetic or non-diabetic predictions."
     ],
     techStack: ["Python", "Pandas", "NumPy", "Scikit-learn", "Random Forest", "Logistic Regression", "SVM", "Flask"],
-    image: "https://images.unsplash.com/photo-1579165466949-3180a3d056d1?q=80&w=1400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=1400&auto=format&fit=crop",
     fullDetails: {
       intro: "Developed a machine learning-based web application for early prediction of diabetes using clinical health data.",
       overview: "The system allows users to input medical parameters and instantly receive predictions for preventive healthcare support. The model was trained on healthcare datasets with features including glucose, BMI, insulin, and age.",
@@ -515,7 +515,7 @@ export const PROJECTS: Project[] = [
       "Integrated frontend controls with Flask backend APIs for interactive, low-latency gesture-based actions."
     ],
     techStack: ["Python", "OpenCV", "MediaPipe", "Flask", "JavaScript", "HTML", "CSS"],
-    image: "https://images.unsplash.com/photo-1581090700227-1e8e8f7f0f16?q=80&w=1400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1400&auto=format&fit=crop",
     fullDetails: {
       intro: "Developed a real-time gesture recognition system that enables users to interact with applications using hand gestures instead of traditional input devices.",
       overview: "The system captures webcam frames, detects hand landmarks, recognizes gesture intent, and translates it into commands through a touchless full-stack workflow.",
@@ -678,7 +678,7 @@ export const PROJECTS: Project[] = [
       "Integrated face detection and video processing pipelines to improve accuracy and provide visual detection outputs."
     ],
     techStack: ["Python", "TensorFlow / PyTorch", "OpenCV", "CNN", "MTCNN", "Gradio"],
-    image: "https://images.unsplash.com/photo-1574717024453-3540562e0c55?q=80&w=1400&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=1400&auto=format&fit=crop",
     fullDetails: {
       intro: "Developed an AI-powered deepfake detection system to identify whether a video is real or AI-generated.",
       overview: "The system processes video frames, detects faces, and uses deep learning models to classify authenticity based on visual inconsistencies and frame-level patterns.",
