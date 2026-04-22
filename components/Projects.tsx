@@ -130,11 +130,31 @@ const Projects: React.FC = () => {
       id="projects"
       className={`relative overflow-hidden py-28 md:py-36 px-6 transition-colors duration-700 ${isDark ? 'bg-[#020617]' : 'bg-[#f8fafc]'}`}
     >
+      <style>{`
+        @keyframes projectFloatAcrossA {
+          0% { transform: translate3d(-12%, -8%, 0) scale(1); }
+          50% { transform: translate3d(24%, 14%, 0) scale(1.12); }
+          100% { transform: translate3d(56%, -6%, 0) scale(1); }
+        }
+        @keyframes projectFloatAcrossB {
+          0% { transform: translate3d(18%, 8%, 0) scale(1); }
+          50% { transform: translate3d(-28%, -14%, 0) scale(1.08); }
+          100% { transform: translate3d(-62%, 12%, 0) scale(1); }
+        }
+      `}</style>
       <div className="pointer-events-none absolute inset-0">
         <div className={`absolute inset-0 ${isDark ? 'bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.08),transparent_30%),radial-gradient(circle_at_20%_30%,rgba(163,230,53,0.08),transparent_28%),radial-gradient(circle_at_80%_15%,rgba(168,85,247,0.10),transparent_26%),linear-gradient(180deg,#020617_0%,#040b17_55%,#020617_100%)]' : 'bg-[radial-gradient(circle_at_top,rgba(14,165,233,0.08),transparent_28%),radial-gradient(circle_at_15%_25%,rgba(132,204,22,0.08),transparent_24%),radial-gradient(circle_at_85%_18%,rgba(168,85,247,0.08),transparent_24%),linear-gradient(180deg,#f8fafc_0%,#eef6ff_50%,#f8fafc_100%)]'}`}></div>
         <div className={`absolute inset-x-0 top-0 h-40 ${isDark ? 'bg-gradient-to-b from-white/[0.04] to-transparent' : 'bg-gradient-to-b from-white/70 to-transparent'}`}></div>
         <div className={`absolute left-0 right-0 top-24 h-px ${isDark ? 'bg-white/10' : 'bg-slate-200/80'}`}></div>
         <div className={`absolute left-1/2 top-32 h-[420px] w-[420px] -translate-x-1/2 rounded-full blur-3xl ${isDark ? 'bg-cyan-500/10' : 'bg-sky-200/60'}`}></div>
+        <div
+          className={`absolute left-[6%] top-[24%] h-[360px] w-[360px] rounded-full blur-3xl ${isDark ? 'bg-fuchsia-500/14' : 'bg-fuchsia-300/45'}`}
+          style={{ animation: 'projectFloatAcrossA 18s ease-in-out infinite alternate' }}
+        />
+        <div
+          className={`absolute right-[10%] bottom-[14%] h-[320px] w-[320px] rounded-full blur-3xl ${isDark ? 'bg-cyan-400/16' : 'bg-cyan-300/50'}`}
+          style={{ animation: 'projectFloatAcrossB 16s ease-in-out infinite alternate' }}
+        />
       </div>
 
       <div className="relative mx-auto max-w-7xl">
