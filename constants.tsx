@@ -422,6 +422,171 @@ export const PROJECTS: Project[] = [
       ],
       outcome: "Built a predictive healthcare system that identifies heart disease risk early, supports data-driven decisions, and demonstrates real-world ML impact."
     }
+  },
+  {
+    id: "proj9",
+    title: "Diabetes Prediction Web App",
+    subtitle: "Clinical ML web app for early diabetes risk prediction",
+    description: [
+      "Developed a machine learning-based web application for early prediction of diabetes using clinical health data.",
+      "Built an ensemble pipeline combining Random Forest, Logistic Regression, and SVM to improve classification reliability.",
+      "Implemented a Flask interface where users enter health parameters and receive instant diabetic or non-diabetic predictions."
+    ],
+    techStack: ["Python", "Pandas", "NumPy", "Scikit-learn", "Random Forest", "Logistic Regression", "SVM", "Flask"],
+    image: "https://images.unsplash.com/photo-1579165466949-3180a3d056d1?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed a machine learning-based web application for early prediction of diabetes using clinical health data.",
+      overview: "The system allows users to input medical parameters and instantly receive predictions for preventive healthcare support. The model was trained on healthcare datasets with features including glucose, BMI, insulin, and age.",
+      features: [
+        { title: "ML-Based Disease Prediction", description: "Implemented an ensemble approach using Random Forest, Logistic Regression, and SVM to improve prediction accuracy." },
+        { title: "User Input System", description: "Accepts health parameters such as glucose level, blood pressure, BMI, and age, then converts them into model-ready input." },
+        { title: "Real-Time Prediction", description: "Provides instant inference and classifies patients as diabetic or non-diabetic with low-latency responses." },
+        { title: "Web Application Interface", description: "Built using Flask with a simple and interactive UI that dynamically displays prediction outcomes." },
+        { title: "Data Preprocessing", description: "Applied data cleaning, normalization, and feature scaling to improve training quality and model performance." }
+      ],
+      systemArchitecture: "User Input (Health Parameters) → Data Preprocessing → Ensemble ML Model → Prediction Output (Risk Result) → Web Interface (Flask)",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "Pandas", "NumPy"] },
+        { category: "Machine Learning", items: ["Scikit-learn", "Random Forest", "Logistic Regression", "SVM"] },
+        { category: "Backend", items: ["Flask"] },
+        { category: "Concepts", items: ["Ensemble Learning", "Classification Models", "Healthcare Analytics"] }
+      ],
+      challenges: [
+        "Handling variability in medical dataset distributions.",
+        "Improving model accuracy through ensemble design.",
+        "Designing a simple and user-friendly prediction interface."
+      ],
+      learnings: [
+        "Building full-stack machine learning web applications.",
+        "Applying ensemble learning for healthcare classification tasks.",
+        "Deploying and serving ML predictions through Flask."
+      ],
+      outcome: "Built a real-world healthcare AI application that predicts diabetes risk, provides instant results, and demonstrates ML + web integration."
+    }
+  },
+  {
+    id: "proj10",
+    title: "Flight Fare Prediction System",
+    subtitle: "Regression ML system for airline ticket price estimation",
+    description: [
+      "Developed a machine learning-based system to predict airline ticket prices using historical flight data.",
+      "Modeled fare trends from features such as airline, source, destination, duration, and number of stops.",
+      "Built a deployment-ready workflow that can be integrated into Flask or Streamlit for real-time fare predictions."
+    ],
+    techStack: ["Python", "Pandas", "NumPy", "Scikit-learn", "Random Forest Regression", "Linear Regression", "Matplotlib", "Seaborn"],
+    image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed a machine learning-based system to predict airline ticket prices using historical flight data.",
+      overview: "The system analyzes multiple features such as airline, source, destination, duration, and total stops to estimate ticket fares and support better booking decisions.",
+      features: [
+        { title: "Regression-Based Prediction", description: "Implemented Random Forest Regression and Linear Regression to predict continuous fare values." },
+        { title: "Data Preprocessing", description: "Handled missing values and inconsistencies, used label encoding for categorical fields, and applied normalization." },
+        { title: "Feature Engineering", description: "Used key variables including airline, source, destination, duration, and total stops to improve fare estimation quality." },
+        { title: "Data Visualization", description: "Created price-vs-duration analysis, airline-wise fare comparison, and feature-importance visualization." },
+        { title: "Model Evaluation", description: "Evaluated performance using R² Score and Mean Absolute Error (MAE) for reliable model selection." },
+        { title: "Deployment Ready", description: "Prepared the system for integration with Flask web apps or Streamlit dashboards for real-time prediction." }
+      ],
+      systemArchitecture: "Flight Dataset → Data Cleaning & Preprocessing → Feature Engineering → Model Training (Regression Models) → Prediction Output (Fare Price) → Visualization / Web Interface",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "Pandas", "NumPy"] },
+        { category: "Machine Learning", items: ["Scikit-learn", "Random Forest Regression", "Linear Regression"] },
+        { category: "Visualization", items: ["Matplotlib", "Seaborn"] }
+      ],
+      challenges: [
+        "Handling highly dynamic airfare pricing patterns.",
+        "Encoding categorical variables effectively for regression models.",
+        "Reducing overfitting while preserving generalization."
+      ],
+      learnings: [
+        "Applying regression methods to real-world pricing problems.",
+        "Understanding the impact of strong feature engineering on price models.",
+        "Building robust preprocessing pipelines for structured travel data."
+      ],
+      outcome: "Built a predictive analytics system that estimates flight ticket prices, helps users plan cost-effective travel, and demonstrates practical ML deployment readiness."
+    }
+  },
+  {
+    id: "proj11",
+    title: "Gesture-Based Interaction System",
+    subtitle: "Real-time touchless control with computer vision and Flask",
+    description: [
+      "Developed a full-stack real-time gesture recognition system for touchless human-computer interaction.",
+      "Used OpenCV and MediaPipe to detect hand landmarks from webcam video and map gestures to commands.",
+      "Integrated frontend controls with Flask backend APIs for interactive, low-latency gesture-based actions."
+    ],
+    techStack: ["Python", "OpenCV", "MediaPipe", "Flask", "JavaScript", "HTML", "CSS"],
+    image: "https://images.unsplash.com/photo-1581090700227-1e8e8f7f0f16?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed a real-time gesture recognition system that enables users to interact with applications using hand gestures instead of traditional input devices.",
+      overview: "The system captures webcam frames, detects hand landmarks, recognizes gesture intent, and translates it into commands through a touchless full-stack workflow.",
+      features: [
+        { title: "Real-Time Gesture Detection", description: "Captures live webcam video, detects hand landmarks, and processes gestures instantly." },
+        { title: "Computer Vision Pipeline", description: "Uses OpenCV for frame processing and MediaPipe for hand tracking and key-point extraction." },
+        { title: "Gesture-Based Control", description: "Maps recognized gestures to navigation, command execution, and UI interaction actions." },
+        { title: "Full-Stack Integration", description: "Combines HTML/CSS/JavaScript frontend with Flask backend APIs for smooth interaction flow." },
+        { title: "Interactive User Interface", description: "Displays live webcam feed, gesture overlays, and real-time visual feedback." }
+      ],
+      systemArchitecture: "Webcam Input (Video Stream) → Frame Processing (OpenCV) → Hand Landmark Detection (MediaPipe) → Gesture Recognition Logic → Backend API (Flask) → Frontend UI (Display + Control)",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "JavaScript"] },
+        { category: "Computer Vision", items: ["OpenCV", "MediaPipe"] },
+        { category: "Backend", items: ["Flask"] },
+        { category: "Frontend", items: ["HTML", "CSS", "JavaScript"] }
+      ],
+      challenges: [
+        "Handling lighting variation and background noise during detection.",
+        "Maintaining high gesture recognition accuracy in real time.",
+        "Keeping latency low for responsive user interaction."
+      ],
+      learnings: [
+        "Computer vision fundamentals for real-time tracking systems.",
+        "Design patterns for interactive low-latency pipelines.",
+        "Practical frontend-backend communication for AI-enabled interfaces."
+      ],
+      outcome: "Built an interactive gesture-controlled system that enables touchless interaction and demonstrates real-time AI + web integration."
+    }
+  },
+  {
+    id: "proj12",
+    title: "End-to-End Airbnb Price Prediction System",
+    subtitle: "Complete ML pipeline for Airbnb rental price forecasting",
+    description: [
+      "Developed an end-to-end machine learning pipeline to predict Airbnb listing prices using location, property type, amenities, and ratings.",
+      "Implemented full lifecycle workflows including data ingestion, preprocessing, EDA, feature engineering, model training, and evaluation.",
+      "Compared regression models and identified key factors that influence listing prices for practical decision support."
+    ],
+    techStack: ["Python", "Scikit-learn", "Pandas", "NumPy", "EDA", "Regression Models", "Matplotlib", "Seaborn"],
+    image: "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed an end-to-end machine learning system to predict Airbnb rental prices using listing data and property features.",
+      overview: "The project follows a complete ML lifecycle including data cleaning, exploratory data analysis, feature engineering, model training, and evaluation to support host pricing and guest decision-making.",
+      features: [
+        { title: "End-to-End ML Pipeline", description: "Implemented complete workflows for data collection, cleaning, feature engineering, model training, and evaluation." },
+        { title: "Exploratory Data Analysis (EDA)", description: "Analyzed price distribution, location trends, and property type effects to identify pricing patterns." },
+        { title: "Feature Engineering", description: "Focused on influential factors such as location, room count, amenities, and review scores." },
+        { title: "Regression-Based Prediction", description: "Built and compared Linear Regression, Decision Tree, and Random Forest models to choose the best performer." },
+        { title: "Data Visualization", description: "Used correlation heatmaps and feature-vs-price analysis to explain key pricing drivers." },
+        { title: "Model Evaluation", description: "Validated predictions with RMSE, MAE, and R² Score to ensure reliability." }
+      ],
+      systemArchitecture: "Airbnb Dataset → Data Cleaning & Preprocessing → Exploratory Data Analysis (EDA) → Feature Engineering → Model Training (Regression Models) → Prediction Output (Price) → Evaluation & Visualization",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "Pandas", "NumPy"] },
+        { category: "Machine Learning", items: ["Scikit-learn", "Linear Regression", "Decision Tree", "Random Forest"] },
+        { category: "Concepts", items: ["EDA", "Feature Engineering", "Regression Modeling"] },
+        { category: "Visualization", items: ["Matplotlib", "Seaborn"] }
+      ],
+      challenges: [
+        "Handling missing and noisy listing data.",
+        "Selecting features that generalize across neighborhoods and property types.",
+        "Managing dynamic market-driven pricing behavior."
+      ],
+      learnings: [
+        "Designing robust end-to-end ML workflows for production-style projects.",
+        "Why EDA and feature engineering are critical for pricing performance.",
+        "How to evaluate and compare regression models for real-world datasets."
+      ],
+      outcome: "Built a complete data science pipeline that predicts Airbnb prices, identifies key pricing factors, and demonstrates production-level ML workflow design."
+    }
   }
 ];
 
