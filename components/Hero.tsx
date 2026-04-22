@@ -349,159 +349,33 @@ const skillPoints = [
   { label: 'System\nDesign', x: 18, y: 32 },
 ];
 
-// ── Hexagonal Profile Photo with Enhanced Contrast & Glow ──────────────────
+// ── Profile Photo ───────────────────────────────────────────────────────────
 const HexProfilePhoto: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   return (
-    <div className="relative flex items-center justify-center" style={{ width: 340, height: 380 }}>
-
-      {/* Wide ambient glow — outermost haze */}
+    <div className="relative flex items-center justify-center" style={{ width: 390, height: 430 }}>
       <div
-        className="absolute rounded-full pointer-events-none"
+        className={`relative z-10 overflow-hidden rounded-3xl border-2 ${
+          isDark ? 'border-[#f3c623]/70 bg-black/40' : 'border-[#f3c623]/70 bg-white/80'
+        }`}
         style={{
-          width: 420, height: 420,
-          background: 'radial-gradient(circle, rgba(243,198,35,0.22) 0%, rgba(255,180,0,0.10) 45%, transparent 70%)',
-          filter: 'blur(40px)',
-          animation: 'hexAura1 4.5s ease-in-out infinite',
-          top: '50%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      />
-      {/* Tight inner glow */}
-      <div
-        className="absolute rounded-full pointer-events-none"
-        style={{
-          width: 300, height: 300,
-          background: 'radial-gradient(circle, rgba(243,198,35,0.45) 0%, rgba(255,220,80,0.18) 45%, transparent 68%)',
-          filter: 'blur(22px)',
-          animation: 'hexAura2 3s ease-in-out infinite',
-          top: '50%', left: '50%',
-          transform: 'translate(-50%, -54%)',
-        }}
-      />
-
-      {/* Spinning outer hex ring */}
-      <svg
-        className="absolute"
-        width="340" height="340"
-        style={{
-          animation: 'hexSpin 16s linear infinite',
-          top: '50%', left: '50%',
-          transform: 'translate(-50%, -54%)',
-          position: 'absolute',
-        }}
-        viewBox="0 0 340 340"
-      >
-        <defs>
-          <filter id="goldGlow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-            <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
-          </filter>
-        </defs>
-        <polygon
-          points="170,8 312,90 312,250 170,332 28,250 28,90"
-          fill="none"
-          stroke="rgba(243,198,35,0.7)"
-          strokeWidth="2"
-          strokeDasharray="10 6"
-          filter="url(#goldGlow)"
-        />
-        {[
-          [170,8],[312,90],[312,250],[170,332],[28,250],[28,90]
-        ].map(([cx,cy], i) => (
-          <circle key={i} cx={cx} cy={cy} r="6" fill="#f3c623"
-            style={{ filter: 'drop-shadow(0 0 8px rgba(243,198,35,1))' }}
-          />
-        ))}
-      </svg>
-
-      {/* Counter-spinning inner hex ring */}
-      <svg
-        className="absolute"
-        width="295" height="295"
-        style={{
-          animation: 'hexSpinReverse 22s linear infinite',
-          top: '50%', left: '50%',
-          transform: 'translate(-50%, -54%)',
-          position: 'absolute',
-        }}
-        viewBox="0 0 295 295"
-      >
-        <polygon
-          points="147,6 272,75 272,220 147,289 22,220 22,75"
-          fill="none"
-          stroke="rgba(243,198,35,0.35)"
-          strokeWidth="1.5"
-          strokeDasharray="5 12"
-        />
-      </svg>
-
-      {/* Hexagonal photo clip */}
-      <div
-        className="relative z-10"
-        style={{
-          width: 245, height: 245,
-          position: 'absolute',
-          top: '50%', left: '50%',
-          transform: 'translate(-50%, -54%)',
+          width: 320,
+          height: 400,
+          boxShadow: '0 0 30px rgba(243,198,35,0.35)',
         }}
       >
-        {/* Gold hex border with glow */}
-        <div
-          className="absolute inset-0"
-          style={{
-            clipPath: 'polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%)',
-            background: 'linear-gradient(135deg, #f3c623 0%, #ffe566 40%, #c89b0a 100%)',
-            filter: 'drop-shadow(0 0 22px rgba(243,198,35,1)) drop-shadow(0 0 50px rgba(243,198,35,0.6))',
-            animation: 'hexGlow 3s ease-in-out infinite',
-          }}
-        />
-
-        {/* Actual photo */}
         <img
           src="/assets/hero-portrait.png"
           alt="Bhumika Tewari"
+          className="h-full w-full"
           style={{
-            position: 'absolute',
-            inset: 4,
-            width: 'calc(100% - 8px)',
-            height: 'calc(100% - 8px)',
-            objectFit: 'contain',
-            objectPosition: 'center',
-            background: isDark ? 'linear-gradient(180deg, #0d0d0d 0%, #131313 100%)' : 'linear-gradient(180deg, #fffdf4 0%, #fff7de 100%)',
-            clipPath: 'polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%)',
+            objectFit: 'cover',
+            objectPosition: 'center top',
             filter: isDark
-              ? 'brightness(1.12) contrast(1.18) saturate(1.25)'
-              : 'brightness(1.08) contrast(1.12) saturate(1.1)',
-          }}
-        />
-
-        {/* Shimmer overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            clipPath: 'polygon(50% 0%, 93.3% 25%, 93.3% 75%, 50% 100%, 6.7% 75%, 6.7% 25%)',
-            background: 'linear-gradient(160deg, rgba(255,255,255,0.18) 0%, transparent 35%, rgba(243,198,35,0.12) 100%)',
-            animation: 'shimmerOverlay 4s ease-in-out infinite',
+              ? 'brightness(1.08) contrast(1.12) saturate(1.08)'
+              : 'brightness(1.02) contrast(1.05) saturate(1.02)',
           }}
         />
       </div>
-
-      {/* Floating sparkle particles */}
-      {[...Array(6)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full bg-[#f3c623] pointer-events-none"
-          style={{
-            width: i % 2 === 0 ? 7 : 5,
-            height: i % 2 === 0 ? 7 : 5,
-            top: `${[12,20,68,78,44,56][i]}%`,
-            left: `${[48,78,83,48,12,18][i]}%`,
-            boxShadow: '0 0 10px 4px rgba(243,198,35,0.9)',
-            animation: `sparkle${i} ${2.5 + i * 0.4}s ease-in-out infinite`,
-            animationDelay: `${i * 0.3}s`,
-          }}
-        />
-      ))}
 
       {/* Status badge */}
       <div
