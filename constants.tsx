@@ -215,6 +215,49 @@ export const PROJECTS: Project[] = [
       ],
       outcome: "Delivered a cloud-based ETL and analytics pipeline with strong data quality handling, warehouse integration, and business intelligence reporting support."
     }
+  },
+  {
+    id: "proj4",
+    title: "AI-Based Chest Disease Detection System",
+    subtitle: "Deep learning system for automated chest disease detection from X-ray images",
+    description: [
+      "Designed and developed a CNN-based medical imaging system to detect lung diseases from chest X-rays, enabling faster and more accurate diagnosis.",
+      "Built deep learning models using CNN architectures for detecting multiple lung diseases from chest X-ray datasets.",
+      "Implemented preprocessing, training pipelines, and deployed prediction system with visualization support for medical insights."
+    ],
+    techStack: ["Python", "TensorFlow", "CNN", "Flask", "OpenCV", "NumPy", "Pandas"],
+    image: "https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?q=80&w=1400&auto=format&fit=crop",
+    github: "https://github.com/Bhumika2006-hue/chest_disease",
+    fullDetails: {
+      intro: "Developed an AI-powered deep learning system for automated detection of chest diseases from X-ray images.",
+      overview: "The system leverages Convolutional Neural Networks (CNNs) to classify lung conditions and assist radiologists in making faster and more accurate diagnoses. It is designed as an end-to-end pipeline covering preprocessing, model training, prediction, and visualization.",
+      features: [
+        { title: "Deep Learning-Based Classification", description: "Built CNN models for medical image analysis and multi-condition detection such as Pneumonia, Cardiomegaly, and Effusion from chest X-ray datasets." },
+        { title: "Image Processing Pipeline", description: "Implemented image resizing, normalization, and deep feature extraction workflows to improve consistency and prediction accuracy." },
+        { title: "Multi-Disease Detection", description: "Enabled classification across multiple disease classes by training on large-scale chest X-ray data and handling real-world medical variability." },
+        { title: "Model Visualization & Explainability", description: "Added heatmap-based visualization (Grad-CAM style) to highlight affected lung regions and improve prediction interpretability." },
+        { title: "Deployment & Application", description: "Built backend services using Flask with an architecture that can be extended into web and mobile applications for real-time predictions." }
+      ],
+      systemArchitecture: "Chest X-ray Image → Preprocessing (Resize, Normalize) → CNN Model Training → Prediction (Disease Classification) → Visualization (Heatmap Output) → Web App / API",
+      modelDetails: ["Pneumonia", "Cardiomegaly", "Effusion"],
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "NumPy", "Pandas"] },
+        { category: "Deep Learning", items: ["TensorFlow", "Keras", "CNN"] },
+        { category: "Backend", items: ["Flask"] },
+        { category: "Tools", items: ["OpenCV", "Matplotlib"] }
+      ],
+      challenges: [
+        "Handling imbalanced datasets common in medical imaging data.",
+        "Ensuring high model accuracy for sensitive healthcare predictions.",
+        "Maintaining interpretability so outputs remain useful for clinical understanding."
+      ],
+      learnings: [
+        "Deep learning implementation patterns for medical imaging applications.",
+        "The critical impact of preprocessing quality in CNN-based systems.",
+        "How to handle real-world dataset limitations in applied AI projects."
+      ],
+      outcome: "Built a scalable AI-based diagnostic system that automates chest disease detection, improves diagnostic efficiency, and can be extended into real healthcare workflows."
+    }
   }
 ];
 
