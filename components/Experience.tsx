@@ -134,6 +134,7 @@ const PremiumWavesBackground: React.FC<{ isDark: boolean; enabled: boolean }> = 
 
     vantaRef.current = vanta.WAVES({
       el: mountRef.current,
+      THREE: (window as any).THREE,
       mouseControls: true,
       touchControls: true,
       gyroControls: false,
@@ -195,6 +196,8 @@ const Experience: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (!threeReady) return;
+
     if ((window as any).VANTA?.WAVES) {
       setVantaReady(true);
       return;
@@ -210,12 +213,12 @@ const Experience: React.FC = () => {
 
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js';
-    script.async = true;
+    script.async = false;
     script.dataset.vanta = 'waves';
     script.onload = handleLoad;
     document.head.appendChild(script);
     return () => script.removeEventListener('load', handleLoad);
-  }, []);
+  }, [threeReady]);
 
   useEffect(() => {
     const path = spiralPathRef.current;
@@ -232,7 +235,7 @@ const Experience: React.FC = () => {
       className="relative overflow-hidden px-6 py-32 transition-colors duration-700"
     >
       <div className="pointer-events-none absolute inset-0">
-        {threeReady && vantaReady ? <PremiumWavesBackground isDark={isDark} enabled /> : threeReady && <ExperienceGoldBlueBackground />}
+        {threeReady && vantaReady ? <PremiumWavesBackground isDark={isDark} enabled /> : <ExperienceGoldBlueBackground />}
         <BlobFieldBackground variant="experience" scrollProgress={trajectoryProgress} />
         <div className={`${isDark ? 'bg-gradient-to-b from-black/35 via-transparent to-black/45' : 'bg-gradient-to-b from-white/10 via-transparent to-slate-950/20'} absolute inset-0`} />
       </div>
