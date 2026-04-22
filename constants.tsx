@@ -587,6 +587,127 @@ export const PROJECTS: Project[] = [
       ],
       outcome: "Built a complete data science pipeline that predicts Airbnb prices, identifies key pricing factors, and demonstrates production-level ML workflow design."
     }
+  },
+  {
+    id: "proj13",
+    title: "End-to-End Movie Recommendation System",
+    subtitle: "AI-powered recommendation system for personalized movie suggestions",
+    description: [
+      "Developed a machine learning-based system that recommends movies based on user preferences using content-based and similarity-based techniques.",
+      "Built a recommendation engine using content-based filtering and similarity measures to suggest movies based on user input.",
+      "Implemented text processing and feature extraction techniques to analyze movie metadata like genre, cast, and overview."
+    ],
+    techStack: ["Python", "Pandas", "Scikit-learn", "NLP", "Cosine Similarity", "Streamlit"],
+    image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed an end-to-end movie recommendation system that suggests movies based on user preferences and similarity between movie features.",
+      overview: "The system uses content-based filtering and similarity metrics to recommend movies with similar characteristics such as genre, cast, and storyline, similar to real-world personalization systems.",
+      features: [
+        { title: "Content-Based Recommendation", description: "Recommends movies similar to user-selected films by comparing metadata such as genre, cast, and keywords." },
+        { title: "Feature Engineering & NLP", description: "Applies text processing and vectorization (TF-IDF / Bag of Words) to convert movie data into numerical features." },
+        { title: "Similarity Matrix Computation", description: "Builds a movie-to-movie cosine similarity matrix and retrieves top matching recommendations efficiently." },
+        { title: "Data Processing Pipeline", description: "Includes data cleaning, metadata preprocessing, feature extraction, and similarity-ready matrix creation." },
+        { title: "Interactive Interface", description: "Provides a Streamlit-based UI where users select a movie and receive instant recommendations." }
+      ],
+      systemArchitecture: "Movie Dataset → Data Cleaning & Preprocessing → Feature Extraction (NLP) → Vectorization (TF-IDF / BoW) → Similarity Matrix (Cosine Similarity) → Recommendation Engine → User Interface (Streamlit / Web App)",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python", "Pandas", "NumPy"] },
+        { category: "Machine Learning / NLP", items: ["Scikit-learn", "TF-IDF / Bag of Words", "Cosine Similarity"] },
+        { category: "Frontend", items: ["Streamlit"] }
+      ],
+      challenges: [
+        "Handling large text-based movie datasets efficiently.",
+        "Optimizing similarity computation for faster retrieval.",
+        "Improving recommendation relevance for diverse user tastes."
+      ],
+      learnings: [
+        "Core recommender system design principles.",
+        "NLP-based feature extraction for recommendation pipelines.",
+        "Similarity-based modeling for practical personalization use cases."
+      ],
+      outcome: "Built a personalized movie recommendation system that suggests relevant movies instantly and demonstrates a real-world ML application."
+    }
+  },
+  {
+    id: "proj14",
+    title: "Automated Certificate Generation System",
+    subtitle: "Automated system for generating personalized certificates in bulk",
+    description: [
+      "Developed a Python-based system to automatically generate certificates by inserting user names into a predefined template, reducing manual effort and improving efficiency.",
+      "Built an automated pipeline to generate multiple certificates by dynamically inserting user data into templates.",
+      "Eliminated manual certificate creation, significantly improving speed and accuracy for bulk generation tasks."
+    ],
+    techStack: ["Python", "OpenCV / PIL", "Pandas", "Automation", "Image Processing"],
+    image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed an automated certificate generation system that creates personalized certificates by inserting user-specific data into a predefined template.",
+      overview: "The system processes input names from files and generates certificates in bulk using image processing workflows, significantly reducing repetitive manual work.",
+      features: [
+        { title: "Automated Certificate Generation", description: "Generates certificates in bulk from a predefined template by dynamically inserting participant names." },
+        { title: "Data-Driven Input", description: "Reads names from text files or CSV input and iterates through records to generate certificates programmatically." },
+        { title: "Image Processing Pipeline", description: "Uses OpenCV / PIL to place text with proper alignment, style, and formatting on certificate templates." },
+        { title: "Fast & Efficient Automation", description: "Produces large numbers of certificates in seconds while minimizing human error." },
+        { title: "Output Management", description: "Stores generated certificates in organized folders for easy access and scalable usage." }
+      ],
+      systemArchitecture: "Input Data (Names List / CSV) → Template Selection (Certificate Image) → Text Processing (Positioning & Formatting) → Image Processing (Overlay Text) → Certificate Generation (Output Files) → Storage (Generated Certificates Folder)",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python"] },
+        { category: "Libraries", items: ["OpenCV / PIL", "Pandas"] },
+        { category: "Concepts", items: ["Automation", "Image Processing", "Batch Processing"] }
+      ],
+      challenges: [
+        "Aligning text correctly across template designs.",
+        "Handling different name lengths without layout breaks.",
+        "Maintaining consistent font and formatting quality at scale."
+      ],
+      learnings: [
+        "Automation workflow design using Python.",
+        "Practical image processing for document generation.",
+        "Handling bulk data processing with reliability."
+      ],
+      outcome: "Built a practical automation tool that generates certificates instantly, saves manual effort, and supports event-scale usage."
+    }
+  },
+  {
+    id: "proj15",
+    title: "AI Video Detection System (Deepfake Detector)",
+    subtitle: "AI system for detecting deepfake and AI-generated videos using computer vision",
+    description: [
+      "Developed a deep learning-based system to detect AI-generated or manipulated videos by analyzing frames and identifying inconsistencies.",
+      "Built a deepfake detection system using CNN-based models to classify videos as real or fake through frame-by-frame analysis.",
+      "Integrated face detection and video processing pipelines to improve accuracy and provide visual detection outputs."
+    ],
+    techStack: ["Python", "TensorFlow / PyTorch", "OpenCV", "CNN", "MTCNN", "Gradio"],
+    image: "https://images.unsplash.com/photo-1574717024453-3540562e0c55?q=80&w=1400&auto=format&fit=crop",
+    fullDetails: {
+      intro: "Developed an AI-powered deepfake detection system to identify whether a video is real or AI-generated.",
+      overview: "The system processes video frames, detects faces, and uses deep learning models to classify authenticity based on visual inconsistencies and frame-level patterns.",
+      features: [
+        { title: "Deepfake Detection", description: "Classifies uploaded videos as real or AI-generated using CNN-based binary classification workflows." },
+        { title: "Face Detection & Processing", description: "Uses MTCNN for face extraction from each frame to improve model focus and prediction quality." },
+        { title: "Frame-by-Frame Video Analysis", description: "Splits videos into frames, evaluates each frame, and aggregates predictions for final classification." },
+        { title: "Prediction Output", description: "Returns final real/fake classification with confidence scores and optional detection highlighting." },
+        { title: "Interactive Interface", description: "Provides a user-friendly Gradio/web interface for uploading videos and viewing detection results." }
+      ],
+      systemArchitecture: "Input Video → Frame Extraction (OpenCV) → Face Detection (MTCNN) → Feature Extraction (CNN Model) → Frame-Level Prediction → Aggregation (Final Decision) → Output (Real / Fake + Confidence)",
+      techStackDetails: [
+        { category: "Languages & Core", items: ["Python"] },
+        { category: "Deep Learning", items: ["TensorFlow / PyTorch", "CNN"] },
+        { category: "Computer Vision", items: ["OpenCV", "MTCNN"] },
+        { category: "Frontend", items: ["Gradio"] }
+      ],
+      challenges: [
+        "Handling high computational cost for long videos.",
+        "Detecting subtle manipulations in realistic deepfakes.",
+        "Generalizing detection performance across varied datasets."
+      ],
+      learnings: [
+        "Deep learning techniques for video authenticity analysis.",
+        "End-to-end computer vision pipeline construction.",
+        "Practical AI security applications for misinformation defense."
+      ],
+      outcome: "Built a real-world AI security system that detects manipulated videos and showcases advanced ML + computer vision skills."
+    }
   }
 ];
 
