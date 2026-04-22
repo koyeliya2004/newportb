@@ -146,16 +146,17 @@ const Experience: React.FC = () => {
       id="experience"
       className={`relative overflow-hidden px-6 py-32 transition-colors duration-700 ${
         isDark
-          ? 'bg-[radial-gradient(circle_at_15%_8%,rgba(34,211,238,0.16),transparent_32%),radial-gradient(circle_at_80%_25%,rgba(244,114,182,0.14),transparent_34%),radial-gradient(circle_at_50%_95%,rgba(99,102,241,0.12),transparent_35%),#020617]'
-          : 'bg-[radial-gradient(circle_at_10%_0%,rgba(56,189,248,0.11),transparent_28%),radial-gradient(circle_at_90%_20%,rgba(244,114,182,0.11),transparent_34%),radial-gradient(circle_at_50%_90%,rgba(129,140,248,0.10),transparent_35%),#f8fafc]'
+          ? 'bg-[#02040a]'
+          : 'bg-[radial-gradient(circle_at_12%_0%,rgba(56,189,248,0.15),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(244,114,182,0.13),transparent_34%),radial-gradient(circle_at_50%_95%,rgba(129,140,248,0.10),transparent_35%),#f8fafc]'
       }`}
     >
       <div className="pointer-events-none absolute inset-0">
-        <ExperienceThreeBackground />
-        <div className={`absolute inset-0 ${isDark ? 'bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)]' : 'bg-[linear-gradient(rgba(15,23,42,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.035)_1px,transparent_1px)]'} bg-[size:56px_56px]`} />
-        <div className="absolute -left-24 top-40 h-96 w-96 rounded-full bg-cyan-500/20 blur-[120px] animate-drift-slow" />
-        <div className="absolute -right-24 top-[35%] h-[26rem] w-[26rem] rounded-full bg-fuchsia-500/20 blur-[120px] animate-drift-reverse" />
-        <div className="absolute left-1/3 top-2/3 h-80 w-80 rounded-full bg-indigo-500/15 blur-[120px] animate-drift-slow" />
+        {isDark ? (
+          <>
+            <ExperienceThreeBackground />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/40" />
+          </>
+        ) : null}
       </div>
 
       <div className="relative mx-auto max-w-7xl">
