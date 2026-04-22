@@ -223,6 +223,7 @@ interface ContactCardProps {
   icon: React.ElementType;
   colorClass: string;
   borderGlow: string;
+  href?: string;
 }
 
 const ContactCard: React.FC<ContactCardProps> = ({
@@ -233,37 +234,50 @@ const ContactCard: React.FC<ContactCardProps> = ({
   icon: Icon,
   colorClass,
   borderGlow,
-}) => (
-  <div
-    className={`relative group p-10 rounded-[32px] bg-black/40 border border-white/10 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-4 hover:border-white/25 ${borderGlow}`}
-  >
-    <div className="absolute top-8 left-1/2 -translate-x-1/2">
-      <span className="text-[10px] tracking-[0.4em] text-gray-500 font-bold uppercase">
-        {ref_id}
-      </span>
-    </div>
+  href,
+}) => {
+  const cardContent = (
+    <div
+      className={`relative group p-10 rounded-[32px] bg-black/40 border border-white/10 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-4 hover:border-white/25 ${borderGlow}`}
+    >
+      <div className="absolute top-8 left-1/2 -translate-x-1/2">
+        <span className="text-[10px] tracking-[0.4em] text-gray-500 font-bold uppercase">
+          {ref_id}
+        </span>
+      </div>
 
-    <div className="mt-10 mb-8 flex justify-center">
-      <div
-        className={`relative p-5 rounded-full border border-white/10 ${colorClass} transition-all duration-500 group-hover:scale-110 group-hover:rotate-6`}
-      >
-        <Icon size={32} className="relative z-10" />
+      <div className="mt-10 mb-8 flex justify-center">
         <div
-          className={`absolute inset-0 rounded-full blur-2xl opacity-40 group-hover:opacity-80 transition-opacity`}
-        ></div>
+          className={`relative p-5 rounded-full border border-white/10 ${colorClass} transition-all duration-500 group-hover:scale-110 group-hover:rotate-6`}
+        >
+          <Icon size={32} className="relative z-10" />
+          <div
+            className={`absolute inset-0 rounded-full blur-2xl opacity-40 group-hover:opacity-80 transition-opacity`}
+          ></div>
+        </div>
+      </div>
+
+      <div className="text-center">
+        <h3 className="text-xs tracking-[0.4em] font-black text-white/90 mb-6 uppercase">
+          {title}
+        </h3>
+        <div className="w-10 h-[1px] bg-white/10 mx-auto mb-6 group-hover:w-20 group-hover:bg-white/30 transition-all duration-700"></div>
+        <p className="text-xl font-semibold text-white mb-3 tracking-tight">{value}</p>
+        <p className="text-sm text-gray-400 leading-relaxed font-light">{description}</p>
       </div>
     </div>
+  );
 
-    <div className="text-center">
-      <h3 className="text-xs tracking-[0.4em] font-black text-white/90 mb-6 uppercase">
-        {title}
-      </h3>
-      <div className="w-10 h-[1px] bg-white/10 mx-auto mb-6 group-hover:w-20 group-hover:bg-white/30 transition-all duration-700"></div>
-      <p className="text-xl font-semibold text-white mb-3 tracking-tight">{value}</p>
-      <p className="text-sm text-gray-400 leading-relaxed font-light">{description}</p>
-    </div>
-  </div>
-);
+  if (!href) {
+    return cardContent;
+  }
+
+  return (
+    <a href={href} className="block">
+      {cardContent}
+    </a>
+  );
+};
 
 interface SocialLinkProps {
   href: string;
@@ -329,6 +343,7 @@ const Contact: React.FC = () => {
             icon={Mail}
             colorClass="text-amber-400 border-amber-400/20 bg-amber-400/5"
             borderGlow="hover:shadow-[0_0_60px_-15px_rgba(251,191,36,0.3)]"
+            href={`mailto:${CV_DATA.email}`}
           />
           <ContactCard
             ref_id="REF_02"

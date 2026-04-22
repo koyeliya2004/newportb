@@ -5,7 +5,7 @@ import { Logo } from './Logo';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const location = useLocation();
   const isHome = location.pathname === '/' || location.pathname === '/home';
 
@@ -76,37 +76,6 @@ const Navbar: React.FC = () => {
               </NavLink>
             ))}
           </div>
-
-          {/* Theme Toggle Button */}
-          <button 
-            onClick={toggleTheme}
-            className={`w-10 h-10 flex items-center justify-center rounded-full border ${
-              isDark
-                ? 'border-white/10 bg-white/5 text-white hover:bg-white/10'
-                : 'border-black/10 bg-black/5 text-black hover:bg-black/10'
-            } transition-all`}
-            aria-label="Toggle Theme"
-          >
-            {isDark ? (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M16.243 17.657l.707.707M7.757 7.757l.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z"
-                />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                />
-              </svg>
-            )}
-          </button>
 
           <NavLink 
             to="/contact"
