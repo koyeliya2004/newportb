@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import { useTheme } from '../App';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Search, Sparkles } from 'lucide-react';
 
 const cardAccentMap = [
   {
@@ -28,9 +28,13 @@ const cardAccentMap = [
   }
 ];
 
+const getFallbackProjectImage = (projectTitle: string) =>
+  `https://source.unsplash.com/1600x900/?${encodeURIComponent(projectTitle + ' technology data dashboard')}`;
+
 const ProjectCard: React.FC<{ proj: any; isDark: boolean; index: number }> = ({ proj, isDark, index }) => {
   const navigate = useNavigate();
   const accent = cardAccentMap[index % cardAccentMap.length];
+  const [imgSrc, setImgSrc] = React.useState(proj.image || getFallbackProjectImage(proj.title));
 
   return (
     <button
@@ -42,8 +46,9 @@ const ProjectCard: React.FC<{ proj: any; isDark: boolean; index: number }> = ({ 
 
       <div className="relative h-52 overflow-hidden">
         <img
-          src={proj.image}
+          src={imgSrc}
           alt={proj.title}
+          onError={() => setImgSrc(getFallbackProjectImage(proj.title))}
           className="w-full h-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
         />
         <div className={`absolute inset-0 ${isDark ? 'bg-gradient-to-t from-[#020617] via-[#020617]/60 to-transparent' : 'bg-gradient-to-t from-white/95 via-white/10 to-transparent'}`}></div>
@@ -114,10 +119,38 @@ const Projects: React.FC = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const PROJECTS_PER_PAGE = 12;
-  const totalPages = Math.ceil(PROJECTS.length / PROJECTS_PER_PAGE);
-  const pageProjects = PROJECTS.slice((currentPage - 1) * PROJECTS_PER_PAGE, currentPage * PROJECTS_PER_PAGE);
+  const navigate = useNavigate();
+
+  const filteredProjects = React.useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase();
+    if (!normalizedQuery) {
+      return PROJECTS;
+    }
+
+    return PROJECTS.filter((project) => {
+      const haystack = [
+        project.title,
+        project.subtitle,
+        ...(project.description || []),
+        ...(project.techStack || []),
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      return haystack.includes(normalizedQuery);
+    });
+  }, [searchQuery]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE));
+  const pageProjects = filteredProjects.slice((currentPage - 1) * PROJECTS_PER_PAGE, currentPage * PROJECTS_PER_PAGE);
+
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   return (
     <section
@@ -166,13 +199,53 @@ const Projects: React.FC = () => {
             </p>
           </div>
 
+          <div className="flex flex-col gap-4 w-full lg:w-auto lg:min-w-[27rem]">
+            <div className="flex flex-wrap justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => navigate('/projects/data-analysis')}
+                className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-3 text-sm font-black transition-all duration-300 ${
+                  isDark
+                    ? 'border-lime-400/40 bg-lime-400/10 text-lime-200 hover:bg-lime-400/20'
+                    : 'border-lime-500/40 bg-lime-50 text-lime-700 hover:bg-lime-100'
+                }`}
+              >
+                Data Analysis Projects
+                <ArrowRight className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-3 text-sm font-black transition-all disabled:cursor-not-allowed disabled:opacity-45 ${
+                  isDark
+                    ? 'border-white/20 bg-white/[0.04] text-white hover:bg-white/[0.08]'
+                    : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                Next Page
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+            <div className={`flex items-center gap-3 rounded-2xl border px-4 py-3 ${isDark ? 'border-white/10 bg-white/[0.04]' : 'border-slate-200 bg-white/80'}`}>
+              <Search className={`h-4 w-4 ${isDark ? 'text-slate-300' : 'text-slate-600'}`} />
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search all projects"
+                className={`w-full bg-transparent text-sm outline-none placeholder:opacity-70 ${isDark ? 'text-white placeholder:text-slate-400' : 'text-slate-900 placeholder:text-slate-500'}`}
+              />
+            </div>
+          </div>
+
           <div className={`grid grid-cols-2 gap-4 rounded-[1.75rem] border p-5 md:p-6 ${isDark ? 'border-white/10 bg-white/[0.04]' : 'border-slate-200 bg-white/80 backdrop-blur-sm'}`}>
             <div>
               <p className={`text-[11px] font-black uppercase tracking-[0.28em] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
                 Major Projects
               </p>
               <p className={`mt-3 text-3xl font-black ${isDark ? 'text-white' : 'text-slate-950'}`}>
-                {String(PROJECTS.length).padStart(2, '0')}
+                {String(filteredProjects.length).padStart(2, '0')}
               </p>
             </div>
             <div>
@@ -186,11 +259,17 @@ const Projects: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid gap-6 xl:grid-cols-3 md:grid-cols-2">
-          {pageProjects.map((proj, index) => (
-            <ProjectCard key={proj.id} proj={proj} isDark={isDark} index={index} />
-          ))}
-        </div>
+        {pageProjects.length > 0 ? (
+          <div className="grid gap-6 xl:grid-cols-3 md:grid-cols-2">
+            {pageProjects.map((proj, index) => (
+              <ProjectCard key={proj.id} proj={proj} isDark={isDark} index={index} />
+            ))}
+          </div>
+        ) : (
+          <div className={`rounded-3xl border px-6 py-14 text-center ${isDark ? 'border-white/10 bg-white/[0.03] text-slate-300' : 'border-slate-200 bg-white text-slate-600'}`}>
+            No projects found for "<span className="font-bold">{searchQuery}</span>".
+          </div>
+        )}
 
         {totalPages > 1 && (
           <div className="mt-14 flex flex-col items-center gap-4">
