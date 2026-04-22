@@ -8,6 +8,7 @@ import Skills from './components/Skills';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
 import ProjectDetail from './components/ProjectDetail';
+import DataAnalysisProjects from './components/DataAnalysisProjects';
 import { Logo } from './components/Logo';
 
 type Theme = 'dark' | 'light';
@@ -123,6 +124,7 @@ const App: React.FC = () => {
               <Route path="/about" element={<PageWrapper><Skills /></PageWrapper>} />
               <Route path="/experience" element={<PageWrapper><Experience /></PageWrapper>} />
               <Route path="/projects" element={<PageWrapper><Projects /></PageWrapper>} />
+              <Route path="/projects/data-analysis" element={<PageWrapper><DataAnalysisProjects /></PageWrapper>} />
               <Route path="/projects/:id" element={<PageWrapper><ProjectDetail /></PageWrapper>} />
               <Route path="/certifications" element={<PageWrapper><Certifications /></PageWrapper>} />
               <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
