@@ -36,11 +36,11 @@ const ProjectCard: React.FC<{ proj: any; isDark: boolean; index: number }> = ({ 
     <button
       type="button"
       onClick={() => navigate(`/projects/${proj.id}`)}
-      className={`group relative text-left flex h-full flex-col overflow-hidden rounded-[2rem] border transition-all duration-700 hover:-translate-y-2 ${isDark ? `bg-white/[0.03] border-white/10 ${accent.border} shadow-[0_30px_80px_rgba(0,0,0,0.45)]` : 'bg-white border-slate-200 hover:border-slate-300 shadow-[0_25px_70px_rgba(15,23,42,0.08)] hover:shadow-[0_35px_90px_rgba(15,23,42,0.16)]'}`}
+      className={`group relative text-left flex h-full flex-col overflow-hidden rounded-[1.5rem] border transition-all duration-700 hover:-translate-y-1.5 ${isDark ? `bg-white/[0.03] border-white/10 ${accent.border} shadow-[0_30px_80px_rgba(0,0,0,0.45)]` : 'bg-white border-slate-200 hover:border-slate-300 shadow-[0_25px_70px_rgba(15,23,42,0.08)] hover:shadow-[0_35px_90px_rgba(15,23,42,0.16)]'}`}
     >
       <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-br ${accent.glow}`}></div>
 
-      <div className="relative h-72 overflow-hidden">
+      <div className="relative h-52 overflow-hidden">
         <img
           src={proj.image}
           alt={proj.title}
@@ -68,25 +68,25 @@ const ProjectCard: React.FC<{ proj: any; isDark: boolean; index: number }> = ({ 
         </div>
       </div>
 
-      <div className="relative flex flex-1 flex-col p-8 md:p-9">
+      <div className="relative flex flex-1 flex-col p-6 md:p-7">
         <div className={`mb-6 h-1.5 w-20 rounded-full bg-gradient-to-r ${accent.line}`}></div>
 
-        <h3 className={`text-2xl md:text-[1.85rem] font-black leading-tight tracking-tight ${isDark ? 'text-white' : 'text-slate-950'}`}>
+        <h3 className={`text-xl md:text-2xl font-black leading-tight tracking-tight ${isDark ? 'text-white' : 'text-slate-950'}`}>
           {proj.title}
         </h3>
 
         {proj.subtitle && (
-          <p className={`mt-3 text-sm md:text-base leading-relaxed ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+          <p className={`mt-2 text-sm leading-relaxed line-clamp-2 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
             {proj.subtitle}
           </p>
         )}
 
-        <p className={`mt-5 text-sm md:text-[15px] leading-7 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+        <p className={`mt-3 text-sm leading-6 line-clamp-3 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
           {proj.description[0]}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2.5">
-          {proj.techStack.slice(0, 6).map((tag: string) => (
+          {proj.techStack.slice(0, 4).map((tag: string) => (
             <span
               key={tag}
               className={`rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.22em] ${isDark ? 'border-white/10 bg-white/[0.04] text-slate-300' : 'border-slate-200 bg-slate-50 text-slate-600'}`}
@@ -96,18 +96,7 @@ const ProjectCard: React.FC<{ proj: any; isDark: boolean; index: number }> = ({ 
           ))}
         </div>
 
-        <div className={`mt-8 mb-7 h-px w-full ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}></div>
-
-        <div className="space-y-3">
-          {proj.description.slice(1).map((line: string, idx: number) => (
-            <div key={idx} className="flex items-start gap-3">
-              <span className={`mt-2 h-2 w-2 shrink-0 rounded-full bg-gradient-to-r ${accent.line}`}></span>
-              <p className={`text-sm leading-7 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>{line}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-auto pt-8 flex items-center justify-between">
+        <div className="mt-auto pt-6 flex items-center justify-between">
           <span className={`text-[11px] font-black uppercase tracking-[0.28em] ${isDark ? `text-white/50 ${accent.button}` : 'text-slate-500 group-hover:text-slate-900'}`}>
             View project details
           </span>
@@ -192,7 +181,7 @@ const Projects: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid gap-8 xl:grid-cols-3 md:grid-cols-2">
+        <div className="grid gap-6 xl:grid-cols-3 md:grid-cols-2">
           {PROJECTS.map((proj, index) => (
             <ProjectCard key={proj.id} proj={proj} isDark={isDark} index={index} />
           ))}
