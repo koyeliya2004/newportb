@@ -61,25 +61,25 @@ export const VIRTUAL_SIMULATIONS = [
   {
     category: "Software & Cloud",
     companies: "AWS, Walmart, Goldman Sachs, HPE, Accenture, AIG, Verizon",
-    icon: "☁️",
+    icon: "cloud",
     color: "#EF4444"
   },
   {
     category: "Data & Analytics",
     companies: "Microsoft, PwC, Tata, Quantium, British Airways, Mastercard",
-    icon: "📊",
+    icon: "analytics",
     color: "#10B981"
   },
   {
     category: "Finance & Consulting",
     companies: "JPMorgan, Fidelity, HP, KPMG US, HSBC, Bank of America, BCG",
-    icon: "💼",
+    icon: "consulting",
     color: "#F59E0B"
   },
   {
     category: "PM & Leadership",
     companies: "Siemens, CBRE, GE, NY Jobs CEO Council",
-    icon: "🚀",
+    icon: "leadership",
     color: "#3B82F6"
   }
 ];
