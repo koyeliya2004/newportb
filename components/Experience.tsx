@@ -123,6 +123,48 @@ const StopCard: React.FC<{ index: number; simulation: any; isDark: boolean }> = 
   </div>
 );
 
+const PremiumWavesBackground: React.FC<{ isDark: boolean; enabled: boolean }> = ({ isDark, enabled }) => {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const vantaRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (!enabled || !mountRef.current) return;
+    const THREE = (window as any).THREE;
+    const vanta = (window as any).VANTA;
+    if (!THREE || !vanta?.WAVES) return;
+
+    try {
+      vantaRef.current = vanta.WAVES({
+        el: mountRef.current,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200,
+        minWidth: 200,
+        scale: 1,
+        scaleMobile: 1,
+        color: isDark ? 0x0b1d3a : 0x214f9b,
+        shininess: 30,
+        waveHeight: isDark ? 10 : 8,
+        waveSpeed: 0.6,
+        zoom: 1.1,
+      });
+    } catch (error) {
+      console.error('[Experience] Failed to initialize Vanta Waves background', error);
+      vantaRef.current = null;
+    }
+
+    return () => {
+      if (vantaRef.current) {
+        vantaRef.current.destroy();
+        vantaRef.current = null;
+      }
+    };
+  }, [enabled, isDark]);
+
+  return <div ref={mountRef} className="absolute inset-0 h-full w-full opacity-85" />;
+};
+
 const Experience: React.FC = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
@@ -132,6 +174,68 @@ const Experience: React.FC = () => {
   const trajectoryProgress = useScrollProgress(trajectoryRef);
   const scrollProgress = useScrollProgress(spiralRef);
   const [orbPosition, setOrbPosition] = useState({ x: 300, y: 0 });
+  const [threeReady, setThreeReady] = useState(false);
+  const [vantaReady, setVantaReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadScript = (selector: string, src: string, dataKey: string, dataValue: string) => new Promise<void>((resolve, reject) => {
+      const existingScript = document.querySelector(selector) as HTMLScriptElement | null;
+      if (existingScript) {
+        if (existingScript.dataset.loaded === 'true') {
+          resolve();
+          return;
+        }
+        const onLoad = () => {
+          existingScript.dataset.loaded = 'true';
+          resolve();
+        };
+        const onError = () => reject(new Error(`Failed to load script: ${src}`));
+        existingScript.addEventListener('load', onLoad, { once: true });
+        existingScript.addEventListener('error', onError, { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = true;
+      script.dataset[dataKey] = dataValue;
+      script.addEventListener('load', () => {
+        script.dataset.loaded = 'true';
+        resolve();
+      }, { once: true });
+      script.addEventListener('error', () => reject(new Error(`Failed to load script: ${src}`)), { once: true });
+      document.head.appendChild(script);
+    });
+
+    const setupBackground = async () => {
+      try {
+        if (!(window as any).THREE) {
+          await loadScript('script[data-threejs="true"]', 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', 'threejs', 'true');
+        }
+        if (!cancelled) {
+          setThreeReady(!!(window as any).THREE);
+        }
+        if (!(window as any).VANTA?.WAVES) {
+          await loadScript('script[data-vanta="waves"]', 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js', 'vanta', 'waves');
+        }
+        if (!cancelled) {
+          setVantaReady(!!(window as any).THREE && !!(window as any).VANTA?.WAVES);
+        }
+      } catch (error) {
+        console.error('[Experience] Failed to load animated background scripts', error);
+        if (!cancelled) {
+          setVantaReady(false);
+        }
+      }
+    };
+
+    setupBackground();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const path = spiralPathRef.current;
@@ -149,8 +253,9 @@ const Experience: React.FC = () => {
     >
       <div className="pointer-events-none absolute inset-0">
         <ExperienceGoldBlueBackground />
+        {threeReady && vantaReady && <PremiumWavesBackground isDark={isDark} enabled />}
         <BlobFieldBackground variant="experience" scrollProgress={trajectoryProgress} />
-        <div className={`${isDark ? 'bg-gradient-to-b from-black/35 via-transparent to-black/45' : 'bg-gradient-to-b from-white/10 via-transparent to-slate-950/20'} absolute inset-0`} />
+        <div className={`${isDark ? 'bg-gradient-to-b from-black/10 via-transparent to-black/25' : 'bg-gradient-to-b from-white/10 via-transparent to-slate-950/20'} absolute inset-0`} />
       </div>
 
       <div className="relative mx-auto max-w-7xl" style={{ transform: `translateY(${(1 - trajectoryProgress) * 10}px)` }}>
