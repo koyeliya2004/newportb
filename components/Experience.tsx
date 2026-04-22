@@ -123,7 +123,7 @@ const StopCard: React.FC<{ index: number; simulation: any; isDark: boolean }> = 
   </div>
 );
 
-const PremiumWavesBackground: React.FC<{ isDark: boolean; enabled: boolean }> = ({ isDark, enabled }) => {
+const PremiumWavesBackground: React.FC<{ isDark: boolean; enabled: boolean; boosted: boolean }> = ({ isDark, enabled, boosted }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const vantaRef = useRef<any>(null);
 
@@ -162,12 +162,13 @@ const PremiumWavesBackground: React.FC<{ isDark: boolean; enabled: boolean }> = 
     };
   }, [enabled, isDark]);
 
-  return <div ref={mountRef} className="absolute inset-0 h-full w-full opacity-85" />;
+  return <div ref={mountRef} className={`absolute inset-0 h-full w-full transition-opacity duration-500 ${boosted ? 'opacity-100' : 'opacity-85'}`} />;
 };
 
 const Experience: React.FC = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const sectionRef = useRef<HTMLElement>(null);
   const spiralRef = useRef<HTMLDivElement>(null);
   const trajectoryRef = useRef<HTMLDivElement>(null);
   const spiralPathRef = useRef<SVGPathElement>(null);
@@ -176,6 +177,7 @@ const Experience: React.FC = () => {
   const [orbPosition, setOrbPosition] = useState({ x: 300, y: 0 });
   const [threeReady, setThreeReady] = useState(false);
   const [vantaReady, setVantaReady] = useState(false);
+  const [isExperienceFocused, setIsExperienceFocused] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -238,6 +240,30 @@ const Experience: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const updateFromHash = () => {
+      setIsExperienceFocused(window.location.hash === '#experience');
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsExperienceFocused(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    updateFromHash();
+    window.addEventListener('hashchange', updateFromHash);
+    if (sectionRef.current) observer.observe(sectionRef.current);
+
+    return () => {
+      window.removeEventListener('hashchange', updateFromHash);
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     const path = spiralPathRef.current;
     if (!path) return;
 
@@ -248,14 +274,15 @@ const Experience: React.FC = () => {
 
   return (
     <section
+      ref={sectionRef}
       id="experience"
       className="relative overflow-hidden px-6 py-32 transition-colors duration-700"
     >
       <div className="pointer-events-none absolute inset-0">
         <ExperienceGoldBlueBackground />
-        {threeReady && vantaReady && <PremiumWavesBackground isDark={isDark} enabled />}
+        {threeReady && vantaReady && <PremiumWavesBackground isDark={isDark} enabled boosted={isExperienceFocused} />}
         <BlobFieldBackground variant="experience" scrollProgress={trajectoryProgress} />
-        <div className={`${isDark ? 'bg-gradient-to-b from-black/10 via-transparent to-black/25' : 'bg-gradient-to-b from-white/10 via-transparent to-slate-950/20'} absolute inset-0`} />
+        <div className={`${isDark ? (isExperienceFocused ? 'bg-gradient-to-b from-black/0 via-transparent to-black/15' : 'bg-gradient-to-b from-black/10 via-transparent to-black/25') : 'bg-gradient-to-b from-white/10 via-transparent to-slate-950/20'} absolute inset-0`} />
       </div>
 
       <div className="relative mx-auto max-w-7xl" style={{ transform: `translateY(${(1 - trajectoryProgress) * 10}px)` }}>
