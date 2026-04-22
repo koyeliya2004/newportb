@@ -17,7 +17,7 @@ const CV_DATA = {
   location: 'Kolkata, India',
   links: {
     github: 'https://github.com/Bhumika2006-hue',
-    linkedin: 'https://www.linkedin.com/in/bhumika',
+    linkedin: 'https://www.linkedin.com/in/bhumika-tewari-21294027a/',
     whatsapp: 'https://wa.me/918420399560',
   },
 };
